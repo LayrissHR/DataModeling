@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="bg">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Урок: Въведение в моделирането на данни</title>
+        <!-- Tailwind CSS -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- Google Fonts: Inter -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            /* Setting the default font for the page */
+            body {
+                font-family: "Inter", sans-serif;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+            /* Smooth scrolling for anchor links */
+            html {
+                scroll-behavior: smooth;
+            }
+            /* Custom gradient for titles */
+            .gradient-text {
+                background: linear-gradient(to right, #4f46e5, #7c3aed);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        </style>
+    </head>
+    <body class="bg-slate-50 text-slate-700">
+        <!-- Header and Navigation -->
+        <header
+            class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm"
+        >
+            <nav
+                class="container mx-auto px-6 py-4 flex justify-between items-center"
+            >
+                <div class="text-xl font-bold text-slate-800">
+                    <a href="#slide-1">Моделиране на Данни</a>
+                </div>
+                <div class="hidden md:flex space-x-6 text-sm font-medium">
+                    <a
+                        href="#slide-2"
+                        class="text-slate-600 hover:text-indigo-600 transition-colors duration-300"
+                        >Какво е?</a
+                    >
+                    <a
+                        href="#slide-3"
+                        class="text-slate-600 hover:text-indigo-600 transition-colors duration-300"
+                        >Данни</a
+                    >
+                    <a
+                        href="#slide-4"
+                        class="text-slate-600 hover:text-indigo-600 transition-colors duration-300"
+                        >Метаданни</a
+                    >
+                    <a
+                        href="#slide-5"
+                        class="text-slate-600 hover:text-indigo-600 transition-colors duration-300"
+                        >Информация</a
+                    >
+                    <a
+                        href="#slide-6"
+                        class="text-slate-600 hover:text-indigo-600 transition-colors duration-300"
+                        >Обобщение</a
+                    >
+                    <a
+                        href="#tasks"
+                        class="text-slate-600 hover:text-indigo-600 transition-colors duration-300"
+                        >Задачи</a
+                    >
+                </div>
+                <!-- Mobile Menu Button can be added here if needed -->
+            </nav>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="container mx-auto px-6 py-8 md:py-12">
+            <!-- Slide 1: Hero Section -->
+            <section
+                id="slide-1"
+                class="text-center min-h-[70vh] flex flex-col justify-center items-center bg-white rounded-2xl shadow-lg p-8"
+            >
+                <div class="max-w-4xl">
+                    <h1
+                        class="text-4xl md:text-6xl font-bold mb-4 text-slate-900 leading-tight"
+                    >
+                        Въведение в
+                        <span class="gradient-text">моделирането на данни</span>
+                    </h1>
+                    <p
+                        class="text-xl md:text-2xl font-light text-slate-600 mt-6"
+                    >
+                        Разбиране на основите: Данни, метаданни и информация.
+                    </p>
+                    <svg
+                        class="w-24 h-24 text-indigo-200 mx-auto mt-12"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M8.25 3.75H19.5M8.25 6.75H19.5M8.25 9.75H19.5M8.25 12.75H19.5m-11.25-9v12.75A2.25 2.25 0 006.75 21h12a2.25 2.25 0 002.25-2.25V5.25A2.25 2.25 0 0018.75 3H6.75A2.25 2.25 0 004.5 5.25v12.75"
+                        />
+                    </svg>
+                </div>
+            </section>
+
+            <!-- Slide 2: What is Data Modeling? -->
+            <section id="slide-2" class="my-20 scroll-mt-24">
+                <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                    <h2 class="text-3xl font-bold mb-8 text-slate-900">
+                        <span class="text-5xl mr-2">🏗️</span> Какво е моделиране
+                        на данни?
+                    </h2>
+                    <div class="grid md:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <p class="mb-6 text-lg">
+                                Моделирането на данни е процесът на създаване на
+                                <strong class="text-indigo-600"
+                                    >визуална схема (чертеж)</strong
+                                >, която описва:
+                            </p>
+                            <ul
+                                class="space-y-4 list-disc list-inside text-slate-600"
+                            >
+                                <li>
+                                    <strong>Какви данни</strong> са ни нужни
+                                    (напр. име на клиент, цена).
+                                </li>
+                                <li>
+                                    <strong>Как тези данни са свързани</strong>
+                                    помежду си (напр. клиент прави поръчки).
+                                </li>
+                                <li>
+                                    <strong>Какви правила и ограничения</strong>
+                                    важат за тях (напр. цената не може да е
+                                    отрицателна).
+                                </li>
+                            </ul>
+                            <div
+                                class="mt-8 p-6 bg-indigo-50 border-l-4 border-indigo-400 rounded-r-lg"
+                            >
+                                <h3 class="font-semibold text-slate-800">
+                                    Аналогия: Архитектурен план
+                                </h3>
+                                <p class="mt-2 text-sm text-slate-600">
+                                    Мислете за него като за **архитектурен план
+                                    на къща**. Преди да започнете да строите, ви
+                                    е нужен детайлен план. Без него рискувате да
+                                    построите нещо хаотично и нефункционално.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <img
+                                src="https://placehold.co/400x600/e0e7ff/4338ca?text=Архитектурен+План"
+                                alt="Архитектурен план на къща"
+                                class="rounded-lg shadow-md w-full h-full object-cover"
+                            />
+                            <img
+                                src="https://placehold.co/400x600/c7d2fe/4f46e5?text=Схема+на+База+Данни"
+                                alt="Схема на база данни"
+                                class="rounded-lg shadow-md w-full h-full object-cover mt-8"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 3: What is Data? -->
+            <section id="slide-3" class="my-20 scroll-mt-24">
+                <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                    <h2 class="text-3xl font-bold mb-2 text-slate-900">
+                        <span class="text-5xl mr-2">🧱</span> Градивният
+                        елемент: Данни (Data)
+                    </h2>
+                    <p class="mb-8 text-lg text-slate-600">
+                        Сурови, необработени и изолирани факти, които
+                        <strong class="text-indigo-600"
+                            >сами по себе си нямат контекст</strong
+                        >.
+                    </p>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="bg-slate-100">
+                                <tr>
+                                    <th
+                                        class="p-4 font-semibold text-sm text-slate-600 rounded-tl-lg"
+                                    >
+                                        Данни
+                                    </th>
+                                    <th
+                                        class="p-4 font-semibold text-sm text-slate-600 rounded-tr-lg"
+                                    >
+                                        Възможни въпроси (липса на контекст)
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-slate-100">
+                                    <td
+                                        class="p-4 font-mono bg-slate-50 rounded-l-lg"
+                                    >
+                                        120
+                                    </td>
+                                    <td class="p-4 text-slate-600">
+                                        120 лева? 120 килограма? 120 броя? IQ?
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-slate-100">
+                                    <td
+                                        class="p-4 font-mono bg-slate-50 rounded-l-lg"
+                                    >
+                                        "Мария"
+                                    </td>
+                                    <td class="p-4 text-slate-600">
+                                        Име на клиент? Служител? Автор на книга?
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-slate-100">
+                                    <td
+                                        class="p-4 font-mono bg-slate-50 rounded-l-lg"
+                                    >
+                                        "15.10.2025"
+                                    </td>
+                                    <td class="p-4 text-slate-600">
+                                        Дата на раждане? Срок за плащане? Дата
+                                        на доставка?
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-slate-100">
+                                    <td
+                                        class="p-4 font-mono bg-slate-50 rounded-l-lg"
+                                    >
+                                        #4F46E5
+                                    </td>
+                                    <td class="p-4 text-slate-600">
+                                        Цвят на кола? Код на продукт? Номер на
+                                        грешка?
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td
+                                        class="p-4 font-mono bg-slate-50 rounded-l-lg rounded-bl-lg"
+                                    >
+                                        True
+                                    </td>
+                                    <td
+                                        class="p-4 text-slate-600 rounded-br-lg"
+                                    >
+                                        Поръчката платена ли е? Продуктът
+                                        наличен ли е?
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="mt-6 text-center italic text-slate-500">
+                        Данните са просто градивни елементи. За да станат
+                        полезни, им трябва нещо повече.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Slide 4: What is Metadata? -->
+            <section id="slide-4" class="my-20 scroll-mt-24">
+                <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                    <h2 class="text-3xl font-bold mb-2 text-slate-900">
+                        <span class="text-5xl mr-2">🏷️</span> Контекстът е
+                        всичко: Метаданни (Metadata)
+                    </h2>
+                    <p class="mb-8 text-lg text-slate-600">
+                        Това са
+                        <strong class="text-indigo-600"
+                            >"данни за данните"</strong
+                        >. Те предоставят описание и контекст, които придават
+                        смисъл.
+                    </p>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="bg-slate-100">
+                                <tr>
+                                    <th
+                                        class="p-4 font-semibold text-sm text-slate-600"
+                                    >
+                                        Данни
+                                    </th>
+                                    <th
+                                        class="p-4 font-semibold text-sm text-slate-600"
+                                    >
+                                        Метаданни (Контекст)
+                                    </th>
+                                    <th
+                                        class="p-4 font-semibold text-sm text-slate-600"
+                                    >
+                                        Какво разбираме?
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-slate-100">
+                                    <td class="p-4 font-mono bg-slate-50">
+                                        120
+                                    </td>
+                                    <td class="p-4 text-slate-600">
+                                        Име: "Цена", Тип: "Число", Валута: "BGN"
+                                    </td>
+                                    <td class="p-4 text-slate-800 font-medium">
+                                        Числото 120 е цена от 120 лв.
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-slate-100">
+                                    <td class="p-4 font-mono bg-slate-50">
+                                        "Мария"
+                                    </td>
+                                    <td class="p-4 text-slate-600">
+                                        Име: "Име на клиент", Тип: "Текст (до
+                                        50)"
+                                    </td>
+                                    <td class="p-4 text-slate-800 font-medium">
+                                        "Мария" е име на клиент.
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-slate-100">
+                                    <td class="p-4 font-mono bg-slate-50">
+                                        "15.10.2025"
+                                    </td>
+                                    <td class="p-4 text-slate-600">
+                                        Име: "Срок на доставка", Тип: "Дата"
+                                    </td>
+                                    <td class="p-4 text-slate-800 font-medium">
+                                        Това е дата за доставка.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 font-mono bg-slate-50">
+                                        True
+                                    </td>
+                                    <td class="p-4 text-slate-600">
+                                        Име: "Платена", Тип: "Булев"
+                                    </td>
+                                    <td class="p-4 text-slate-800 font-medium">
+                                        Показва, че поръчката е платена.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="mt-6 text-center italic text-slate-500">
+                        Метаданните превръщат безсмислените данни в разбираеми
+                        факти.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Slide 5: What is Information? -->
+            <section id="slide-5" class="my-20 scroll-mt-24">
+                <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                    <h2 class="text-3xl font-bold mb-2 text-slate-900">
+                        <span class="text-5xl mr-2">💡</span> Резултатът:
+                        Информация (Information)
+                    </h2>
+                    <p class="mb-8 text-lg text-slate-600">
+                        Данни, на които е придаден смисъл и контекст. Те са
+                        организирани, структурирани и
+                        <strong class="text-indigo-600">полезни</strong>.
+                    </p>
+
+                    <div
+                        class="text-center my-10 p-6 bg-indigo-600 text-white rounded-lg shadow-inner"
+                    >
+                        <p class="text-xl md:text-2xl font-bold">
+                            Данни + Контекст (Метаданни) = Информация
+                        </p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="font-bold text-xl text-slate-800 mb-4">
+                                Пример 1: Поръчка
+                            </h3>
+                            <div class="space-y-6">
+                                <div class="p-4 bg-slate-100 rounded-lg">
+                                    <p>
+                                        <strong
+                                            class="font-mono text-sm text-indigo-700 mr-2"
+                                            >[1]</strong
+                                        >
+                                        <strong>Сурови данни:</strong>
+                                        <code
+                                            class="bg-slate-200 text-slate-800 px-2 py-1 rounded"
+                                            >"Иванов"</code
+                                        >,
+                                        <code
+                                            class="bg-slate-200 text-slate-800 px-2 py-1 rounded"
+                                            >125.50</code
+                                        >,
+                                        <code
+                                            class="bg-slate-200 text-slate-800 px-2 py-1 rounded"
+                                            >3</code
+                                        >
+                                    </p>
+                                </div>
+                                <div class="text-center text-slate-400">▼</div>
+                                <div class="p-4 bg-slate-100 rounded-lg">
+                                    <p>
+                                        <strong
+                                            class="font-mono text-sm text-indigo-700 mr-2"
+                                            >[2]</strong
+                                        >
+                                        <strong>+ Метаданни:</strong> Фамилия:
+                                        "Иванов", Сума: 125.50 BGN, ID: 3
+                                    </p>
+                                </div>
+                                <div class="text-center text-slate-400">▼</div>
+                                <div
+                                    class="p-6 bg-green-100 border-l-4 border-green-500 rounded-r-lg"
+                                >
+                                    <p>
+                                        <strong
+                                            class="font-mono text-sm text-green-700 mr-2"
+                                            >[3]</strong
+                                        >
+                                        <strong class="text-green-800"
+                                            >Информация:</strong
+                                        >
+                                    </p>
+                                    <blockquote
+                                        class="mt-2 text-lg text-green-900"
+                                    >
+                                        "Клиент Иванов е направил поръчка №3 за
+                                        125.50 лв."
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-xl text-slate-800 mb-4">
+                                Пример 2: Прогноза за времето
+                            </h3>
+                            <div class="space-y-6">
+                                <div class="p-4 bg-slate-100 rounded-lg">
+                                    <p>
+                                        <strong
+                                            class="font-mono text-sm text-indigo-700 mr-2"
+                                            >[1]</strong
+                                        >
+                                        <strong>Сурови данни:</strong>
+                                        <code
+                                            class="bg-slate-200 text-slate-800 px-2 py-1 rounded"
+                                            >22</code
+                                        >,
+                                        <code
+                                            class="bg-slate-200 text-slate-800 px-2 py-1 rounded"
+                                            >C</code
+                                        >,
+                                        <code
+                                            class="bg-slate-200 text-slate-800 px-2 py-1 rounded"
+                                            >Varna</code
+                                        >
+                                    </p>
+                                </div>
+                                <div class="text-center text-slate-400">▼</div>
+                                <div class="p-4 bg-slate-100 rounded-lg">
+                                    <p>
+                                        <strong
+                                            class="font-mono text-sm text-indigo-700 mr-2"
+                                            >[2]</strong
+                                        >
+                                        <strong>+ Метаданни:</strong>
+                                        Температура: 22, Мерна единица: C, Град:
+                                        Varna
+                                    </p>
+                                </div>
+                                <div class="text-center text-slate-400">▼</div>
+                                <div
+                                    class="p-6 bg-green-100 border-l-4 border-green-500 rounded-r-lg"
+                                >
+                                    <p>
+                                        <strong
+                                            class="font-mono text-sm text-green-700 mr-2"
+                                            >[3]</strong
+                                        >
+                                        <strong class="text-green-800"
+                                            >Информация:</strong
+                                        >
+                                    </p>
+                                    <blockquote
+                                        class="mt-2 text-lg text-green-900"
+                                    >
+                                        "Температурата във Варна е 22 градуса по
+                                        Целзий."
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="mt-8 text-center italic text-slate-500">
+                        Информацията ни позволява да отговаряме на въпроси и да
+                        вземаме решения.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Slide 6: Summary & DIKW Pyramid -->
+            <section id="slide-6" class="my-20 scroll-mt-24">
+                <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                    <h2 class="text-3xl font-bold mb-8 text-slate-900">
+                        Обобщение и ключови разлики
+                    </h2>
+
+                    <!-- Comparison Table -->
+                    <div class="overflow-x-auto mb-16">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="bg-slate-100">
+                                <tr>
+                                    <th
+                                        class="p-4 font-semibold text-sm text-slate-600"
+                                    >
+                                        Критерий
+                                    </th>
+                                    <th
+                                        class="p-4 font-semibold text-sm text-slate-600"
+                                    >
+                                        🧱 Данни (Data)
+                                    </th>
+                                    <th
+                                        class="p-4 font-semibold text-sm text-slate-600"
+                                    >
+                                        💡 Информация (Information)
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-slate-100">
+                                    <td class="p-4 font-semibold">Формат</td>
+                                    <td class="p-4">Неорганизирани, сурови</td>
+                                    <td class="p-4">
+                                        Организирана и структурирана
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-slate-100">
+                                    <td class="p-4 font-semibold">Смисъл</td>
+                                    <td class="p-4">Нямат вграден смисъл</td>
+                                    <td class="p-4">
+                                        Имат логически смисъл и контекст
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-slate-100">
+                                    <td class="p-4 font-semibold">Полезност</td>
+                                    <td class="p-4">Не са директно полезни</td>
+                                    <td class="p-4">
+                                        Полезни за вземане на решения
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 font-semibold">Роля</td>
+                                    <td class="p-4">
+                                        Входен материал (суровина)
+                                    </td>
+                                    <td class="p-4">Краен продукт</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- DIKW Pyramid -->
+                    <h3
+                        class="text-2xl font-bold text-center text-slate-800 mb-8"
+                    >
+                        Пирамида на знанието
+                    </h3>
+                    <div class="max-w-2xl mx-auto space-y-4">
+                        <!-- Wisdom -->
+                        <div
+                            class="bg-purple-600 text-white p-4 rounded-lg shadow-lg"
+                        >
+                            <h4 class="font-bold">Мъдрост (Wisdom)</h4>
+                            <p class="text-sm text-purple-200">
+                                Прилагане на знанието: "Трябва да увеличим
+                                запасите преди лятото."
+                            </p>
+                        </div>
+                        <!-- Knowledge -->
+                        <div
+                            class="bg-indigo-600 text-white p-4 rounded-lg shadow-lg"
+                        >
+                            <h4 class="font-bold">Знание (Knowledge)</h4>
+                            <p class="text-sm text-indigo-200">
+                                Разбиране на модели: "Продукт Х се продава
+                                най-добре през лятото."
+                            </p>
+                        </div>
+                        <!-- Information -->
+                        <div
+                            class="bg-blue-600 text-white p-4 rounded-lg shadow-lg"
+                        >
+                            <h4 class="font-bold">Информация (Information)</h4>
+                            <p class="text-sm text-blue-200">
+                                Контекст: "Продадени са 300 броя от продукт Х."
+                            </p>
+                        </div>
+                        <!-- Data -->
+                        <div
+                            class="bg-slate-600 text-white p-4 rounded-lg shadow-lg"
+                        >
+                            <h4 class="font-bold">Данни (Data)</h4>
+                            <p class="text-sm text-slate-200">
+                                Сурови факти: `300`
+                            </p>
+                        </div>
+                    </div>
+                    <p class="mt-8 text-center italic text-slate-500">
+                        Доброто моделиране на данни е основата на тази пирамида.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Tasks Section -->
+            <section id="tasks" class="my-20 scroll-mt-24">
+                <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                    <h2 class="text-3xl font-bold mb-8 text-slate-900">
+                        <span class="text-5xl mr-2">✍️</span> Практически задачи
+                    </h2>
+                    <div class="space-y-8">
+                        <!-- Task 1 -->
+                        <div class="p-6 border border-slate-200 rounded-lg">
+                            <h3 class="font-bold text-lg text-indigo-700">
+                                Задача 1: Библиотечна карта
+                            </h3>
+                            <p class="mt-2 mb-4 text-slate-600">
+                                Разгледайте следния списък с елементи, свързани
+                                с книга от библиотека:
+                            </p>
+                            <ul
+                                class="list-disc list-inside bg-slate-50 p-4 rounded-md"
+                            >
+                                <li>"Под игото"</li>
+                                <li>"Иван Вазов"</li>
+                                <li>"978-619-0-12345-6"</li>
+                                <li>"Българска класика"</li>
+                            </ul>
+                            <p class="mt-4">
+                                <strong>Въпрос:</strong> Кои от елементите са
+                                <strong class="text-slate-800">данни</strong>?
+                                Какви
+                                <strong class="text-slate-800"
+                                    >метаданни</strong
+                                >
+                                (имена на полета) бихте им дали? Каква
+                                <strong class="text-slate-800"
+                                    >информация</strong
+                                >
+                                можете да сглобите?
+                            </p>
+                        </div>
+
+                        <!-- Task 2 -->
+                        <div class="p-6 border border-slate-200 rounded-lg">
+                            <h3 class="font-bold text-lg text-indigo-700">
+                                Задача 2: От данни към информация
+                            </h3>
+                            <p class="mt-2 mb-4 text-slate-600">
+                                Имате следните сурови данни:
+                            </p>
+                            <div class="bg-slate-50 p-4 rounded-md font-mono">
+                                "SKU-9876", "Лаптоп ProBook", "24", "1899.99",
+                                "BGN"
+                            </div>
+                            <p class="mt-4">
+                                Като използвате следните метаданни:
+                                <code class="text-sm">Артикулен номер</code>,
+                                <code class="text-sm">Име на продукт</code>,
+                                <code class="text-sm">Гаранция (месеци)</code>,
+                                <code class="text-sm">Цена</code>,
+                                <code class="text-sm">Валута</code>,
+                                формулирайте едно изречение, което представлява
+                                пълна
+                                <strong class="text-slate-800"
+                                    >информация</strong
+                                >.
+                            </p>
+                        </div>
+
+                        <!-- Task 3 -->
+                        <div class="p-6 border border-slate-200 rounded-lg">
+                            <h3 class="font-bold text-lg text-indigo-700">
+                                Задача 3: Създайте метаданни
+                            </h3>
+                            <p class="mt-2 mb-4 text-slate-600">
+                                Разполагате с данни за музикална песен:
+                            </p>
+                            <ul
+                                class="list-disc list-inside bg-slate-50 p-4 rounded-md"
+                            >
+                                <li>"Bohemian Rhapsody"</li>
+                                <li>"Queen"</li>
+                                <li>"A Night at the Opera"</li>
+                                <li>"06:07"</li>
+                            </ul>
+                            <p class="mt-4">
+                                <strong>Въпрос:</strong> Предложете подходящи
+                                <strong class="text-slate-800"
+                                    >метаданни</strong
+                                >
+                                (имена на полета) за всеки от тези елементи.
+                            </p>
+                        </div>
+
+                        <!-- Task 4 -->
+                        <div class="p-6 border border-slate-200 rounded-lg">
+                            <h3 class="font-bold text-lg text-indigo-700">
+                                Задача 4: Анализ на касова бележка
+                            </h3>
+                            <p class="mt-2 mb-4 text-slate-600">
+                                Представете си следната касова бележка:
+                            </p>
+                            <div
+                                class="bg-slate-50 p-4 rounded-md font-mono text-sm whitespace-pre-wrap"
+                            >
+                                Супермаркет "Надежда" -----------------------
+                                Хляб "Добруджа" - 2.20 лв. Прясно мляко 1л -
+                                3.10 лв. Сирене "Елена" - 8.50 лв.
+                                ----------------------- ОБЩО: 13.80 лв. Дата:
+                                28.09.2025
+                            </div>
+                            <p class="mt-4">
+                                <strong>Въпрос:</strong> Идентифицирайте поне 5
+                                различни
+                                <strong class="text-slate-800">данни</strong>, 3
+                                <strong class="text-slate-800"
+                                    >метаданни</strong
+                                >
+                                (видове информация) и обобщете каква е основната
+                                <strong class="text-slate-800"
+                                    >информация</strong
+                                >, която бележката предоставя.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-slate-800 text-white mt-16">
+            <div
+                class="container mx-auto px-6 py-8 text-center text-sm text-slate-400"
+            >
+                <p>
+                    &copy; 2025 Урок по моделиране на данни. Всички права
+                    запазени. инж. Пламена Янева
+                </p>
+            </div>
+        </footer>
+    </body>
+</html>

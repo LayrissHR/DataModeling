@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="bg">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Урок: Йерархичен и мрежови модел на данните</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      .gradient-text {
+        background: linear-gradient(to right, #059669, #0ea5e9);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-700">
+    <!-- Header and Navigation -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+      <nav
+        class="container mx-auto px-6 py-4 flex justify-between items-center"
+      >
+        <div class="text-xl font-bold text-slate-800">
+          <a href="#slide-1">Ранни Модели</a>
+        </div>
+        <div class="hidden md:flex space-x-6 text-sm font-medium">
+          <a
+            href="#slide-2"
+            class="text-slate-600 hover:text-emerald-600 transition-colors duration-300"
+            >Въведение</a
+          >
+          <a
+            href="#slide-3"
+            class="text-slate-600 hover:text-emerald-600 transition-colors duration-300"
+            >Йерархичен</a
+          >
+          <a
+            href="#slide-4"
+            class="text-slate-600 hover:text-emerald-600 transition-colors duration-300"
+            >Мрежови</a
+          >
+          <a
+            href="#slide-5"
+            class="text-slate-600 hover:text-emerald-600 transition-colors duration-300"
+            >Сравнение</a
+          >
+          <a
+            href="#tasks"
+            class="text-slate-600 hover:text-emerald-600 transition-colors duration-300"
+            >Задачи</a
+          >
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="container mx-auto px-6 py-8 md:py-12">
+      <!-- Slide 1: Hero Section -->
+      <section
+        id="slide-1"
+        class="text-center min-h-[70vh] flex flex-col justify-center items-center bg-white rounded-2xl shadow-lg p-8"
+      >
+        <div class="max-w-4xl">
+          <h1
+            class="text-4xl md:text-6xl font-bold mb-4 text-slate-900 leading-tight"
+          >
+            Ранни модели на данни:
+            <span class="gradient-text">Йерархичен и Мрежови</span>
+          </h1>
+          <p class="text-xl md:text-2xl font-light text-slate-600 mt-6">
+            Да разгледаме предшествениците на модерните бази данни.
+          </p>
+          <svg
+            class="w-24 h-24 text-emerald-200 mx-auto mt-12"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M10.5 6h9.75M10.5 11.25h9.75m-9.75 5.25h9.75M3.75 6a7.5 7.5 0 0115 0v2.25a7.5 7.5 0 01-7.5 7.5h-1.5a7.5 7.5 0 01-7.5-7.5V6z"
+            />
+          </svg>
+        </div>
+      </section>
+
+      <!-- Slide 2: Introduction to Early Models -->
+      <section id="slide-2" class="my-20 scroll-mt-24">
+        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-8 text-slate-900">
+            <span class="text-5xl mr-2">📜</span> Защо изучаваме стари модели?
+          </h2>
+          <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <p class="mb-6 text-lg">
+                Преди днешните релационни (SQL) и NoSQL бази данни, йерархичният
+                и мрежовият модел са били основата на системите за управление на
+                данни. Тяхното разбиране ни помага да оценим еволюцията и
+                компромисите в съвременните технологии.
+              </p>
+              <div
+                class="mt-8 p-6 bg-emerald-50 border-l-4 border-emerald-400 rounded-r-lg"
+              >
+                <h3 class="font-semibold text-slate-800">
+                  Аналогия: Транспортни средства
+                </h3>
+                <p class="mt-2 text-sm text-slate-600">
+                  Това е като да изучаваш парния локомотив и първите автомобили.
+                  Макар и остарели, те въвеждат фундаментални концепции, които
+                  са развити в днешните високоскоростни влакове и електрически
+                  коли.
+                </p>
+              </div>
+            </div>
+            <div>
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/e/e7/41018_Schiefe_Ebene_Nov_5_2016.png"
+                alt="Парен локомотив"
+                class="rounded-lg shadow-md w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 3: Hierarchical Model -->
+      <section id="slide-3" class="my-20 scroll-mt-24">
+        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-2 text-slate-900">
+            <span class="text-5xl mr-2">🌳</span> Йерархичен модел: Структурата
+            на дърво
+          </h2>
+          <p class="mb-8 text-lg text-slate-600">
+            Данните са организирани в дървовидна структура, където всеки запис
+            има <strong class="text-emerald-700">точно един родител</strong>.
+          </p>
+
+          <div class="grid md:grid-cols-2 gap-8">
+            <div>
+              <h4 class="font-bold text-xl mb-2">Ключови характеристики:</h4>
+              <ul class="list-disc list-inside space-y-2 text-slate-600">
+                <li>
+                  Има един главен елемент - <strong>корен (root)</strong>.
+                </li>
+                <li>
+                  Връзките са тип
+                  <strong>"родител-дете"</strong> (parent-child).
+                </li>
+                <li>Всеки "елемент-дете" има само един "родител".</li>
+                <li>Навигацията е строго отгоре-надолу.</li>
+                <li>
+                  Подходящ за представяне на връзки
+                  <strong>"едно към много" (1:N)</strong>.
+                </li>
+              </ul>
+              <p class="mt-4 italic">
+                <strong>Примери:</strong> Файлова система на компютър,
+                организационна структура на фирма, XML и JSON формати.
+              </p>
+            </div>
+            <div class="bg-slate-50 p-4 rounded-lg text-center border">
+              <h4 class="font-semibold mb-2">Пример: Университет</h4>
+              <!-- Simple text-based tree -->
+              <div class="font-mono text-left text-sm p-4 bg-white rounded">
+                <p>Университет (Корен)</p>
+                <p class="ml-4">└─ Факултет по Информатика</p>
+                <p class="ml-8">├─ Катедра "Софтуерни науки"</p>
+                <p class="ml-12">│ └─ Проф. Иванов</p>
+                <p class="ml-8">└─ Катедра "Компютърни системи"</p>
+                <p class="ml-4">└─ Факултет по Икономика</p>
+                <p class="ml-8">└─ Катедра "Финанси"</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 mt-8">
+            <div class="p-4 bg-green-100 rounded-lg">
+              <h4 class="font-bold text-green-800">Предимства ✅</h4>
+              <ul class="list-disc list-inside text-sm text-green-700 mt-2">
+                <li>Лесен за разбиране и имплементиране.</li>
+                <li>Бърз достъп до данните по йерархичния път.</li>
+              </ul>
+            </div>
+            <div class="p-4 bg-red-100 rounded-lg">
+              <h4 class="font-bold text-red-800">Недостатъци ❌</h4>
+              <ul class="list-disc list-inside text-sm text-red-700 mt-2">
+                <li>Негъвкав - промените са трудни.</li>
+                <li>Води до дублиране на данни.</li>
+                <li>Не може лесно да представи връзки "много към много".</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 4: Network Model -->
+      <section id="slide-4" class="my-20 scroll-mt-24">
+        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-2 text-slate-900">
+            <span class="text-5xl mr-2">🕸️</span> Мрежови модел: Еволюцията към
+            паяжина
+          </h2>
+          <p class="mb-8 text-lg text-slate-600">
+            Развитие на йерархичния модел, което позволява на един запис да има
+            <strong class="text-emerald-700">няколко родителя</strong>.
+          </p>
+
+          <div class="grid md:grid-cols-2 gap-8">
+            <div>
+              <h4 class="font-bold text-xl mb-2">Ключови характеристики:</h4>
+              <ul class="list-disc list-inside space-y-2 text-slate-600">
+                <li>
+                  Данните са организирани като <strong>граф (мрежа)</strong>.
+                </li>
+                <li>
+                  Записите се наричат "възли" (nodes), а връзките - "ребра"
+                  (edges).
+                </li>
+                <li>
+                  Един "възел-дете" може да е свързан с няколко
+                  "възела-родители".
+                </li>
+                <li>
+                  Директно поддържа връзки
+                  <strong>"много към много" (M:N)</strong>.
+                </li>
+              </ul>
+              <p class="mt-4 italic">
+                <strong>Пример:</strong> Студент може да участва в няколко
+                курса, а всеки курс има много студенти.
+              </p>
+            </div>
+            <div class="bg-slate-50 p-4 rounded-lg text-center border">
+              <h4 class="font-semibold mb-2">Пример: Студенти и курсове</h4>
+              <!-- Simple text-based graph -->
+              <div class="font-mono text-left text-sm p-4 bg-white rounded">
+                <p>Проф. Иванов</p>
+                <p class="ml-4">└─ Курс "Бази данни"</p>
+                <p class="ml-4">└─ Курс "Алгоритми"</p>
+                <br />
+                <p>Студент "Петър"</p>
+                <p class="ml-4">├─ (записан в) → Курс "Бази данни"</p>
+                <p class="ml-4">└─ (записан в) → Курс "Алгоритми"</p>
+              </div>
+              <p class="text-xs mt-2 italic">
+                Студент "Петър" има два "родителя" - двата курса.
+              </p>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 mt-8">
+            <div class="p-4 bg-green-100 rounded-lg">
+              <h4 class="font-bold text-green-800">Предимства ✅</h4>
+              <ul class="list-disc list-inside text-sm text-green-700 mt-2">
+                <li>По-гъвкав от йерархичния.</li>
+                <li>Намалява дублирането на данни.</li>
+                <li>Ефективно моделира сложни връзки (M:N).</li>
+              </ul>
+            </div>
+            <div class="p-4 bg-red-100 rounded-lg">
+              <h4 class="font-bold text-red-800">Недостатъци ❌</h4>
+              <ul class="list-disc list-inside text-sm text-red-700 mt-2">
+                <li>Много сложен за дизайн и поддръжка.</li>
+                <li>Заявките към данните са трудни за конструиране.</li>
+                <li>Промени в структурата са почти невъзможни.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 5: Comparison -->
+      <section id="slide-5" class="my-20 scroll-mt-24">
+        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-8 text-slate-900">
+            Сравнение: Йерархичен vs. Мрежови
+          </h2>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead class="bg-slate-100">
+                <tr>
+                  <th class="p-4 font-semibold text-sm text-slate-600">
+                    Критерий
+                  </th>
+                  <th class="p-4 font-semibold text-sm text-slate-600">
+                    🌳 Йерархичен модел
+                  </th>
+                  <th class="p-4 font-semibold text-sm text-slate-600">
+                    🕸️ Мрежови модел
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b border-slate-200">
+                  <td class="p-4 font-semibold">Структура</td>
+                  <td class="p-4">Дърво</td>
+                  <td class="p-4">Граф (Мрежа)</td>
+                </tr>
+                <tr class="border-b border-slate-200">
+                  <td class="p-4 font-semibold">Основна връзка</td>
+                  <td class="p-4">1:N (Едно към много)</td>
+                  <td class="p-4">M:N (Много към много)</td>
+                </tr>
+                <tr class="border-b border-slate-200">
+                  <td class="p-4 font-semibold">Брой "родители"</td>
+                  <td class="p-4">Точно един (с изкл. на корена)</td>
+                  <td class="p-4">Един или повече</td>
+                </tr>
+                <tr class="border-b border-slate-200">
+                  <td class="p-4 font-semibold">Гъвкавост</td>
+                  <td class="p-4">Ниска</td>
+                  <td class="p-4">Средна</td>
+                </tr>
+                <tr>
+                  <td class="p-4 font-semibold">Сложност</td>
+                  <td class="p-4">Ниска</td>
+                  <td class="p-4">Висока</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tasks Section -->
+      <section id="tasks" class="my-20 scroll-mt-24">
+        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-8 text-slate-900">
+            <span class="text-5xl mr-2">✍️</span> Практически задачи
+          </h2>
+          <div class="space-y-8">
+            <!-- Task 1 -->
+            <div class="p-6 border border-slate-200 rounded-lg">
+              <h3 class="font-bold text-lg text-emerald-700">
+                Задача 1: Моделиране на рецепта
+              </h3>
+              <p class="mt-2 mb-4 text-slate-600">
+                Представете си готварска рецепта за "Шопска салата". Тя има
+                раздели: "Необходими продукти" и "Начин на приготвяне". Всеки
+                раздел има стъпки или елементи.
+              </p>
+              <p class="mt-4">
+                <strong>Въпрос:</strong> Начертайте как би изглеждала тази
+                рецепта като
+                <strong class="text-slate-800">йерархичен модел</strong>. Кой е
+                коренът?
+              </p>
+            </div>
+
+            <!-- Task 2 -->
+            <div class="p-6 border border-slate-200 rounded-lg">
+              <h3 class="font-bold text-lg text-emerald-700">
+                Задача 2: Проблемът с актьорите
+              </h3>
+              <p class="mt-2 mb-4 text-slate-600">
+                Искате да създадете база данни за филми и актьори. Един актьор
+                може да играе в много филми, и един филм има много актьори
+                (връзка "много към много").
+              </p>
+              <p class="mt-4">
+                <strong>Въпрос:</strong> Защо
+                <strong class="text-slate-800">йерархичният модел</strong> би
+                бил много неефективен за тази задача? Как
+                <strong class="text-slate-800">мрежовият модел</strong> решава
+                този проблем?
+              </p>
+            </div>
+
+            <!-- Task 3 -->
+            <div class="p-6 border border-slate-200 rounded-lg">
+              <h3 class="font-bold text-lg text-emerald-700">
+                Задача 3: Идентификация на модел
+              </h3>
+              <p class="mt-2 mb-4 text-slate-600">
+                Разгледайте следните сценарии:
+              </p>
+              <ul class="list-decimal list-inside bg-slate-50 p-4 rounded-md">
+                <li>
+                  Структурата на HTML документ с неговите тагове (html -> head,
+                  body -> div -> p).
+                </li>
+                <li>
+                  Карта на полетите между различни градове, където от един град
+                  може да се лети до много други.
+                </li>
+                <li>
+                  Категории в онлайн магазин (Електроника -> Телефони ->
+                  Смартфони).
+                </li>
+              </ul>
+              <p class="mt-4">
+                <strong>Въпрос:</strong> Кой от ранните модели (йерархичен или
+                мрежови) описва най-добре всеки от сценариите?
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-white mt-16">
+      <div
+        class="container mx-auto px-6 py-8 text-center text-sm text-slate-400"
+      >
+        <p>&copy; 2025 Урок по моделиране на данни. Всички права запазени.</p>
+      </div>
+    </footer>
+  </body>
+</html>
