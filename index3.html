@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Урок: Релационен модел на данните</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #4f46e5, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-700">
+
+    <!-- Header and Navigation -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-xl font-bold text-slate-800">
+                <a href="#slide-1">Релационен Модел</a>
+            </div>
+            <div class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="#slide-2" class="text-slate-600 hover:text-indigo-600 transition-colors duration-300">Въведение</a>
+                <a href="#slide-3" class="text-slate-600 hover:text-indigo-600 transition-colors duration-300">Компоненти</a>
+                <a href="#slide-4" class="text-slate-600 hover:text-indigo-600 transition-colors duration-300">Ключове</a>
+                <a href="#slide-5" class="text-slate-600 hover:text-indigo-600 transition-colors duration-300">Връзки</a>
+                <a href="#slide-6" class="text-slate-600 hover:text-indigo-600 transition-colors duration-300">Предимства</a>
+                <a href="#tasks" class="text-slate-600 hover:text-indigo-600 transition-colors duration-300">Задачи</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="container mx-auto px-6 py-8 md:py-12">
+
+        <!-- Slide 1: Hero Section -->
+        <section id="slide-1" class="text-center min-h-[70vh] flex flex-col justify-center items-center bg-white rounded-2xl shadow-lg p-8">
+            <div class="max-w-4xl">
+                 <h1 class="text-4xl md:text-6xl font-bold mb-4 text-slate-900 leading-tight">Релационен модел <span class="gradient-text">на данните</span></h1>
+                 <p class="text-xl md:text-2xl font-light text-slate-600 mt-6">Основата на модерните бази данни и езика SQL.</p>
+                 <svg class="w-24 h-24 text-indigo-200 mx-auto mt-12" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                 </svg>
+            </div>
+        </section>
+
+        <!-- Slide 2: Introduction -->
+        <section id="slide-2" class="my-20 scroll-mt-24">
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-8 text-slate-900"><span class="text-5xl mr-2">🏛️</span> Какво е релационен модел?</h2>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <p class="mb-6 text-lg">Предложен от Е. Ф. Код през 1970 г., релационният модел организира данните в <strong class="text-indigo-600">таблици (наречени релации)</strong>. Всяка таблица се състои от редове и колони. Този модел е логическата основа за езика SQL и за почти всички модерни системи за управление на бази данни (СУБД) като MySQL, PostgreSQL, Oracle и др.</p>
+                        <div class="mt-8 p-6 bg-indigo-50 border-l-4 border-indigo-400 rounded-r-lg">
+                            <h3 class="font-semibold text-slate-800">Аналогия: Колекция от свързани електронни таблици</h3>
+                            <p class="mt-2 text-sm text-slate-600">Представете си, че имате отделни файлове (таблици) за студенти, курсове и преподаватели. Релационният модел ви дава начин да ги свържете логически, така че да можете да разберете кой студент в кой курс е записан и кой преподавател го води.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="https://placehold.co/600x400/e0e7ff/4f46e5?text=Свързани+Таблици" alt="Свързани таблици" class="rounded-lg shadow-md w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Components -->
+        <section id="slide-3" class="my-20 scroll-mt-24">
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-8 text-slate-900"><span class="text-5xl mr-2">🧱</span> Основни градивни елементи</h2>
+                <div class="grid md:grid-cols-2 gap-8 items-start">
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="font-bold text-lg">1. Таблица (Релация)</h4>
+                            <p class="text-slate-600">Основната структура за съхранение. Представлява колекция от свързани данни за определен обект (напр. "Студенти").</p>
+                        </div>
+                         <div>
+                            <h4 class="font-bold text-lg">2. Ред (Кортеж / Tuple)</h4>
+                            <p class="text-slate-600">Един запис в таблицата. Представлява един конкретен екземпляр от обекта (напр. данните за студент "Иван Петров").</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg">3. Колона (Атрибут)</h4>
+                            <p class="text-slate-600">Описва характеристика на обекта. Всеки атрибут има име и тип данни (напр. "Име" - текст, "Възраст" - число).</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg">4. Домейн</h4>
+                            <p class="text-slate-600">Множеството от всички възможни стойности, които една колона може да приеме (напр. домейнът за "Пол" може да бъде {"Мъж", "Жена"}).</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-lg border">
+                        <h4 class="font-semibold mb-2 text-center">Таблица: Студенти</h4>
+                        <div class="overflow-x-auto">
+                           <table class="w-full text-sm text-left">
+                                <thead class="bg-slate-200">
+                                    <tr>
+                                        <th class="p-2">СтудентID (Атрибут)</th>
+                                        <th class="p-2">Име</th>
+                                        <th class="p-2">Специалност</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b bg-indigo-100 ring-2 ring-indigo-500">
+                                        <td class="p-2 font-mono">101 (Ред/Кортеж)</td>
+                                        <td class="p-2">Иван Петров</td>
+                                        <td class="p-2">Информатика</td>
+                                    </tr>
+                                    <tr class="border-b"><td class="p-2 font-mono">102</td><td class="p-2">Мария Георгиева</td><td class="p-2">Право</td></tr>
+                                    <tr><td class="p-2 font-mono">103</td><td class="p-2">Петър Иванов</td><td class="p-2">Информатика</td></tr>
+                                </tbody>
+                           </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Keys -->
+        <section id="slide-4" class="my-20 scroll-mt-24">
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-8 text-slate-900"><span class="text-5xl mr-2">🔑</span> Ключовете, които свързват всичко</h2>
+                <p class="mb-8 text-lg text-slate-600">Ключовете са специални колони, които се използват за уникална идентификация на редовете и за създаване на връзки между таблиците.</p>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="p-6 bg-indigo-50 border border-indigo-200 rounded-lg">
+                        <h3 class="font-bold text-xl text-indigo-800">Първичен ключ (Primary Key)</h3>
+                        <p class="mt-2 text-slate-600">Колона (или комбинация от колони), чиято стойност <strong class="text-slate-800">уникално идентифицира</strong> всеки ред в таблицата. Не може да съдържа NULL стойности.</p>
+                        <p class="mt-4 font-mono text-sm bg-white p-2 rounded border"><strong>Пример:</strong> В таблица "Студенти", `СтудентID` е първичен ключ.</p>
+                    </div>
+                    <div class="p-6 bg-purple-50 border border-purple-200 rounded-lg">
+                        <h3 class="font-bold text-xl text-purple-800">Външен ключ (Foreign Key)</h3>
+                        <p class="mt-2 text-slate-600">Колона в една таблица, която съдържа стойности от колоната с <strong class="text-slate-800">първичен ключ</strong> на друга таблица. Това е механизмът за създаване на връзка.</p>
+                        <p class="mt-4 font-mono text-sm bg-white p-2 rounded border"><strong>Пример:</strong> В таблица "Записвания", `СтудентID` е външен ключ, който сочи към първичния ключ в "Студенти".</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Relationships -->
+        <section id="slide-5" class="my-20 scroll-mt-24">
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-8 text-slate-900"><span class="text-5xl mr-2">🔗</span> Изграждане на връзки</h2>
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="font-bold text-xl">1. Едно към много (1:N) - Най-честата връзка</h3>
+                        <p class="text-slate-600 mt-1">Един запис от Таблица А може да е свързан с много записи от Таблица Б, но един запис от Б е свързан само с един от А.</p>
+                        <p class="mt-2 italic"><strong>Пример:</strong> Един `Преподавател` води много `Курсове`.</p>
+                        <p class="mt-2 text-sm"><strong>Реализация:</strong> Таблицата `Курсове` (страната "много") има външен ключ `ПреподавателID`.</p>
+                    </div>
+                     <div>
+                        <h3 class="font-bold text-xl">2. Много към много (M:N)</h3>
+                        <p class="text-slate-600 mt-1">Много записи от Таблица А могат да са свързани с много записи от Таблица Б.</p>
+                        <p class="mt-2 italic"><strong>Пример:</strong> Един `Студент` може да е записан в много `Курсове`, и един `Курс` има много `Студенти`.</p>
+                        <p class="mt-2 text-sm"><strong>Реализация:</strong> Задължително се създава трета, <strong class="text-indigo-600">свързваща таблица</strong> (напр. `Записвания`), която съдържа външни ключове и към двете таблици (`СтудентID` и `КурсID`).</p>
+                    </div>
+                     <div>
+                        <h3 class="font-bold text-xl">3. Едно към едно (1:1)</h3>
+                        <p class="text-slate-600 mt-1">Един запис от Таблица А е свързан с точно един запис от Таблица Б. Използва се по-рядко, често за разделяне на данни от съображения за сигурност или производителност.</p>
+                        <p class="mt-2 italic"><strong>Пример:</strong> Един `Служител` има точно едно `Досие с лични данни`.</p>
+                        <p class="mt-2 text-sm"><strong>Реализация:</strong> Двете таблици споделят един и същ първичен ключ.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Slide 6: Advantages -->
+        <section id="slide-6" class="my-20 scroll-mt-24">
+             <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-8 text-slate-900">Предимства на релационния модел</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="p-4 bg-green-50 rounded-lg">
+                        <h4 class="font-bold text-green-800">✅ Цялост на данните</h4>
+                        <p class="text-sm text-green-700 mt-1">Правила (като първични и външни ключове) гарантират консистентност и точност на данните.</p>
+                    </div>
+                     <div class="p-4 bg-green-50 rounded-lg">
+                        <h4 class="font-bold text-green-800">✅ Гъвкавост</h4>
+                        <p class="text-sm text-green-700 mt-1">Лесно е да се правят сложни заявки и да се комбинират данни от различни таблици.</p>
+                    </div>
+                     <div class="p-4 bg-green-50 rounded-lg">
+                        <h4 class="font-bold text-green-800">✅ Намалена излищност</h4>
+                        <p class="text-sm text-green-700 mt-1">Данните се съхраняват само на едно място (нормализация), което спестява място и улеснява промените.</p>
+                    </div>
+                     <div class="p-4 bg-green-50 rounded-lg">
+                        <h4 class="font-bold text-green-800">✅ Стандартизация (SQL)</h4>
+                        <p class="text-sm text-green-700 mt-1">Наличието на стандартен език (SQL) прави работата с различни релационни бази данни много сходна.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tasks Section -->
+        <section id="tasks" class="my-20 scroll-mt-24">
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-8 text-slate-900"><span class="text-5xl mr-2">✍️</span> Практически задачи</h2>
+                <div class="space-y-8">
+                    
+                    <div class="p-6 border border-slate-200 rounded-lg">
+                        <h3 class="font-bold text-lg text-indigo-700">Задача 1: Автори и книги</h3>
+                        <p class="mt-2 mb-4 text-slate-600">Имате две таблици: `Автори` (с колони `АвторID`, `Име`) и `Книги` (с колони `КнигаID`, `Заглавие`, `АвторID`).</p>
+                        <p class="mt-4"><strong>Въпроси:</strong>
+                            <ul class="list-disc list-inside mt-2">
+                                <li>Коя колона е първичен ключ в `Автори`?</li>
+                                <li>Коя е първичен ключ в `Книги`?</li>
+                                <li>Коя колона е външен ключ и каква връзка създава? (1:1, 1:N, или M:N)</li>
+                            </ul>
+                        </p>
+                    </div>
+
+                    <div class="p-6 border border-slate-200 rounded-lg">
+                        <h3 class="font-bold text-lg text-indigo-700">Задача 2: Продукти и тагове</h3>
+                        <p class="mt-2 mb-4 text-slate-600">Искате да моделирате система, в която един продукт може да има много тагове (напр. "лаптоп", "промоция", "гейминг"), и един таг може да бъде асоцииран с много продукти. Това е класическа M:N връзка.</p>
+                        <p class="mt-4"><strong>Въпрос:</strong> Какви таблици и ключове ще създадете, за да реализирате тази връзка правилно?</p>
+                    </div>
+                    
+                    <div class="p-6 border border-slate-200 rounded-lg">
+                        <h3 class="font-bold text-lg text-indigo-700">Задача 3: Проектиране на база данни</h3>
+                        <p class="mt-2 mb-4 text-slate-600">Трябва да проектирате проста база данни за онлайн магазин. Трябват ви таблици за `Клиенти` и `Поръчки`. Един клиент може да направи много поръчки.</p>
+                         <p class="mt-4"><strong>Въпрос:</strong> Какви колони бихте включили във всяка таблица? Как ще ги свържете?</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-white mt-16">
+        <div class="container mx-auto px-6 py-8 text-center text-sm text-slate-400">
+            <p>&copy; 2025 Урок по моделиране на данни. Всички права запазени. инж. Пламена Янева</p>
+        </div>
+    </footer>
+
+</body>
+</html>
