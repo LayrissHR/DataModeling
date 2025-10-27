@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="bg">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Урок: Упражнение - Сравнение на модели на данни</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      .gradient-text {
+        background: linear-gradient(to right, #0d9488, #22d3ee);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-700">
+    <!-- Header and Navigation -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+      <nav
+        class="container mx-auto px-6 py-4 flex justify-between items-center"
+      >
+        <div class="text-xl font-bold text-slate-800">
+          <a href="#slide-1">Сравнение на Модели</a>
+        </div>
+        <div class="hidden md:flex space-x-6 text-sm font-medium">
+          <a
+            href="#slide-2"
+            class="text-slate-600 hover:text-teal-600 transition-colors duration-300"
+            >Сценарий</a
+          >
+          <a
+            href="#slide-3"
+            class="text-slate-600 hover:text-teal-600 transition-colors duration-300"
+            >Йерархичен</a
+          >
+          <a
+            href="#slide-4"
+            class="text-slate-600 hover:text-teal-600 transition-colors duration-300"
+            >Мрежови</a
+          >
+          <a
+            href="#slide-5"
+            class="text-slate-600 hover:text-teal-600 transition-colors duration-300"
+            >Релационен</a
+          >
+          <a
+            href="#slide-6"
+            class="text-slate-600 hover:text-teal-600 transition-colors duration-300"
+            >Заключение</a
+          >
+          <a
+            href="#tasks"
+            class="text-slate-600 hover:text-teal-600 transition-colors duration-300"
+            >Задачи</a
+          >
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="container mx-auto px-6 py-8 md:py-12">
+      <!-- Slide 1: Hero Section -->
+      <section
+        id="slide-1"
+        class="text-center min-h-[70vh] flex flex-col justify-center items-center bg-white rounded-2xl shadow-lg p-8"
+      >
+        <div class="max-w-4xl">
+          <h1
+            class="text-4xl md:text-6xl font-bold mb-4 text-slate-900 leading-tight"
+          >
+            Упражнение: Сравнение
+            <span class="gradient-text">на модели на данни</span>
+          </h1>
+          <p class="text-xl md:text-2xl font-light text-slate-600 mt-6">
+            Йерархичен vs. Мрежови vs. Релационен: Кой е правилният инструмент
+            за задачата?
+          </p>
+          <svg
+            class="w-24 h-24 text-teal-200 mx-auto mt-12"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.286zm0 13.036h.008v.008h-.008v-.008z"
+            />
+          </svg>
+        </div>
+      </section>
+
+      <!-- Slide 2: The Scenario -->
+      <section id="slide-2" class="my-20 scroll-mt-24">
+        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-8 text-slate-900">
+            <span class="text-5xl mr-2">🎯</span> Сценарий за сравнение:
+            Университет
+          </h2>
+          <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <p class="mb-6 text-lg">
+                За да сравним трите модела, ще използваме един и същ сценарий:
+                опростена информационна система на университет. Целта е да
+                съхраняваме данни за факултети, преподаватели, студенти и
+                курсове.
+              </p>
+              <h4 class="font-bold text-xl mb-2">Основни правила (връзки):</h4>
+              <ul class="space-y-2 list-disc list-inside text-slate-600">
+                <li>
+                  Един <strong class="text-teal-700">Факултет</strong> има много
+                  <strong class="text-teal-700">Преподаватели</strong> (1:N).
+                </li>
+                <li>
+                  Един <strong class="text-teal-700">Преподавател</strong> води
+                  много <strong class="text-teal-700">Курсове</strong> (1:N).
+                </li>
+                <li>
+                  Един <strong class="text-teal-700">Студент</strong> може да се
+                  запише в много <strong class="text-teal-700">Курсове</strong>,
+                  и един <strong class="text-teal-700">Курс</strong> има много
+                  <strong class="text-teal-700">Студенти</strong> (M:N).
+                </li>
+              </ul>
+            </div>
+            <div>
+              <img
+                src="photos/DALL·E 2025-10-20 10.26.06 - A clean and professional Entity-Relationship (ER) diagram for a simplified university information system. The diagram includes five entities_ Faculty,.webp"
+                alt="Университетска система"
+                class="rounded-lg shadow-md w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 3: Hierarchical Approach -->
+      <section id="slide-3" class="my-20 scroll-mt-24">
+        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-8 text-slate-900">
+            <span class="text-5xl mr-2">🌳</span> Решение 1: Йерархичен подход
+          </h2>
+          <p class="mb-8 text-lg text-slate-600">
+            Опитваме се да наложим строга дървовидна структура.
+          </p>
+          <div class="bg-slate-50 p-6 rounded-lg border">
+            <h4 class="font-semibold mb-2 text-center">Примерна структура</h4>
+            <div class="font-mono text-left text-sm p-4 bg-white rounded">
+              <p>Факултет по Информатика</p>
+              <p class="ml-4">└─ Преподавател "Проф. Иванов"</p>
+              <p class="ml-8">├─ Курс "Бази данни"</p>
+              <p class="ml-12">│ ├─ Студент "Анна"</p>
+              <p class="ml-12">│ └─ Студент "Борис"</p>
+              <p class="ml-8">└─ Курс "Алгоритми"</p>
+              <p class="ml-12">
+                └─ Студент "Анна"
+                <span class="text-red-500 font-bold ml-4"
+                  >&lt;-- ДУБЛИРАНЕ!</span
+                >
+              </p>
+            </div>
+          </div>
+          <div
+            class="mt-8 p-6 bg-red-100 border-l-4 border-red-400 rounded-r-lg"
+          >
+            <h3 class="font-semibold text-red-800">Проблеми на този подход:</h3>
+            <ul class="mt-2 list-disc list-inside text-sm text-red-700">
+              <li>
+                <strong>Масивно дублиране на данни:</strong> Студент "Анна"
+                трябва да бъде дублиран под всеки курс, в който е записана. Ако
+                промени адреса си, трябва да го редактираме на много места.
+              </li>
+              <li>
+                <strong>Негъвкавост:</strong> Как да представим, че курсът
+                "Алгоритми" се води и от друг преподавател? Невъзможно е, защото
+                един курс може да има само един родител (преподавател).
+              </li>
+              <li>
+                <strong>Заключение:</strong> Йерархичният модел е напълно
+                неподходящ за този сценарий.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 4: Network Approach -->
+      <section id="slide-4" class="my-20 scroll-mt-24">
+        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-8 text-slate-900">
+            <span class="text-5xl mr-2">🕸️</span> Решение 2: Мрежови подход
+          </h2>
+          <p class="mb-8 text-lg text-slate-600">
+            Позволяваме на един запис да има няколко "родители", решавайки
+            проблема с дублирането.
+          </p>
+          <div class="bg-slate-50 p-6 rounded-lg border">
+            <h4 class="font-semibold mb-2 text-center">Примерна структура</h4>
+            <div class="font-mono text-left text-sm p-4 bg-white rounded">
+              <p>Студент "Анна"</p>
+              <p class="ml-4">├─ (свързан с) → Курс "Бази данни"</p>
+              <p class="ml-4">└─ (свързан с) → Курс "Алгоритми"</p>
+              <br />
+              <p>Курс "Бази данни"</p>
+              <p class="ml-4">
+                ├─ (свързан с) → Студент "Анна"
+                <span class="text-green-600 font-bold">&lt;-- ОК</span>
+              </p>
+              <p class="ml-4">└─ (свързан с) → Студент "Борис"</p>
+            </div>
+          </div>
+          <div
+            class="mt-8 p-6 bg-yellow-100 border-l-4 border-yellow-400 rounded-r-lg"
+          >
+            <h3 class="font-semibold text-yellow-800">
+              Компромиси на този подход:
+            </h3>
+            <ul class="mt-2 list-disc list-inside text-sm text-yellow-700">
+              <li>
+                <strong>Решен проблем с M:N връзката:</strong> Вече няма нужда
+                да дублираме "Анна". Създаваме една връзка към нея от всеки
+                курс.
+              </li>
+              <li>
+                <strong>Огромна сложност:</strong> Системата се превръща в
+                "паяжина" от указатели (връзки). Да се напише заявка от типа
+                "Покажи ми всички студенти на проф. Иванов" става изключително
+                трудно и изисква сложна навигация по връзките.
+              </li>
+              <li>
+                <strong>Трудна поддръжка:</strong> Добавянето на нов тип връзка
+                (напр. "Курсът има учебници") изисква преструктуриране на цялата
+                база данни.
+              </li>
+              <li>
+                <strong>Заключение:</strong> Мрежовият модел решава основния
+                проблем, но на цената на огромна сложност.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 5: Relational Approach -->
+      <section id="slide-5" class="my-20 scroll-mt-24">
+        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-8 text-slate-900">
+            <span class="text-5xl mr-2">🗂️</span> Решение 3: Релационен подход
+          </h2>
+          <p class="mb-8 text-lg text-slate-600">
+            Разделяме данните на прости, логически таблици, свързани с ключове.
+          </p>
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Table Students -->
+            <div class="bg-slate-50 p-4 rounded border">
+              <h4 class="font-bold text-center">Таблица: Студенти</h4>
+              <table class="w-full text-xs mt-2">
+                <thead>
+                  <tr class="bg-slate-200">
+                    <th>СтудентID</th>
+                    <th>Име</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>S1</td>
+                    <td>Анна</td>
+                  </tr>
+                  <tr>
+                    <td>S2</td>
+                    <td>Борис</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- Table Courses -->
+            <div class="bg-slate-50 p-4 rounded border">
+              <h4 class="font-bold text-center">Таблица: Курсове</h4>
+              <table class="w-full text-xs mt-2">
+                <thead>
+                  <tr class="bg-slate-200">
+                    <th>КурсID</th>
+                    <th>Име</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>C101</td>
+                    <td>Бази данни</td>
+                  </tr>
+                  <tr>
+                    <td>C102</td>
+                    <td>Алгоритми</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- Table Enrollments -->
+            <div class="bg-slate-50 p-4 rounded border ring-4 ring-teal-300">
+              <h4 class="font-bold text-center">
+                Свързваща таблица: Записвания
+              </h4>
+              <table class="w-full text-xs mt-2">
+                <thead>
+                  <tr class="bg-slate-200">
+                    <th>СтудентID (FK)</th>
+                    <th>КурсID (FK)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>S1</td>
+                    <td>C101</td>
+                  </tr>
+                  <tr>
+                    <td>S1</td>
+                    <td>C102</td>
+                  </tr>
+                  <tr>
+                    <td>S2</td>
+                    <td>C101</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div
+            class="mt-8 p-6 bg-green-100 border-l-4 border-green-400 rounded-r-lg"
+          >
+            <h3 class="font-semibold text-green-800">
+              Предимства на този подход:
+            </h3>
+            <ul class="mt-2 list-disc list-inside text-sm text-green-700">
+              <li>
+                <strong>Нула дублиране на данни:</strong> Данните за всеки обект
+                (студент, курс) се съхраняват точно на едно място.
+              </li>
+              <li>
+                <strong>Елегантно решение за M:N:</strong> Свързващата таблица
+                `Записвания` ясно и ефективно моделира сложната връзка.
+              </li>
+              <li>
+                <strong>Максимална гъвкавост:</strong> Лесно можем да задаваме
+                всякакви въпроси към данните с езика SQL. Например: "SELECT Име
+                FROM Студенти WHERE СтудентID IN (SELECT СтудентID FROM
+                Записвания WHERE КурсID = 'C101')".
+              </li>
+              <li>
+                <strong>Заключение:</strong> Релационният модел е най-гъвкавият,
+                логичен и ефективен начин за моделиране на този тип сценарии.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 6: Conclusion -->
+      <section id="slide-6" class="my-20 scroll-mt-24">
+        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-8 text-slate-900">
+            Заключение: Сравнителна таблица
+          </h2>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead class="bg-slate-100">
+                <tr>
+                  <th class="p-4 font-semibold text-sm text-slate-600">
+                    Критерий
+                  </th>
+                  <th class="p-4 font-semibold text-sm text-slate-600">
+                    🌳 Йерархичен
+                  </th>
+                  <th class="p-4 font-semibold text-sm text-slate-600">
+                    🕸️ Мрежови
+                  </th>
+                  <th class="p-4 font-semibold text-sm text-slate-600">
+                    🗂️ Релационен
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b">
+                  <td class="p-3 font-semibold">Структура</td>
+                  <td class="p-3">Дърво</td>
+                  <td class="p-3">Граф</td>
+                  <td class="p-3">Таблици</td>
+                </tr>
+                <tr class="border-b">
+                  <td class="p-3 font-semibold">Дублиране на данни</td>
+                  <td class="p-3 text-red-600">Високо</td>
+                  <td class="p-3 text-yellow-600">Ниско</td>
+                  <td class="p-3 text-green-600">Почти нулево</td>
+                </tr>
+                <tr class="border-b">
+                  <td class="p-3 font-semibold">Справяне с M:N</td>
+                  <td class="p-3 text-red-600">Невъзможно</td>
+                  <td class="p-3 text-yellow-600">Възможно, но сложно</td>
+                  <td class="p-3 text-green-600">
+                    Елегантно (със свързваща таблица)
+                  </td>
+                </tr>
+                <tr>
+                  <td class="p-3 font-semibold">Гъвкавост</td>
+                  <td class="p-3 text-red-600">Много ниска</td>
+                  <td class="p-3 text-yellow-600">Средна</td>
+                  <td class="p-3 text-green-600">Много висока</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mt-6 text-center italic text-slate-500">
+            Изборът на модел зависи от проблема, но релационният модел предлага
+            най-добрия баланс за повечето бизнес приложения.
+          </p>
+        </div>
+      </section>
+
+      <!-- Tasks Section -->
+      <section id="tasks" class="my-20 scroll-mt-24">
+        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-8 text-slate-900">
+            <span class="text-5xl mr-2">✍️</span> Задачи за размисъл
+          </h2>
+          <div class="space-y-8">
+            <div class="p-6 border border-slate-200 rounded-lg">
+              <h3 class="font-bold text-lg text-teal-700">
+                Задача 1: Семейно дърво
+              </h3>
+              <p class="mt-2 mb-4 text-slate-600">
+                Трябва да създадете база данни за генеалогия (семейно дърво),
+                където всеки човек има точно двама биологични родители.
+              </p>
+              <p class="mt-4">
+                <strong>Въпрос:</strong> Кой от трите модела би бил
+                най-интуитивен и естествен за представяне на тази структура и
+                защо?
+              </p>
+            </div>
+            <div class="p-6 border border-slate-200 rounded-lg">
+              <h3 class="font-bold text-lg text-teal-700">
+                Задача 2: Социална мрежа
+              </h3>
+              <p class="mt-2 mb-4 text-slate-600">
+                Проектирате социална мрежа. Потребителите могат да бъдат
+                "приятели" един с друг. Връзката е взаимна и един потребител
+                може да има хиляди приятели.
+              </p>
+              <p class="mt-4">
+                <strong>Въпрос:</strong> Защо релационният модел (с таблици
+                `Потребители` и `Приятелства`) би работил, но мрежовият модел е
+                концептуално по-близо до същността на проблема?
+              </p>
+            </div>
+            <div class="p-6 border-4 border-teal-200 rounded-lg bg-teal-50">
+              <h3 class="font-bold text-xl text-teal-800">
+                Задача 3: Комплексно упражнение - Проект за библиотека (Понеже
+                обичаме да четем)
+              </h3>
+              <p class="mt-2 mb-4 text-slate-700">
+                Вие сте наети да проектирате базата данни за нова градска
+                библиотека. Системата трябва да следи книгите, техните автори и
+                читателите, които ги заемат.
+              </p>
+
+              <h4 class="font-semibold text-lg mt-6 mb-2 text-slate-800">
+                Изисквания към системата:
+              </h4>
+              <ul
+                class="list-disc list-inside space-y-2 text-slate-600 bg-white p-4 rounded-md"
+              >
+                <li>
+                  Всяка <strong>книга</strong> има уникален ISBN, заглавие,
+                  година на издаване и брой налични екземпляри.
+                </li>
+                <li>Всеки <strong>автор</strong> има име и биография.</li>
+                <li>
+                  Всеки <strong>читател (член на библиотеката)</strong> има
+                  номер на карта, име и адрес.
+                </li>
+                <li>
+                  Връзките, които трябва да се моделират са:
+                  <ul class="list-['-_'] list-inside ml-6 mt-2 space-y-1">
+                    <li>
+                      Една книга може да бъде написана от
+                      <strong>много автори</strong>.
+                    </li>
+                    <li>
+                      Един автор може да е написал <strong>много книги</strong>.
+                      (M:N връзка)
+                    </li>
+                    <li>
+                      Един читател може да заеме
+                      <strong>много книги</strong> (едновременно или през
+                      годините).
+                    </li>
+                    <li>
+                      Една книга може да бъде заета от
+                      <strong>много читатели</strong> (през годините). (M:N
+                      връзка)
+                    </li>
+                    <li>
+                      Когато книга се заема, трябва да се пази дата на заемане и
+                      дата на връщане.
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+
+              <h4 class="font-semibold text-lg mt-6 mb-2 text-slate-800">
+                Вашата задача е да преминете през следните стъпки:
+              </h4>
+              <ol class="list-decimal list-inside space-y-4 mt-4">
+                <li>
+                  <strong>Анализ и Йерархичен модел:</strong> Опитайте се да
+                  скицирате структурата на данните, използвайки йерархичен
+                  модел. Започнете с "Автори" като корен. Сблъсквате ли се с
+                  проблеми, особено при книги с няколко автори? Опишете накратко
+                  къде и защо моделът се "чупи".
+                </li>
+                <li>
+                  <strong>Мрежови модел:</strong> Как мрежовият модел би решил
+                  проблема с връзката "автор-книга"? Скицирайте с думи или
+                  проста диаграма как би изглеждала връзката между един автор,
+                  една книга и друг автор, свързан със същата книга. Какви са
+                  потенциалните сложности при извличане на данни?
+                </li>
+                <li>
+                  <strong
+                    >Проектиране на Релационен модел (Основна част):</strong
+                  >
+                  <ul class="list-disc list-inside ml-6 mt-2 space-y-2">
+                    <li>
+                      Идентифицирайте всички необходими
+                      <strong>таблици</strong>. (Подсказка: ще ви трябват поне
+                      5).
+                    </li>
+                    <li>
+                      За всяка таблица дефинирайте нейните
+                      <strong>колони (атрибути)</strong> и подходящ тип данни
+                      (текст, число, дата).
+                    </li>
+                    <li>
+                      Определете <strong>първичния ключ (PK)</strong> за всяка
+                      таблица.
+                    </li>
+                    <li>
+                      Идентифицирайте всички
+                      <strong>външни ключове (FK)</strong> и посочете кои
+                      таблици свързват. Обърнете специално внимание на M:N
+                      връзките - какви свързващи таблици са нужни?
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <strong>Заключителен анализ:</strong> Напишете кратък
+                  параграф, в който сравнявате трите подхода за конкретния казус
+                  с библиотеката и обосновавате защо релационният модел е
+                  най-подходящият избор.
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-white mt-16">
+      <div
+        class="container mx-auto px-6 py-8 text-center text-sm text-slate-400"
+      >
+        <p>
+          &copy; 2025 Урок по моделиране на данни. Всички права запазени. инж.
+          Пламена Янева
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

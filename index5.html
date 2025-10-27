@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Урок: Същности, множества същности и атрибути (Разширен)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #db2777, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .key-attribute {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-700">
+
+    <!-- Header and Navigation -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-xl font-bold text-slate-800">
+                <a href="#slide-1">"Същност-Връзка" Моделиране</a>
+            </div>
+            <div class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="#slide-2" class="text-slate-600 hover:text-pink-600 transition-colors duration-300">Същност</a>
+                <a href="#slide-3" class="text-slate-600 hover:text-pink-600 transition-colors duration-300">Множество</a>
+                <a href="#slide-4" class="text-slate-600 hover:text-pink-600 transition-colors duration-300">Атрибути</a>
+                <a href="#slide-5" class="text-slate-600 hover:text-pink-600 transition-colors duration-300">Видове атрибути</a>
+                <a href="#slide-6" class="text-slate-600 hover:text-pink-600 transition-colors duration-300">ER Диаграма</a>
+                <a href="#tasks" class="text-slate-600 hover:text-pink-600 transition-colors duration-300">Задачи</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="container mx-auto px-6 py-8 md:py-12">
+
+        <!-- Slide 1: Hero Section -->
+        <section id="slide-1" class="text-center min-h-[70vh] flex flex-col justify-center items-center bg-white rounded-2xl shadow-lg p-8">
+            <div class="max-w-4xl">
+                 <h1 class="text-4xl md:text-6xl font-bold mb-4 text-slate-900 leading-tight">Същности, множества <span class="gradient-text">и атрибути</span></h1>
+                 <p class="text-xl md:text-2xl font-light text-slate-600 mt-6">Градивните елементи на Entity-Relationship (ER) диаграмите.</p>
+                 <svg class="w-24 h-24 text-pink-200 mx-auto mt-12" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                   <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                 </svg>
+            </div>
+        </section>
+
+        <!-- Slide 2: What is an Entity? -->
+        <section id="slide-2" class="my-20 scroll-mt-24">
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-8 text-slate-900"><span class="text-5xl mr-2">👤</span> Какво е същност (Entity)?</h2>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <p class="mb-6 text-lg">Една **същност** е обект от реалния свят, който съществува и може да бъде <strong class="text-pink-600">уникално разпознат</strong>. Тя може да бъде физически обект (напр. човек, кола) или абстрактна концепция (напр. курс, банкова сметка).</p>
+                        <div class="mt-8 p-6 bg-pink-50 border-l-4 border-pink-400 rounded-r-lg">
+                            <h3 class="font-semibold text-slate-800">Аналогия: Съществително име</h3>
+                            <p class="mt-2 text-sm text-slate-600">Мислете за същността като за **конкретно съществително име**. Тя не е категорията, а **един конкретен екземпляр**.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-2">Примери за същности (екземпляри):</h4>
+                        <ul class="space-y-2 list-disc list-inside text-slate-600">
+                           <li class="font-semibold">Физически (осезаеми):</li>
+                           <ul class="list-['-_'] list-inside ml-6">
+                               <li>Студентът <strong class="text-slate-800">"Иван Петров"</strong> (конкретен човек)</li>
+                               <li>Автомобилът с рег. номер <strong class="text-slate-800">"СВ1234АВ"</strong> (конкретен обект)</li>
+                           </ul>
+                           <li class="font-semibold mt-2">Концептуални (абстрактни):</li>
+                            <ul class="list-['-_'] list-inside ml-6">
+                               <li>Курсът <strong class="text-slate-800">"Бази данни"</strong> (конкретна концепция)</li>
+                               <li>Банковата сметка <strong class="text-slate-800">"BG12STOI123..."</strong> (конкретен обект)</li>
+                           </ul>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: What is an Entity Set? -->
+        <section id="slide-3" class="my-20 scroll-mt-24">
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-8 text-slate-900"><span class="text-5xl mr-2">🗃️</span> Какво е множество същности (Entity Set)?</h2>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <p class="mb-4 text-lg">**Множеството същности** е колекция (група) от <strong class="text-pink-600">еднотипни същности</strong>. Всички същности в едно множество споделят едни и същи характеристики (атрибути).</p>
+                        <p class="mb-6 text-base">Важно е да се прави разлика между **схема на множеството** (дефиницията на атрибутите, напр. "СТУДЕНТИ има Фак. номер и Име") и **екземпляр на множеството** (данните в него в даден момент, напр. {Иван, Мария}).</p>
+                        <div class="mt-8 p-6 bg-pink-50 border-l-4 border-pink-400 rounded-r-lg">
+                            <h3 class="font-semibold text-slate-800">Връзка с релационния модел</h3>
+                            <p class="mt-2 text-sm text-slate-600">Множеството същности е концептуалният еквивалент на **схемата на таблица** в релационния модел. Самите същности (екземплярите) отговарят на **редовете** в тази таблица.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-2">Примери за множества същности:</h4>
+                        <ul class="space-y-2 list-disc list-inside text-slate-600">
+                           <li><strong>СТУДЕНТИ</strong> (множество, съдържащо "Иван Петров", "Мария Иванова", ...)</li>
+                           <li><strong>АВТОМОБИЛИ</strong> (множество, съдържащо "СВ1234АВ", "РВ5678ВС", ...)</li>
+                           <li><strong>КУРСОВЕ</strong> (множество, съдържащо "Бази данни", "Алгоритми", ...)</li>
+                           <li><strong>СМЕТКИ</strong> (множество, съдържащо "BG12STOI...", "BG98FINV...", ...)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: What are Attributes? -->
+        <section id="slide-4" class="my-20 scroll-mt-24">
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-8 text-slate-900"><span class="text-5xl mr-2">🏷️</span> Какво са атрибути (Attributes)?</h2>
+                <p class="mb-4 text-lg text-slate-600">**Атрибутите** са характеристиките или свойствата, които описват всяка същност в дадено множество. Те дефинират каква информация съхраняваме за същностите.</p>
+                <p class="mb-8 text-base text-slate-600">Всеки атрибут има **Домейн** (Domain) - това е наборът от всички възможни (позволени) стойности за този атрибут. Например, домейнът на `Оценка` може да е {Среден 3, Добър 4, Мн. Добър 5, Отличен 6}.</p>
+                <div class="bg-slate-50 p-6 rounded-lg border">
+                    <h4 class="font-semibold mb-4 text-center text-xl">Множество същности: СТУДЕНТИ</h4>
+                    <p class="text-center text-slate-600 mb-6">Всяка същност "студент" се описва от следните атрибути:</p>
+                    <div class="grid md:grid-cols-5 gap-4 text-center">
+                        <div class="p-4 bg-pink-100 rounded-lg">
+                            <h5 class="font-bold">Факултетен_Номер</h5>
+                            <p class="text-sm text-pink-700">(напр. 121221001)</p>
+                        </div>
+                        <div class="p-4 bg-pink-100 rounded-lg">
+                            <h5 class="font-bold">Име</h5>
+                            <p class="text-sm text-pink-700">(напр. "Иван Петров")</p>
+                        </div>
+                        <div class="p-4 bg-pink-100 rounded-lg">
+                            <h5 class="font-bold">Специалност</h5>
+                            <p class="text-sm text-pink-700">(напр. "Информатика")</p>
+                        </div>
+                        <div class="p-4 bg-pink-100 rounded-lg">
+                            <h5 class="font-bold">Дата_на_Раждане</h5>
+                            <p class="text-sm text-pink-700">(напр. "05.10.2002")</p>
+                        </div>
+                        <div class="p-4 bg-pink-100 rounded-lg">
+                            <h5 class="font-bold">Среден_Успех</h5>
+                            <p class="text-sm text-pink-700">(напр. "5.50")</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 p-4 bg-indigo-50 border-l-4 border-indigo-400 rounded-r-lg">
+                        <h3 class="font-semibold text-slate-800">Връзка с релационния модел</h3>
+                        <p class="mt-1 text-sm text-slate-600">Атрибутите в ER модела директно съответстват на **колони (полета)** в таблицата от релационния модел.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Types of Attributes -->
+        <section id="slide-5" class="my-20 scroll-mt-24">
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-8 text-slate-900"><span class="text-5xl mr-2">🔬</span> Видове атрибути</h2>
+                <p class="mb-8 text-lg text-slate-600">Атрибутите могат да бъдат класифицирани в няколко типа, което ни помага да моделираме данните по-прецизно.</p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="p-4 bg-slate-100 rounded-lg border">
+                        <h4 class="font-bold">1. Прости (Simple)</h4>
+                        <p class="text-sm mt-1">Не могат да бъдат разделени на по-малки части. (пр. `Възраст`, `Пол`)</p>
+                    </div>
+                    <div class="p-4 bg-slate-100 rounded-lg border">
+                        <h4 class="font-bold">2. Сложни (Composite)</h4>
+                        <p class="text-sm mt-1">Могат да бъдат разделени на съставни части. (пр. `Адрес` -> `Град`, `Улица`, `Номер`; или `Име` -> `Първо име`, `Фамилия`)</p>
+                    </div>
+                    <div class="p-4 bg-slate-100 rounded-lg border">
+                        <h4 class="font-bold">3. Еднозначни (Single-valued)</h4>
+                        <p class="text-sm mt-1">Имат само една стойност за дадена същност. (пр. `Дата_на_Раждане`)</p>
+                    </div>
+                     <div class="p-4 bg-slate-100 rounded-lg border">
+                        <h4 class="font-bold">4. Многозначни (Multi-valued)</h4>
+                        <p class="text-sm mt-1">Могат да имат няколко стойности. (пр. `Телефонен_Номер` - служебен, личен). В релационния модел това обикновено се решава с отделна таблица.</p>
+                    </div>
+                     <div class="p-4 bg-slate-100 rounded-lg border">
+                        <h4 class="font-bold">5. Извлечени (Derived)</h4>
+                        <p class="text-sm mt-1">Стойността им се изчислява от друг атрибут. (пр. `Възраст` - изчислява се от `Дата_на_Раждане`). Не се съхранява физически, за да се пести място и да се избегнат грешки.</p>
+                    </div>
+                </div>
+                
+                <div class="mt-8 p-6 bg-pink-100 border-2 border-pink-300 rounded-lg">
+                    <h3 class="font-bold text-xl text-pink-800 mb-4">Фокус върху ключовите атрибути</h3>
+                    <p class="mb-4 text-slate-700">Ключовете са в основата на уникалната идентификация и връзките. Различаваме няколко вида:</p>
+                    <ul class="space-y-3">
+                        <li><strong class="text-slate-800">Суперключ (Superkey):</strong> Един или повече атрибути, чиято комбинация **уникално** идентифицира всяка същност. (пр. `{Факултетен_Номер}` е суперключ. `{Факултетен_Номер, Име}` също е суперключ, макар и излишен).</li>
+                        <li><strong class="text-slate-800">Ключ-кандидат (Candidate Key):</strong> Минимален суперключ. Това е суперключ, от който не можем да премахнем нито един атрибут и той да остане уникален. (пр. `{Факултетен_Номер}` е ключ-кандидат. Ако `{ЕГН}` също е уникален, той също е ключ-кандидат).</li>
+                        <li><strong class="text-slate-800">Първичен ключ (Primary Key):</strong> Това е един от ключовете-кандидати, който ние *избираме* да бъде основният идентификатор за множеството същности. (пр. Избираме `Факултетен_Номер` за първичен ключ). В диаграмите той се подчертава.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: ER Diagram Notation -->
+        <section id="slide-6" class="my-20 scroll-mt-24">
+             <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-8 text-slate-900"><span class="text-5xl mr-2">🎨</span> Как се чертае: Диаграма "Същност-Връзка" (Нотация на Чен)</h2>
+                <p class="mb-8 text-lg text-slate-600">Диаграмите "Същност-Връзка" използват стандартни символи за визуализиране на тези концепции.</p>
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <ul class="space-y-4">
+                            <li class="flex items-center">
+                                <div class="w-24 h-12 border-2 border-slate-700 rounded-lg flex items-center justify-center font-bold">Същност</div>
+                                <span class="ml-4"><strong>Правоъгълник:</strong> Множество същности</span>
+                            </li>
+                             <li class="flex items-center">
+                                <div class="w-24 h-12 relative">
+                                    <div class="w-16 h-8 border-2 border-slate-700 rounded-full flex items-center justify-center font-bold absolute top-2 left-4">Атрибут</div>
+                                </div>
+                                <span class="ml-4"><strong>Елипса:</strong> Атрибут</span>
+                            </li>
+                            <li class="flex items-center">
+                                <div class="w-24 h-12 relative">
+                                    <div class="w-16 h-8 border-2 border-slate-700 rounded-full flex items-center justify-center font-bold absolute top-2 left-4"><span class="key-attribute">Ключ</span></div>
+                                </div>
+                                <span class="ml-4"><strong>Подчертана елипса:</strong> Ключов атрибут</span>
+                            </li>
+                             <li class="flex items-center">
+                                <div class="w-24 h-12 relative">
+                                    <div class="w-16 h-8 border-2 border-slate-700 rounded-full flex items-center justify-center font-bold absolute top-2 left-4" style="border-width: 3px;">Много</div>
+                                </div>
+                                <span class="ml-4"><strong>Двойна елипса:</strong> Многозначен атрибут</span>
+                            </li>
+                             <li class="flex items-center">
+                                <div class="w-24 h-12 relative">
+                                    <div class="w-16 h-8 border-2 border-slate-700 border-dashed rounded-full flex items-center justify-center font-bold absolute top-2 left-4">Извл.</div>
+                                </div>
+                                <span class="ml-4"><strong>Прекъсната елипса:</strong> Извлечен атрибут</span>
+                            </li>
+                            <li class="flex items-center">
+                                <div class="w-24 h-12 relative flex items-center justify-center">
+                                    <svg viewBox="0 0 100 60" class="w-full h-full">
+                                        <ellipse cx="50" cy="30" rx="25" ry="12" fill="white" stroke="black" stroke-width="1.5"></ellipse>
+                                        <line x1="50" y1="18" x2="30" y2="5" stroke="black"></line>
+                                        <ellipse cx="25" cy="5" rx="15" ry="5" fill="white" stroke="black" stroke-width="1.5"></ellipse>
+                                        <line x1="50" y1="18" x2="70" y2="5" stroke="black"></line>
+                                        <ellipse cx="75" cy="5" rx="15" ry="5" fill="white" stroke="black" stroke-width="1.5"></ellipse>
+                                    </svg>
+                                </div>
+                                <span class="ml-4"><strong>Сложен атрибут:</strong> Елипса с разклонения</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg border-2 border-slate-200 text-center">
+                        <h4 class="font-bold text-xl mb-4">Примерна диаграма</h4>
+                        <!-- Simple SVG representation -->
+                        <svg class="w-full h-auto" viewBox="0 0 300 250">
+                            <!-- Entity Box -->
+                            <rect x="75" y="105" width="150" height="40" fill="white" stroke="black" stroke-width="2" rx="8"></rect>
+                            <text x="150" y="130" text-anchor="middle" font-weight="bold">СТУДЕНТ</text>
+                            
+                            <!-- Key Attribute: Фак_Номер -->
+                            <line x1="75" y1="125" x2="30" y2="125" stroke="black"></line>
+                            <ellipse cx="30" cy="125" rx="30" ry="15" fill="white" stroke="black" stroke-width="2"></ellipse>
+                            <text x="30" y="127" text-anchor="middle" font-size="8" class="key-attribute" font-weight="bold">Фак_Номер</text>
+                            
+                            <!-- Composite Attribute: Адрес -->
+                            <line x1="150" y1="105" x2="150" y2="65" stroke="black"></line>
+                            <ellipse cx="150" cy="50" rx="30" ry="15" fill="white" stroke="black" stroke-width="2"></ellipse>
+                            <text x="150" y="52" text-anchor="middle" font-size="10">Адрес</text>
+                            <!-- Sub-attributes for Адрес -->
+                            <line x1="130" y1="40" x2="100" y2="20" stroke="black"></line>
+                            <ellipse cx="90" cy="15" rx="20" ry="10" fill="white" stroke="black" stroke-width="2"></ellipse>
+                            <text x="90" y="17" text-anchor="middle" font-size="8">Град</text>
+                            <line x1="170" y1="40" x2="200" y2="20" stroke="black"></line>
+                            <ellipse cx="210" cy="15" rx="20" ry="10" fill="white" stroke="black" stroke-width="2"></ellipse>
+                            <text x="210" y="17" text-anchor="middle" font-size="8">Улица</text>
+
+                            <!-- Multi-valued Attribute: Телефон -->
+                            <line x1="225" y1="125" x2="270" y2="125" stroke="black"></line>
+                            <ellipse cx="270" cy="125" rx="30" ry="15" fill="white" stroke="black" stroke-width="2"></ellipse>
+                            <ellipse cx="270" cy="125" rx="26" ry="12" fill="white" stroke="black" stroke-width="2"></ellipse>
+                            <text x="270" y="127" text-anchor="middle" font-size="8">Телефон</text>
+
+                            <!-- Simple Attribute: Дата_Раждане -->
+                            <line x1="110" y1="145" x2="70" y2="180" stroke="black"></line>
+                            <ellipse cx="60" cy="195" rx="30" ry="15" fill="white" stroke="black" stroke-width="2"></ellipse>
+                            <text x="60" y="197" text-anchor="middle" font-size="8">Дата_Раждане</text>
+                            
+                            <!-- Derived Attribute: Възраст -->
+                            <line x1="190" y1="145" x2="230" y2="180" stroke="black"></line>
+                            <ellipse cx="240" cy="195" rx="30" ry="15" fill="white" stroke="black" stroke-width="2" stroke-dasharray="4"></ellipse>
+                            <text x="240" y="197" text-anchor="middle" font-size="10">Възраст</text>
+                            
+                            <!-- Line from Derived to Simple -->
+                            <line x1="75" y1="205" x2="225" y2="205" stroke="black" stroke-dasharray="3,3" stroke-width="0.5"></line>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tasks Section -->
+        <section id="tasks" class="my-20 scroll-mt-24">
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-8 text-slate-900"><span class="text-5xl mr-2">✍️</span> Практически задачи</h2>
+                <div class="space-y-8">
+                    
+                    <div class="p-6 border border-slate-200 rounded-lg">
+                        <h3 class="font-bold text-lg text-pink-700">Задача 1: Идентификация</h3>
+                        <p class="mt-2 mb-4 text-slate-600">Разглеждаме информационна система за болница. Посочете кои от следните са <strong>същности</strong>, кои са <strong>множества същности</strong> и кои са <strong>атрибути</strong>:</p>
+                        <p class="mt-4 font-mono text-sm bg-slate-100 p-4 rounded">
+                            "Д-р Петров", "ЕГН", "ЛЕКАРИ", "Отделение по Кардиология", "Име на пациент", "ПАЦИЕНТИ", "Диагноза", "ОТДЕЛЕНИЯ"
+                        </p>
+                    </div>
+
+                    <div class="p-6 border border-slate-200 rounded-lg">
+                        <h3 class="font-bold text-lg text-pink-700">Задача 2: Моделиране на атрибути</h3>
+                        <p class="mt-2 mb-4 text-slate-600">Трябва да моделирате множеството същности **ПРОДУКТ** в онлайн магазин. Дефинирайте поне 5 атрибута, които го описват.</p>
+                        <p class="mt-4"><strong>Въпрос:</strong> За всеки от 5-те атрибута, определете неговия тип:
+                            <ul class="list-disc list-inside mt-2">
+                                <li>Прост или Сложен? (напр. `Размери` -> `Височина`, `Ширина`)</li>
+                                <li>Еднозначен или Многозначен? (напр. `Цвят`)</li>
+                                <li>Ключов ли е? Има ли ключове-кандидати? (напр. `ID_на_Продукт`, `Баркод`)</li>
+                                <li>Има ли извлечени атрибути (напр. `Крайна_Цена` = `Цена` * (1 + `ДДС`))?</li>
+                            </ul>
+                        </p>
+                    </div>
+                    
+                    <div class="p-6 border border-slate-200 rounded-lg">
+                        <h3 class="font-bold text-lg text-pink-700">Задача 3: Рисуване на ER диаграма</h3>
+                        <p class="mt-2 mb-4 text-slate-600">Използвайки нотацията на Чен (показана в Слайд 6), нарисувайте на лист хартия или в текстов редактор ER диаграмата за множеството същности **КНИГА**.</p>
+                         <p class="mt-4"><strong>Включете следните атрибути:</strong>
+                            <ul class="list-disc list-inside mt-2">
+                                <li>`ISBN` (ключов атрибут)</li>
+                                <li>`Заглавие` (прост)</li>
+                                <li>`Жанр` (многозначен - една книга може да е и "Фантастика", и "Трилър")</li>
+                                <li>`Име_на_Автор` (също многозначен - няколко автори)</li>
+                                <li>`Данни_за_Издаване` (сложен, съставен от `Град` и `Година`)</li>
+                            </ul>
+                        </p>
+                    </div>
+                    
+                    <div class="p-6 border border-slate-200 rounded-lg">
+                        <h3 class="font-bold text-lg text-pink-700">Задача 3: Рисуване на ER диаграма</h3>
+                        <p class="mt-2 mb-4 text-slate-600">Използвайки нотацията на Чен (показана в Слайд 6), нарисувайте на лист хартия или в текстов редактор ER диаграмата за множеството същности **КНИГА**.</p>
+                         <p class="mt-4"><strong>Включете следните атрибути:</strong>
+                            <ul class="list-disc list-inside mt-2">
+                                <li>`ISBN` (ключов атрибут)</li>
+                                <li>`Заглавие` (прост)</li>
+                                <li>`Автор` (може да са няколко - помислете какъв тип е)</li>
+                                <li>`Издателство` (прост)</li>
+                            </ul>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-white mt-16">
+        <div class="container mx-auto px-6 py-8 text-center text-sm text-slate-400">
+            <p>&copy; 2025 Урок по моделиране на данни. Всички права запазени.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
+
