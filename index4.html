@@ -3,595 +3,689 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Урок: Упражнение - Сравнение на модели на данни</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
-      rel="stylesheet"
-    />
+    <title>Урок: Покритие на Кода (Code Coverage) от Нулата</title>
     <style>
       body {
-        font-family: "Inter", sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+          "Segoe UI Symbol";
+        line-height: 1.7;
+        margin: 0;
+        padding: 0;
+        background-color: #f7f9fa;
+        color: #333;
       }
-      html {
-        scroll-behavior: smooth;
+      .container {
+        max-width: 900px;
+        margin: 20px auto;
+        padding: 25px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
       }
-      .gradient-text {
-        background: linear-gradient(to right, #0d9488, #22d3ee);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+      h1,
+      h2,
+      h3 {
+        color: #2c3e50;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 10px;
+        margin-top: 30px;
+      }
+      h1 {
+        text-align: center;
+        font-size: 2.6em;
+        border-bottom: none;
+      }
+      code {
+        background-color: #eef1f3;
+        padding: 3px 7px;
+        border-radius: 4px;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
+          Courier, monospace;
+        font-size: 0.95em;
+      }
+      pre {
+        background-color: #2d2d2d;
+        color: #f8f8f2;
+        padding: 15px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
+          Courier, monospace;
+      }
+      pre code {
+        background: none;
+        padding: 0;
+      }
+      .analogy,
+      .tasks,
+      .walkthrough {
+        background-color: #eaf5ff;
+        border-left: 5px solid #3498db;
+        padding: 15px 20px;
+        margin: 25px 0;
+        border-radius: 0 5px 5px 0;
+      }
+      .tasks {
+        background-color: #fff3cd;
+        border-left-color: #ffc107;
+      }
+      .walkthrough {
+        background-color: #e2f0d9;
+        border-left-color: #548235;
+      }
+      .warning {
+        background-color: #fbeaea;
+        border-left-color: #c0392b;
+      }
+      .section-title {
+        font-weight: bold;
+        font-size: 1.2em;
+        color: #2980b9;
+        margin-bottom: 10px;
+        display: block;
+      }
+      .tasks .section-title {
+        color: #856404;
+      }
+      .walkthrough .section-title {
+        color: #375623;
+      }
+      .warning .section-title {
+        color: #a94442;
+      }
+      .step {
+        font-weight: bold;
+        color: #2980b9;
+      }
+      ul,
+      ol {
+        padding-left: 20px;
+      }
+      li {
+        margin-bottom: 10px;
+      }
+      hr {
+        border: 0;
+        height: 1px;
+        background-image: linear-gradient(
+          to right,
+          rgba(0, 0, 0, 0),
+          rgba(0, 0, 0, 0.1),
+          rgba(0, 0, 0, 0)
+        );
+        margin: 40px 0;
+      }
+      .image-placeholder {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        border: 2px dashed #ddd;
+        border-radius: 5px;
+        margin: 20px 0;
+        background-color: #f9f9f9;
+        text-align: center;
+        padding: 30px;
+        font-style: italic;
+        color: #777;
+        font-weight: 500;
       }
     </style>
   </head>
-  <body class="bg-slate-50 text-slate-700">
-    <!-- Header and Navigation -->
-    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
-      <nav
-        class="container mx-auto px-6 py-4 flex justify-between items-center"
-      >
-        <div class="text-xl font-bold text-slate-800">
-          <a href="#slide-1">Сравнение на Модели</a>
+  <body>
+    <div class="container">
+      <h1>Интерактивен Урок: Покритие на Кода (Code Coverage)</h1>
+      <p style="text-align: center; font-size: 1.1em; color: #555">
+        Упражнение: Да създадем проект от нулата и да тестваме всяка негова
+        част!
+      </p>
+
+      <p>
+        Добре дошли! В този урок ще започнем <strong>от самото начало</strong>.
+        Ще създадем цялостно приложение, спазвайки трислойния модел, и ще го
+        използваме, за да научим една от най-важните концепции в тестването:
+        <strong>Покритие на Кода (Code Coverage)</strong>.
+      </p>
+
+      <hr />
+
+      <h2>Част 1: Заданието - Какво ще създаваме?</h2>
+      <p>
+        Нашият проект ще се казва <strong>"SimpleReg"</strong>. Това ще бъде
+        много опростена система за регистрация на потребители. Тя ще се състои
+        от форма, в която потребителят въвежда потребителско име, парола и
+        имейл, и бутон "Регистрирай се".
+      </p>
+
+      <p>
+        Ще изградим това приложение, използвайки **Трислойната Архитектура**, за
+        да разделим отговорностите:
+      </p>
+
+      <ul>
+        <li>
+          <strong>SimpleReg.UI (WinForms App):</strong> Презентационният слой.
+          Тук ще са текстовите полета и бутонът. Този слой само ще показва и
+          приема данни.
+        </li>
+        <li>
+          <strong>SimpleReg.BLL (Class Library):</strong> Бизнес логиката.
+          "Мозъкът" на приложението. Тук ще са правилата (напр. "Паролата твърде
+          къса", "Невалиден имейл").
+        </li>
+        <li>
+          <strong>SimpleReg.DAL (Class Library):</strong> Слоят за данни. Той ще
+          се грижи за "запазването" на потребителя (в нашия случай, просто в
+          един списък в паметта).
+        </li>
+        <li>
+          <strong>SimpleReg.Tests (MSTest Project):</strong> Нашият тестов
+          проект. Тук ще пишем Unit тестове, за да проверяваме нашата Бизнес
+          логика (BLL).
+        </li>
+      </ul>
+
+      <h3>Стъпка 1: Създаване на структурата на проекта</h3>
+      <ol>
+        <li>Отворете Visual Studio и изберете `Create a new project`.</li>
+        <li>
+          Изберете `Blank Solution` (Ако не я виждате, потърсете я). Наречете я
+          <strong>"SimpleReg"</strong>.
+        </li>
+        <div class="image-placeholder">
+          <img src="photos/4/1.png" width="800px" height="500px" />
+          <img src="photos/4/2.png" width="800px" height="500px" />
         </div>
-        <div class="hidden md:flex space-x-6 text-sm font-medium">
-          <a
-            href="#slide-2"
-            class="text-slate-600 hover:text-teal-600 transition-colors duration-300"
-            >Сценарий</a
-          >
-          <a
-            href="#slide-3"
-            class="text-slate-600 hover:text-teal-600 transition-colors duration-300"
-            >Йерархичен</a
-          >
-          <a
-            href="#slide-4"
-            class="text-slate-600 hover:text-teal-600 transition-colors duration-300"
-            >Мрежови</a
-          >
-          <a
-            href="#slide-5"
-            class="text-slate-600 hover:text-teal-600 transition-colors duration-300"
-            >Релационен</a
-          >
-          <a
-            href="#slide-6"
-            class="text-slate-600 hover:text-teal-600 transition-colors duration-300"
-            >Заключение</a
-          >
-          <a
-            href="#tasks"
-            class="text-slate-600 hover:text-teal-600 transition-colors duration-300"
-            >Задачи</a
-          >
+
+        <li>
+          В `Solution Explorer` (прозорецът вдясно), кликнете с десен бутон
+          върху Solution-а (`Solution 'SimpleReg'`).
+        </li>
+        <li>Изберете `Add` -> `New Project...`.</li>
+        <li>
+          Намерете и изберете `Windows Forms App (.NET Framework)`. Наречете го
+          <strong>SimpleReg.UI</strong>.
+        </li>
+        <div class="image-placeholder">
+          <img src="photos/4/3.png" width="800px" height="500px" />
+          <img src="photos/4/4.png" width="800px" height="500px" />
         </div>
-      </nav>
-    </header>
 
-    <!-- Main Content Area -->
-    <main class="container mx-auto px-6 py-8 md:py-12">
-      <!-- Slide 1: Hero Section -->
-      <section
-        id="slide-1"
-        class="text-center min-h-[70vh] flex flex-col justify-center items-center bg-white rounded-2xl shadow-lg p-8"
-      >
-        <div class="max-w-4xl">
-          <h1
-            class="text-4xl md:text-6xl font-bold mb-4 text-slate-900 leading-tight"
-          >
-            Упражнение: Сравнение
-            <span class="gradient-text">на модели на данни</span>
-          </h1>
-          <p class="text-xl md:text-2xl font-light text-slate-600 mt-6">
-            Йерархичен vs. Мрежови vs. Релационен: Кой е правилният инструмент
-            за задачата?
-          </p>
-          <svg
-            class="w-24 h-24 text-teal-200 mx-auto mt-12"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.286zm0 13.036h.008v.008h-.008v-.008z"
-            />
-          </svg>
-        </div>
-      </section>
+        <li>
+          Кликнете отново с десен бутон върху Solution-а. Изберете `Add` -> `New
+          Project...`.
+        </li>
+        <li>
+          Намерете и изберете `Class Library (.NET Framework)`. Наречете го
+          <strong>SimpleReg.BLL</strong>.
+        </li>
+        <div class="image-placeholder"></div>
 
-      <!-- Slide 2: The Scenario -->
-      <section id="slide-2" class="my-20 scroll-mt-24">
-        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
-          <h2 class="text-3xl font-bold mb-8 text-slate-900">
-            <span class="text-5xl mr-2">🎯</span> Сценарий за сравнение:
-            Университет
-          </h2>
-          <div class="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <p class="mb-6 text-lg">
-                За да сравним трите модела, ще използваме един и същ сценарий:
-                опростена информационна система на университет. Целта е да
-                съхраняваме данни за факултети, преподаватели, студенти и
-                курсове.
-              </p>
-              <h4 class="font-bold text-xl mb-2">Основни правила (връзки):</h4>
-              <ul class="space-y-2 list-disc list-inside text-slate-600">
-                <li>
-                  Един <strong class="text-teal-700">Факултет</strong> има много
-                  <strong class="text-teal-700">Преподаватели</strong> (1:N).
-                </li>
-                <li>
-                  Един <strong class="text-teal-700">Преподавател</strong> води
-                  много <strong class="text-teal-700">Курсове</strong> (1:N).
-                </li>
-                <li>
-                  Един <strong class="text-teal-700">Студент</strong> може да се
-                  запише в много <strong class="text-teal-700">Курсове</strong>,
-                  и един <strong class="text-teal-700">Курс</strong> има много
-                  <strong class="text-teal-700">Студенти</strong> (M:N).
-                </li>
-              </ul>
-            </div>
-            <div>
-              <img
-                src="photos/DALL·E 2025-10-20 10.26.06 - A clean and professional Entity-Relationship (ER) diagram for a simplified university information system. The diagram includes five entities_ Faculty,.webp"
-                alt="Университетска система"
-                class="rounded-lg shadow-md w-full h-full object-cover"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+        <li>
+          Направете същото отново и създайте още една `Class Library` с име
+          <strong>SimpleReg.DAL</strong>.
+        </li>
 
-      <!-- Slide 3: Hierarchical Approach -->
-      <section id="slide-3" class="my-20 scroll-mt-24">
-        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
-          <h2 class="text-3xl font-bold mb-8 text-slate-900">
-            <span class="text-5xl mr-2">🌳</span> Решение 1: Йерархичен подход
-          </h2>
-          <p class="mb-8 text-lg text-slate-600">
-            Опитваме се да наложим строга дървовидна структура.
-          </p>
-          <div class="bg-slate-50 p-6 rounded-lg border">
-            <h4 class="font-semibold mb-2 text-center">Примерна структура</h4>
-            <div class="font-mono text-left text-sm p-4 bg-white rounded">
-              <p>Факултет по Информатика</p>
-              <p class="ml-4">└─ Преподавател "Проф. Иванов"</p>
-              <p class="ml-8">├─ Курс "Бази данни"</p>
-              <p class="ml-12">│ ├─ Студент "Анна"</p>
-              <p class="ml-12">│ └─ Студент "Борис"</p>
-              <p class="ml-8">└─ Курс "Алгоритми"</p>
-              <p class="ml-12">
-                └─ Студент "Анна"
-                <span class="text-red-500 font-bold ml-4"
-                  >&lt;-- ДУБЛИРАНЕ!</span
-                >
-              </p>
-            </div>
-          </div>
-          <div
-            class="mt-8 p-6 bg-red-100 border-l-4 border-red-400 rounded-r-lg"
-          >
-            <h3 class="font-semibold text-red-800">Проблеми на този подход:</h3>
-            <ul class="mt-2 list-disc list-inside text-sm text-red-700">
-              <li>
-                <strong>Масивно дублиране на данни:</strong> Студент "Анна"
-                трябва да бъде дублиран под всеки курс, в който е записана. Ако
-                промени адреса си, трябва да го редактираме на много места.
-              </li>
-              <li>
-                <strong>Негъвкавост:</strong> Как да представим, че курсът
-                "Алгоритми" се води и от друг преподавател? Невъзможно е, защото
-                един курс може да има само един родител (преподавател).
-              </li>
-              <li>
-                <strong>Заключение:</strong> Йерархичният модел е напълно
-                неподходящ за този сценарий.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
+        <li>
+          И накрая, кликнете с десен бутон върху Solution-а. Изберете `Add` ->
+          `New Project...`.
+        </li>
+        <li>
+          Потърсете и изберете `MSTest Test Project`. Наречете го
+          <strong>SimpleReg.Tests</strong>.
+        </li>
+        <div class="image-placeholder"></div>
+      </ol>
+      <p>Сега вашият Solution Explorer трябва да изглежда така:</p>
+      <div class="image-placeholder">
+        <br />
+        Solution 'SimpleReg'<br />
+        ├─ SimpleReg.BLL<br />
+        ├─ SimpleReg.DAL<br />
+        ├─ SimpleReg.Tests<br />
+        └─ SimpleReg.UI
+      </div>
 
-      <!-- Slide 4: Network Approach -->
-      <section id="slide-4" class="my-20 scroll-mt-24">
-        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
-          <h2 class="text-3xl font-bold mb-8 text-slate-900">
-            <span class="text-5xl mr-2">🕸️</span> Решение 2: Мрежови подход
-          </h2>
-          <p class="mb-8 text-lg text-slate-600">
-            Позволяваме на един запис да има няколко "родители", решавайки
-            проблема с дублирането.
-          </p>
-          <div class="bg-slate-50 p-6 rounded-lg border">
-            <h4 class="font-semibold mb-2 text-center">Примерна структура</h4>
-            <div class="font-mono text-left text-sm p-4 bg-white rounded">
-              <p>Студент "Анна"</p>
-              <p class="ml-4">├─ (свързан с) → Курс "Бази данни"</p>
-              <p class="ml-4">└─ (свързан с) → Курс "Алгоритми"</p>
-              <br />
-              <p>Курс "Бази данни"</p>
-              <p class="ml-4">
-                ├─ (свързан с) → Студент "Анна"
-                <span class="text-green-600 font-bold">&lt;-- ОК</span>
-              </p>
-              <p class="ml-4">└─ (свързан с) → Студент "Борис"</p>
-            </div>
-          </div>
-          <div
-            class="mt-8 p-6 bg-yellow-100 border-l-4 border-yellow-400 rounded-r-lg"
-          >
-            <h3 class="font-semibold text-yellow-800">
-              Компромиси на този подход:
-            </h3>
-            <ul class="mt-2 list-disc list-inside text-sm text-yellow-700">
-              <li>
-                <strong>Решен проблем с M:N връзката:</strong> Вече няма нужда
-                да дублираме "Анна". Създаваме една връзка към нея от всеки
-                курс.
-              </li>
-              <li>
-                <strong>Огромна сложност:</strong> Системата се превръща в
-                "паяжина" от указатели (връзки). Да се напише заявка от типа
-                "Покажи ми всички студенти на проф. Иванов" става изключително
-                трудно и изисква сложна навигация по връзките.
-              </li>
-              <li>
-                <strong>Трудна поддръжка:</strong> Добавянето на нов тип връзка
-                (напр. "Курсът има учебници") изисква преструктуриране на цялата
-                база данни.
-              </li>
-              <li>
-                <strong>Заключение:</strong> Мрежовият модел решава основния
-                проблем, но на цената на огромна сложност.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
+      <h3>Стъпка 2: Настройване на Референциите ("Кой с кого говори")</h3>
+      <p>
+        Трябва да "свържем" проектите си, за да могат да комуникират. Помнете
+        правилото: <strong>UI -> BLL -> DAL</strong>.
+      </p>
+      <ol>
+        <li>
+          В `Solution Explorer`, под `SimpleReg.UI`, кликнете с десен бутон на
+          `References`.
+        </li>
+        <li>
+          Изберете `Add Reference...` -> `Projects` -> Отбележете
+          `SimpleReg.BLL`. Кликнете OK. (UI вече познава BLL).
+        </li>
 
-      <!-- Slide 5: Relational Approach -->
-      <section id="slide-5" class="my-20 scroll-mt-24">
-        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
-          <h2 class="text-3xl font-bold mb-8 text-slate-900">
-            <span class="text-5xl mr-2">🗂️</span> Решение 3: Релационен подход
-          </h2>
-          <p class="mb-8 text-lg text-slate-600">
-            Разделяме данните на прости, логически таблици, свързани с ключове.
-          </p>
-          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <!-- Table Students -->
-            <div class="bg-slate-50 p-4 rounded border">
-              <h4 class="font-bold text-center">Таблица: Студенти</h4>
-              <table class="w-full text-xs mt-2">
-                <thead>
-                  <tr class="bg-slate-200">
-                    <th>СтудентID</th>
-                    <th>Име</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>S1</td>
-                    <td>Анна</td>
-                  </tr>
-                  <tr>
-                    <td>S2</td>
-                    <td>Борис</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <!-- Table Courses -->
-            <div class="bg-slate-50 p-4 rounded border">
-              <h4 class="font-bold text-center">Таблица: Курсове</h4>
-              <table class="w-full text-xs mt-2">
-                <thead>
-                  <tr class="bg-slate-200">
-                    <th>КурсID</th>
-                    <th>Име</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>C101</td>
-                    <td>Бази данни</td>
-                  </tr>
-                  <tr>
-                    <td>C102</td>
-                    <td>Алгоритми</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <!-- Table Enrollments -->
-            <div class="bg-slate-50 p-4 rounded border ring-4 ring-teal-300">
-              <h4 class="font-bold text-center">
-                Свързваща таблица: Записвания
-              </h4>
-              <table class="w-full text-xs mt-2">
-                <thead>
-                  <tr class="bg-slate-200">
-                    <th>СтудентID (FK)</th>
-                    <th>КурсID (FK)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>S1</td>
-                    <td>C101</td>
-                  </tr>
-                  <tr>
-                    <td>S1</td>
-                    <td>C102</td>
-                  </tr>
-                  <tr>
-                    <td>S2</td>
-                    <td>C101</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div
-            class="mt-8 p-6 bg-green-100 border-l-4 border-green-400 rounded-r-lg"
-          >
-            <h3 class="font-semibold text-green-800">
-              Предимства на този подход:
-            </h3>
-            <ul class="mt-2 list-disc list-inside text-sm text-green-700">
-              <li>
-                <strong>Нула дублиране на данни:</strong> Данните за всеки обект
-                (студент, курс) се съхраняват точно на едно място.
-              </li>
-              <li>
-                <strong>Елегантно решение за M:N:</strong> Свързващата таблица
-                `Записвания` ясно и ефективно моделира сложната връзка.
-              </li>
-              <li>
-                <strong>Максимална гъвкавост:</strong> Лесно можем да задаваме
-                всякакви въпроси към данните с езика SQL. Например: "SELECT Име
-                FROM Студенти WHERE СтудентID IN (SELECT СтудентID FROM
-                Записвания WHERE КурсID = 'C101')".
-              </li>
-              <li>
-                <strong>Заключение:</strong> Релационният модел е най-гъвкавият,
-                логичен и ефективен начин за моделиране на този тип сценарии.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
+        <li>Под `SimpleReg.BLL`, кликнете с десен бутон на `References`.</li>
+        <li>
+          Изберете `Add Reference...` -> `Projects` -> Отбележете
+          `SimpleReg.DAL`. Кликнете OK. (BLL вече познава DAL).
+        </li>
 
-      <!-- Slide 6: Conclusion -->
-      <section id="slide-6" class="my-20 scroll-mt-24">
-        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
-          <h2 class="text-3xl font-bold mb-8 text-slate-900">
-            Заключение: Сравнителна таблица
-          </h2>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-              <thead class="bg-slate-100">
-                <tr>
-                  <th class="p-4 font-semibold text-sm text-slate-600">
-                    Критерий
-                  </th>
-                  <th class="p-4 font-semibold text-sm text-slate-600">
-                    🌳 Йерархичен
-                  </th>
-                  <th class="p-4 font-semibold text-sm text-slate-600">
-                    🕸️ Мрежови
-                  </th>
-                  <th class="p-4 font-semibold text-sm text-slate-600">
-                    🗂️ Релационен
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="border-b">
-                  <td class="p-3 font-semibold">Структура</td>
-                  <td class="p-3">Дърво</td>
-                  <td class="p-3">Граф</td>
-                  <td class="p-3">Таблици</td>
-                </tr>
-                <tr class="border-b">
-                  <td class="p-3 font-semibold">Дублиране на данни</td>
-                  <td class="p-3 text-red-600">Високо</td>
-                  <td class="p-3 text-yellow-600">Ниско</td>
-                  <td class="p-3 text-green-600">Почти нулево</td>
-                </tr>
-                <tr class="border-b">
-                  <td class="p-3 font-semibold">Справяне с M:N</td>
-                  <td class="p-3 text-red-600">Невъзможно</td>
-                  <td class="p-3 text-yellow-600">Възможно, но сложно</td>
-                  <td class="p-3 text-green-600">
-                    Елегантно (със свързваща таблица)
-                  </td>
-                </tr>
-                <tr>
-                  <td class="p-3 font-semibold">Гъвкавост</td>
-                  <td class="p-3 text-red-600">Много ниска</td>
-                  <td class="p-3 text-yellow-600">Средна</td>
-                  <td class="p-3 text-green-600">Много висока</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="mt-6 text-center italic text-slate-500">
-            Изборът на модел зависи от проблема, но релационният модел предлага
-            най-добрия баланс за повечето бизнес приложения.
-          </p>
-        </div>
-      </section>
+        <li>Под `SimpleReg.Tests`, кликнете с десен бутон на `References`.</li>
+        <li>
+          Изберете `Add Reference...` -> `Projects` -> Отбележете
+          `SimpleReg.BLL`. Кликнете OK. (Тестовете ни ще проверяват BLL).
+        </li>
+      </ol>
+      <p>
+        <strong>Честито! Имате перфектно структуриран трислоен проект.</strong>
+      </p>
 
-      <!-- Tasks Section -->
-      <section id="tasks" class="my-20 scroll-mt-24">
-        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
-          <h2 class="text-3xl font-bold mb-8 text-slate-900">
-            <span class="text-5xl mr-2">✍️</span> Задачи за размисъл
-          </h2>
-          <div class="space-y-8">
-            <div class="p-6 border border-slate-200 rounded-lg">
-              <h3 class="font-bold text-lg text-teal-700">
-                Задача 1: Семейно дърво
-              </h3>
-              <p class="mt-2 mb-4 text-slate-600">
-                Трябва да създадете база данни за генеалогия (семейно дърво),
-                където всеки човек има точно двама биологични родители.
-              </p>
-              <p class="mt-4">
-                <strong>Въпрос:</strong> Кой от трите модела би бил
-                най-интуитивен и естествен за представяне на тази структура и
-                защо?
-              </p>
-            </div>
-            <div class="p-6 border border-slate-200 rounded-lg">
-              <h3 class="font-bold text-lg text-teal-700">
-                Задача 2: Социална мрежа
-              </h3>
-              <p class="mt-2 mb-4 text-slate-600">
-                Проектирате социална мрежа. Потребителите могат да бъдат
-                "приятели" един с друг. Връзката е взаимна и един потребител
-                може да има хиляди приятели.
-              </p>
-              <p class="mt-4">
-                <strong>Въпрос:</strong> Защо релационният модел (с таблици
-                `Потребители` и `Приятелства`) би работил, но мрежовият модел е
-                концептуално по-близо до същността на проблема?
-              </p>
-            </div>
-            <div class="p-6 border-4 border-teal-200 rounded-lg bg-teal-50">
-              <h3 class="font-bold text-xl text-teal-800">
-                Задача 3: Комплексно упражнение - Проект за библиотека (Понеже
-                обичаме да четем)
-              </h3>
-              <p class="mt-2 mb-4 text-slate-700">
-                Вие сте наети да проектирате базата данни за нова градска
-                библиотека. Системата трябва да следи книгите, техните автори и
-                читателите, които ги заемат.
-              </p>
+      <hr />
 
-              <h4 class="font-semibold text-lg mt-6 mb-2 text-slate-800">
-                Изисквания към системата:
-              </h4>
-              <ul
-                class="list-disc list-inside space-y-2 text-slate-600 bg-white p-4 rounded-md"
-              >
-                <li>
-                  Всяка <strong>книга</strong> има уникален ISBN, заглавие,
-                  година на издаване и брой налични екземпляри.
-                </li>
-                <li>Всеки <strong>автор</strong> има име и биография.</li>
-                <li>
-                  Всеки <strong>читател (член на библиотеката)</strong> има
-                  номер на карта, име и адрес.
-                </li>
-                <li>
-                  Връзките, които трябва да се моделират са:
-                  <ul class="list-['-_'] list-inside ml-6 mt-2 space-y-1">
-                    <li>
-                      Една книга може да бъде написана от
-                      <strong>много автори</strong>.
-                    </li>
-                    <li>
-                      Един автор може да е написал <strong>много книги</strong>.
-                      (M:N връзка)
-                    </li>
-                    <li>
-                      Един читател може да заеме
-                      <strong>много книги</strong> (едновременно или през
-                      годините).
-                    </li>
-                    <li>
-                      Една книга може да бъде заета от
-                      <strong>много читатели</strong> (през годините). (M:N
-                      връзка)
-                    </li>
-                    <li>
-                      Когато книга се заема, трябва да се пази дата на заемане и
-                      дата на връщане.
-                    </li>
-                  </ul>
-                </li>
-              </ul>
+      <h2>Част 2: Какво е „Покритие на Кода“ (Code Coverage)? 🔎</h2>
+      <p>
+        <strong>Code Coverage</strong> е метрика, изразена в проценти (%), която
+        показва каква част от вашия програмен код е била "докосната" или
+        изпълнена по време на автоматизираните ви тестове (Unit Tests).
+      </p>
+      <p>
+        Представете си, че вашият код е една книжка за оцветяване. Вашите
+        тестове са флумастерите.
+      </p>
 
-              <h4 class="font-semibold text-lg mt-6 mb-2 text-slate-800">
-                Вашата задача е да преминете през следните стъпки:
-              </h4>
-              <ol class="list-decimal list-inside space-y-4 mt-4">
-                <li>
-                  <strong>Анализ и Йерархичен модел:</strong> Опитайте се да
-                  скицирате структурата на данните, използвайки йерархичен
-                  модел. Започнете с "Автори" като корен. Сблъсквате ли се с
-                  проблеми, особено при книги с няколко автори? Опишете накратко
-                  къде и защо моделът се "чупи".
-                </li>
-                <li>
-                  <strong>Мрежови модел:</strong> Как мрежовият модел би решил
-                  проблема с връзката "автор-книга"? Скицирайте с думи или
-                  проста диаграма как би изглеждала връзката между един автор,
-                  една книга и друг автор, свързан със същата книга. Какви са
-                  потенциалните сложности при извличане на данни?
-                </li>
-                <li>
-                  <strong
-                    >Проектиране на Релационен модел (Основна част):</strong
-                  >
-                  <ul class="list-disc list-inside ml-6 mt-2 space-y-2">
-                    <li>
-                      Идентифицирайте всички необходими
-                      <strong>таблици</strong>. (Подсказка: ще ви трябват поне
-                      5).
-                    </li>
-                    <li>
-                      За всяка таблица дефинирайте нейните
-                      <strong>колони (атрибути)</strong> и подходящ тип данни
-                      (текст, число, дата).
-                    </li>
-                    <li>
-                      Определете <strong>първичния ключ (PK)</strong> за всяка
-                      таблица.
-                    </li>
-                    <li>
-                      Идентифицирайте всички
-                      <strong>външни ключове (FK)</strong> и посочете кои
-                      таблици свързват. Обърнете специално внимание на M:N
-                      връзките - какви свързващи таблици са нужни?
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <strong>Заключителен анализ:</strong> Напишете кратък
-                  параграф, в който сравнявате трите подхода за конкретния казус
-                  с библиотеката и обосновавате защо релационният модел е
-                  най-подходящият избор.
-                </li>
-              </ol>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-slate-800 text-white mt-16">
-      <div
-        class="container mx-auto px-6 py-8 text-center text-sm text-slate-400"
-      >
+      <div class="analogy">
+        <span class="section-title">Аналогия с Книжка за Оцветяване 🎨</span>
         <p>
-          &copy; 2025 Урок по моделиране на данни. Всички права запазени. инж.
-          Пламена Янева
+          Вашата програма (например `RegistrationService` в BLL) е страница в
+          книжка за оцветяване. Тя има много различни зони (<code>if</code>
+          условия, <code>else</code> блокове, <code>return</code>-и).
+        </p>
+        <ul>
+          <li>
+            Когато напишете **Unit тест** и го стартирате, той действа като
+            флумастер, който оцветява всяка част от кода, през която мине.
+          </li>
+          <li>
+            Инструментът за **Code Coverage** е като ваш родител, който поглежда
+            страницата и казва: "Браво! Оцветил си 80% от картинката!"
+          </li>
+          <li>
+            Онези 20%, които са останали **бели (неоцветени)**, са вашият
+            рисков, **неизпитан код**. Вие нямате представа дали той работи.
+          </li>
+        </ul>
+        <p>
+          <strong>Целта</strong> е да оцветите колкото се може по-голяма част от
+          картинката, за да сте сигурни, че всичко е проверено.
         </p>
       </div>
-    </footer>
+
+      <p>
+        Високото покритие (напр. 80-90%) ви дава <strong>увереност</strong>. То
+        не гарантира, че няма бъгове, но гарантира, че почти всяка част от
+        логиката ви е била проверена поне веднъж.
+      </p>
+
+      <p>
+        <strong>Важно:</strong> Както казахме в предишния урок, ние гоним 100%
+        покритие за <strong>BLL проекта</strong>. UI слоят не е наша цел.
+      </p>
+
+      <hr />
+
+      <h2>Част 3: Упражнение: Да напишем и измерим нашите тестове!</h2>
+      <p>Да се върнем към нашия проект "SimpleReg".</p>
+
+      <h3>Стъпка 3: Писане на Кода (DAL и BLL)</h3>
+      <p>Първо, нека напишем малко код, който да тестваме.</p>
+
+      <p>
+        <span class="step">В `SimpleReg.DAL`:</span><br />
+        1. Изтрийте файла `Class1.cs`, който Visual Studio създаде.<br />
+        2. Създайте нов клас `UserRepository.cs`.
+      </p>
+      <pre><code>using System.Collections.Generic;
+
+namespace SimpleReg.DAL
+{
+    // Този клас просто *симулира* база данни със списък в паметта.
+    public class UserRepository
+    {
+        // Статичен списък, за да не се губят данните при всяко извикване
+        private static List&lt;string&gt; _users = new List&lt;string&gt;();
+
+        public void SaveUser(string username)
+        {
+            _users.Add(username);
+        }
+    }
+}</code></pre>
+
+      <p>
+        <span class="step">В `SimpleReg.BLL`:</span><br />
+        1. Изтрийте `Class1.cs`.<br />
+        2. Създайте нов клас `RegistrationService.cs`. Ето тук е нашата "книжка
+        за оцветяване" – забележете всички `if` условия. Това са различните зони
+        за оцветяване.
+      </p>
+      <pre><code>using SimpleReg.DAL;
+
+namespace SimpleReg.BLL
+{
+    public class RegistrationService
+    {
+        private UserRepository _repository = new UserRepository();
+
+        // Ето го и нашият метод с много "пътеки"
+        public string RegisterUser(string username, string password, string email)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                return "Грешка: Потребителското име е празно."; // ПЪТ 1
+            }
+
+            if (password.Length < 6)
+            {
+                return "Грешка: Паролата е твърде къса."; // ПЪТ 2
+            }
+
+            if (!email.Contains("@"))
+            {
+                return "Грешка: Невалиден имейл."; // ПЪТ 3
+            }
+
+            // Ако всичко е наред:
+            _repository.SaveUser(username);
+            return "Успех: Потребителят е регистриран."; // ПЪТ 4
+        }
+    }
+}</code></pre>
+      <p>Този метод има 4 различни "пътя" или изхода.</p>
+
+      <h3>Стъпка 4: Писане на Първия (Непълен) Тест</h3>
+      <p>Отиваме в нашия тестов проект <code>SimpleReg.Tests</code>.</p>
+      <ol>
+        <li>
+          Преименувайте файла `UnitTest1.cs` на `RegistrationServiceTests.cs`.
+        </li>
+        <li>
+          Отворете го и напишете <strong>само един</strong> "щастлив" тест
+          (тест, при който всичко е наред).
+        </li>
+      </ol>
+
+      <pre><code>using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SimpleReg.BLL; // Важно! Даваме достъп до BLL
+
+namespace SimpleReg.Tests
+{
+    [TestClass]
+    public class RegistrationServiceTests
+    {
+        [TestMethod]
+        public void RegisterUser_WithValidData_ReturnsSuccess()
+        {
+            // Arrange (Подготовка)
+            RegistrationService service = new RegistrationService();
+            string user = "TestUser";
+            string pass = "ValidPassword123";
+            string email = "test@example.com";
+
+            // Act (Действие)
+            string result = service.RegisterUser(user, pass, email);
+
+            // Assert (Проверка)
+            Assert.AreEqual("Успех: Потребителят е регистриран.", result);
+        }
+    }
+}</code></pre>
+
+      <h3>Стъпка 5: Стартиране на Теста и Измерване на Покритието</h3>
+      <ol>
+        <li>
+          Отидете в менюто <code>Test</code> -> <code>Test Explorer</code>.
+        </li>
+        <li>
+          Ще видите вашия тест. Натиснете <code>Run All Tests</code> (зелената
+          стрелка).
+        </li>
+        <li>
+          Тестът ще мине успешно! ✅ Ще светне в зелено. Чувстваме се добре!
+        </li>
+        <li><strong>Но дали сме тествали всичко?</strong> Нека проверим.</li>
+        <li>Отидете в менюто <code>Test</code>.</li>
+        <li>Изберете <code>Analyze Code Coverage for All Tests</code>.</li>
+      </ol>
+
+      <div class="image-placeholder"></div>
+
+      <h3>Стъпка 6: "Аха!" Моментът - Анализ на Резултатите</h3>
+      <p>
+        Ще се отвори нов прозорец "Code Coverage Results". Той ще ви покаже нещо
+        такова:
+      </p>
+
+      <div class="image-placeholder">
+        <br />
+        - SimpleReg.BLL.dll: <strong>48% Blocks Covered</strong>
+      </div>
+
+      <p><strong>Само 48%?!</strong> Но нашият тест беше "зелен"?!</p>
+      <p>
+        Това е така, защото нашият "флумастер" е оцветил само една пътека от
+        четирите. Той е минал през всички `if` проверки (те са били `false`) и е
+        стигнал до ПЪТ 4.
+      </p>
+
+      <p>
+        Кликнете върху бутона
+        <strong>"Show Code Coverage Coloring"</strong> (икона с палитра) 🖌️ и се
+        върнете в <code>RegistrationService.cs</code>:
+      </p>
+
+      <div class="image-placeholder">
+        <br />
+        Кодът ви ще изглежда така:
+        <pre style="background: #f9f9f9; color: #333; text-align: left">
+<span style="background-color: #add8e6;">public string RegisterUser(string username, string password, string email)</span>
+<span style="background-color: #add8e6;">{</span>
+    <span style="background-color: #add8e6;">if (string.IsNullOrWhiteSpace(username))</span>
+    <span style="background-color: #add8e6;">{</span>
+    <span style="background-color: #ffcccb; color: #a00;">    return "Грешка: Потребителското име е празно."; // ПЪТ 1 (ЧЕРВЕН)</span>
+    <span style="background-color: #ffcccb; color: #a00;">}</span>
+
+    <span style="background-color: #add8e6;">if (password.Length < 6)</span>
+    <span style="background-color: #add8e6;">{</span>
+    <span style="background-color: #ffcccb; color: #a00;">    return "Грешка: Паролата е твърде къса."; // ПЪТ 2 (ЧЕРВЕН)</span>
+    <span style="background-color: #ffcccb; color: #a00;">}</span>
+
+    <span style="background-color: #add8e6;">if (!email.Contains("@"))</span>
+    <span style="background-color: #add8e6;">{</span>
+    <span style="background-color: #ffcccb; color: #a00;">    return "Грешка: Невалиден имейл."; // ПЪТ 3 (ЧЕРВЕН)</span>
+    <span style="background-color: #ffcccb; color: #a00;">}</span>
+
+    <span style="background-color: #add8e6;">// Ако всичко е наред:</span>
+    <span style="background-color: #add8e6;">_repository.SaveUser(username);</span>
+    <span style="background-color: #add8e6;">return "Успех: Потребителят е регистриран."; // ПЪТ 4 (СИН)</span>
+<span style="background-color: #add8e6;">}</span></pre>
+      </div>
+
+      <p>
+        Веднага виждаме проблема! Нашата "защитна мрежа" срещу регресии има три
+        огромни дупки. Ако някой промени нещо по тези червени редове, ние никога
+        няма да разберем, че ги е счупил.
+      </p>
+
+      <h3>Стъпка 7: "Оцветяване" на останалата част (Постигане на 100%)</h3>
+      <p>
+        Нашата задача е ясна: Трябва да напишем още 3 теста, които *специално*
+        да накарат кода да влезе във всяка от червените зони.
+      </p>
+      <p>
+        Върнете се в <code>RegistrationServiceTests.cs</code> и добавете тези 3
+        теста:
+      </p>
+
+      <pre><code>// ... тук стои първият ни тест ...
+
+[TestMethod]
+public void RegisterUser_WithEmptyUsername_ReturnsUsernameError()
+{
+    // Arrange (Подготовка)
+    RegistrationService service = new RegistrationService();
+
+    // Act (Действие) - подаваме празно име
+    string result = service.RegisterUser("", "ValidPassword123", "test@example.com");
+
+    // Assert (Проверка) - Очакваме грешка за ПЪТ 1
+    Assert.AreEqual("Грешка: Потребителското име е празно.", result);
+}
+
+[TestMethod]
+public void RegisterUser_WithShortPassword_ReturnsPasswordError()
+{
+    // Arrange (Подготовка)
+    RegistrationService service = new RegistrationService();
+
+    // Act (Действие) - подаваме къса парола
+    string result = service.RegisterUser("TestUser", "123", "test@example.com");
+
+    // Assert (Проверка) - Очакваме грешка за ПЪТ 2
+    Assert.AreEqual("Грешка: Паролата е твърде къса.", result);
+}
+
+[TestMethod]
+public void RegisterUser_WithInvalidEmail_ReturnsEmailError()
+{
+    // Arrange (Подготовка)
+    RegistrationService service = new RegistrationService();
+
+    // Act (Действие) - подаваме имейл без "@"
+    string result = service.RegisterUser("TestUser", "ValidPassword123", "bademail.com");
+
+    // Assert (Проверка) - Очакваме грешка за ПЪТ 3
+    Assert.AreEqual("Грешка: Невалиден имейл.", result);
+}</code></pre>
+
+      <h3>Стъпка 8: Финален Анализ</h3>
+      <p>
+        Сега в <code>Test Explorer</code> имате 4 теста. Натиснете `Run All
+        Tests` – всички ще минат и ще светнат в зелено. ✅
+      </p>
+      <p>
+        Сега натиснете отново
+        <code>Test -> Analyze Code Coverage for All Tests</code>.
+      </p>
+      <p>Погледнете прозореца "Code Coverage Results":</p>
+
+      <div class="image-placeholder">
+        <br />
+        - SimpleReg.BLL.dll: <strong>100% Blocks Covered</strong>
+      </div>
+
+      <p>
+        Ако се върнете в <code>RegistrationService.cs</code>, целият метод
+        <code>RegisterUser</code> вече ще свети в <strong>синьо</strong>! 🥳
+      </p>
+      <p>
+        <strong>Сега сме готови!</strong> Нашата "книжка за оцветяване" е
+        завършена. Изградихме пълна защитна мрежа около нашата бизнес логика.
+      </p>
+
+      <hr />
+
+      <h2>Част 4: Задачи за Упражнение ✍️</h2>
+      <p>
+        Време е да приложите наученото! Ще надградим нашия
+        <strong>SimpleReg</strong> проект.
+      </p>
+
+      <div class="tasks">
+        <span class="section-title">Задачи:</span>
+        <ol>
+          <li>
+            <strong>Задача 1 (DAL):</strong> Отворете
+            <code>UserRepository.cs</code> в DAL. Добавете нов метод
+            <code>public bool DoesUserExist(string username)</code>, който да
+            проверява дали потребителят вече съществува в списъка
+            <code>_users</code>.
+          </li>
+
+          <li>
+            <strong>Задача 2 (BLL):</strong> Отворете
+            <code>RegistrationService.cs</code> в BLL. Използвайте новия метод
+            от DAL, за да добавите нова проверка в <code>RegisterUser</code>. Тя
+            трябва да е <strong>преди</strong> всички останали и да връща
+            <code>"Грешка: Потребителят вече съществува."</code>, ако
+            потребителят вече го има.
+          </li>
+
+          <li>
+            <strong>Задача 3 (Tests):</strong> Пуснете
+            <code>Analyze Code Coverage</code>. Какво се случи с процентите ви?
+            (Трябва да са паднали, защото имате нов, неоцветен/червен код).
+          </li>
+
+          <li>
+            <strong>Задача 4 (Tests):</strong> Напишете
+            <strong>нов unit тест</strong> с име
+            <code>RegisterUser_WhenUserExists_ReturnsExistsError</code>. В него:
+            <ul>
+              <li>Първо регистрирайте потребител (напр. "Ivan") успешно.</li>
+              <li>След това се опитайте да регистрирате "Ivan" *отново*.</li>
+              <li>
+                Assert-нете, че получавате новата грешка "Грешка: Потребителят
+                вече съществува.".
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <strong>Задача 5 (BLL):</strong> В
+            <code>RegistrationService.cs</code>, добавете нова проверка към
+            `RegisterUser`: Потребителското име "admin" не е позволено. Трябва
+            да връща <code>"Грешка: 'admin' е запазено име."</code>
+          </li>
+
+          <li>
+            <strong>Задача 6 (Tests):</strong> Напишете unit тест, който се
+            опитва да регистрира потребител с име "admin" и проверява (Assert)
+            дали получавате правилната грешка.
+          </li>
+
+          <li>
+            <strong>Задача 7 (BLL):</strong> Създайте изцяло нов метод в
+            <code>RegistrationService.cs</code> с име
+            <code>public bool LoginUser(string username, string password)</code
+            >. Засега логиката е проста: той трябва да връща `true` само ако
+            <code>username == "user"</code> и <code>password == "pass"</code>.
+            Във всички останали случаи връща `false`.
+          </li>
+
+          <li>
+            <strong>Задача 8 (Tests):</strong> Напишете "щастлив" тест за
+            <code>LoginUser</code>, който подава "user" и "pass" и очаква
+            `true`.
+          </li>
+
+          <li>
+            <strong>Задача 9 (Tests):</strong> Пуснете Code Coverage. Ще видите,
+            че новият ви метод <code>LoginUser</code> не е на 100% покрит.
+            Напишете още тестове (напр. с грешно име, с грешна парола), докато
+            не постигнете 100% покритие и за него.
+          </li>
+
+          <li>
+            <strong>Задача 10 (UI):</strong> Свържете всичко! Отворете дизайнера
+            на <code>SimpleReg.UI</code>, добавете 3 <code>TextBox</code>-а
+            (<code>txtUser</code>, <code>txtPass</code>, <code>txtEmail</code>)
+            и един <code>Button</code> (<code>btnRegister</code>). При клик на
+            бутона, извикайте <code>RegistrationService</code> и покажете
+            резултата (грешка или успех) в <code>MessageBox</code>.
+          </li>
+        </ol>
+      </div>
+
+      <p style="text-align: center; margin-top: 40px">
+        Надяваме се този урок да ви е бил полезен! Успех със задачите! 😊
+      </p>
+    </div>
   </body>
 </html>
