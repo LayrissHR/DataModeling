@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Урок: Йерархии от множества същности</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #d97706, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+              body {
+        font-family: "Inter", sans-serif;
+        scroll-behavior: smooth;
+      }
+      .diagram-box {
+        background-color: #f8fafc;
+        border: 2px dashed #cbd5e1;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        margin: 20px 0;
+      }
+      .entity {
+        display: inline-block;
+        border: 2px solid #334155;
+        padding: 10px 20px;
+        background: white;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+      }
+      .relationship-triangle {
+        width: 0;
+        height: 0;
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-top: 25px solid #334155;
+        margin: 10px auto;
+        position: relative;
+      }
+      .relationship-triangle::after {
+        content: "ISA";
+        position: absolute;
+        top: -45px;
+        left: -12px;
+        font-size: 12px;
+        font-weight: bold;
+        color: #64748b;
+      }
+      .connector {
+        width: 2px;
+        background-color: #334155;
+        height: 20px;
+        margin: 0 auto;
+      }
+      .branch-connector {
+        display: flex;
+        justify-content: space-around;
+        position: relative;
+        margin-top: -10px;
+      }
+      .branch-connector::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 25%;
+        right: 25%;
+        height: 2px;
+        background-color: #334155;
+      }
+      .branch-line {
+        width: 2px;
+        height: 20px;
+        background-color: #334155;
+      }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-700">
+
+    <!-- Header and Navigation -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-xl font-bold text-slate-800">
+                <a href="#slide-1">ER Йерархии</a>
+            </div>
+            <div class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="#slide-2" class="text-slate-600 hover:text-amber-600 transition-colors duration-300">Концепция</a>
+                <a href="#slide-3" class="text-slate-600 hover:text-amber-600 transition-colors duration-300">Наследяване</a>
+                <a href="#slide-4" class="text-slate-600 hover:text-amber-600 transition-colors duration-300">Процеси</a>
+                <a href="#slide-5" class="text-slate-600 hover:text-amber-600 transition-colors duration-300">Ограничения</a>
+                <a href="#slide-6" class="text-slate-600 hover:text-amber-600 transition-colors duration-300">Диаграма</a>
+                <a href="#tasks" class="text-slate-600 hover:text-amber-600 transition-colors duration-300">Задачи</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="container mx-auto px-6 py-8 md:py-12">
+
+        <!-- Slide 1: Hero Section -->
+        <section id="slide-1" class="text-center min-h-[70vh] flex flex-col justify-center items-center bg-white rounded-2xl shadow-lg p-8">
+            <div class="max-w-4xl">
+                 <h1 class="text-4xl md:text-6xl font-bold mb-4 text-slate-900 leading-tight">Йерархии от <span class="gradient-text">множества същности</span></h1>
+                 <p class="text-xl md:text-2xl font-light text-slate-600 mt-6">Обобщение, Специализация и Наследяване в базите данни.</p>
+                 <svg class="w-24 h-24 text-amber-200 mx-auto mt-12" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                </svg>
+            </div>
+        </section>
+
+        <!-- Slide 2: Superclass and Subclass -->
+        <section id="slide-2" class="my-20 scroll-mt-24">
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-8 text-slate-900"><span class="text-5xl mr-2">👑</span> Свръхклас и Подклас</h2>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <p class="mb-6 text-lg">Често в едно множество същности има подгрупи, които имат уникални характеристики. За да моделираме това, използваме йерархия.</p>
+                        <ul class="space-y-4 text-slate-600">
+                            <li><strong class="text-amber-600">Свръхклас (Superclass):</strong> Главното, по-общо множество същности. Съдържа атрибутите, които са общи за всички.</li>
+                            <li><strong class="text-amber-600">Подклас (Subclass):</strong> Специализирана подгрупа от свръхкласа. Съдържа атрибути, специфични само за тази група.</li>
+                        </ul>
+                        <div class="mt-8 p-6 bg-amber-50 border-l-4 border-amber-400 rounded-r-lg">
+                            <h3 class="font-semibold text-slate-800">Аналогия: Биология</h3>
+                            <p class="mt-2 text-sm text-slate-600">"Животно" е свръхклас. "Бозайник" и "Птица" са подкласове. Всички дишат (общо свойство), но само птиците имат пера (специфично свойство).</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="bg-slate-50 p-4 rounded-lg border text-center">
+                             <div class="mx-auto w-32 p-4 bg-white border-2 border-slate-800 rounded font-bold mb-8 shadow-md">СЛУЖИТЕЛ</div>
+                             
+                             <!-- ISA Relationship symbol -->
+                             <div class="mx-auto w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-b-[25px] border-b-slate-800 mb-8 relative">
+                                <span class="absolute top-8 left-[-15px] text-xs font-bold text-slate-500">ISA</span>
+                             </div>
+
+                             <div class="flex justify-center gap-4">
+                                 <div class="w-28 p-4 bg-white border-2 border-slate-800 rounded text-sm shadow">СЕКРЕТАР</div>
+                                 <div class="w-28 p-4 bg-white border-2 border-slate-800 rounded text-sm shadow">ИНЖЕНЕР</div>
+                                 <div class="w-28 p-4 bg-white border-2 border-slate-800 rounded text-sm shadow">ТЕХНИК</div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Inheritance -->
+        <section id="slide-3" class="my-20 scroll-mt-24">
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-8 text-slate-900"><span class="text-5xl mr-2">🧬</span> Наследяване на атрибути</h2>
+                <p class="mb-8 text-lg text-slate-600">Основното правило в йерархията е: **Всеки подклас наследява всички атрибути и връзки на своя свръхклас.**</p>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="p-6 border border-amber-200 bg-amber-50 rounded-lg">
+                        <h3 class="font-bold text-xl text-amber-800 mb-4">Свръхклас: СЛУЖИТЕЛ</h3>
+                        <p class="text-sm text-slate-700 mb-2">Тук пазим данните, валидни за <strong>всеки</strong> човек във фирмата:</p>
+                        <ul class="list-disc list-inside text-slate-800 font-medium">
+                            <li>Име</li>
+                            <li>ЕГН</li>
+                            <li>Дата на назначаване</li>
+                        </ul>
+                    </div>
+                    <div class="p-6 border border-slate-200 bg-slate-50 rounded-lg">
+                        <h3 class="font-bold text-xl text-slate-800 mb-4">Подклас: ИНЖЕНЕР</h3>
+                        <p class="text-sm text-slate-700 mb-2">Тук пазим само данните, специфични за инженерите. Но на практика инженерът има:</p>
+                        <ul class="list-disc list-inside text-slate-600">
+                            <li class="opacity-50">Име (Наследено)</li>
+                            <li class="opacity-50">ЕГН (Наследено)</li>
+                            <li class="font-bold text-amber-600">Инженерна_Специалност (Специфично)</li>
+                            <li class="font-bold text-amber-600">Лиценз_№ (Специфично)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Specialization vs Generalization -->
+        <section id="slide-4" class="my-20 scroll-mt-24">
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-8 text-slate-900"><span class="text-5xl mr-2">🔄</span> Два процеса, една цел</h2>
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div>
+                        <h3 class="text-2xl font-bold text-amber-600 mb-2">Специализация (Top-down)</h3>
+                        <p class="text-slate-600 mb-4">Процес на разделяне на едно множество същности на подгрупи. Започваме от общото и вървим към частното.</p>
+                        <div class="bg-slate-100 p-4 rounded text-sm italic">
+                            "Имаме много служители. Нека ги разделим на такива, които получават заплата на час, и такива на фиксирана заплата, защото за първите трябва да следим часовете."
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-blue-600 mb-2">Обобщение (Bottom-up)</h3>
+                        <p class="text-slate-600 mb-4">Процес на обединяване на няколко множества същности, които споделят общи черти, в един свръхклас.</p>
+                         <div class="bg-slate-100 p-4 rounded text-sm italic">
+                            "Имаме данни за 'Коли' и данни за 'Камиони'. И двете имат 'Рег. номер' и 'Година'. Нека създадем общ клас 'Превозно средство', за да не дублираме атрибути."
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Constraints -->
+        <section id="slide-5" class="my-20 scroll-mt-24">
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-8 text-slate-900"><span class="text-5xl mr-2">⛔</span> Ограничения (Constraints)</h2>
+                <p class="mb-8 text-lg text-slate-600">Когато създаваме йерархия, трябва да дефинираме правилата за членство в подкласовете.</p>
+                
+                <div class="space-y-6">
+                    <!-- Disjoint vs Overlapping -->
+                    <div class="border-l-4 border-amber-500 pl-4">
+                        <h3 class="text-xl font-bold text-slate-800">1. Пресичане (Disjoint vs. Overlapping)</h3>
+                        <p class="text-slate-600 mt-1">Може ли една същност да бъде в два подкласа едновременно?</p>
+                        <div class="grid md:grid-cols-2 gap-4 mt-4">
+                            <div class="bg-slate-50 p-3 rounded">
+                                <span class="font-bold text-amber-700">Непресичащи се (Disjoint - d):</span>
+                                <p class="text-sm">Не. Служителят е или `СЕКРЕТАР`, или `ИНЖЕНЕР`, не може и двете.</p>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded">
+                                <span class="font-bold text-amber-700">Пресичащи се (Overlapping - o):</span>
+                                <p class="text-sm">Да. Един човек може да бъде едновременно `СЛУЖИТЕЛ` и `КЛИЕНТ` на банката.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total vs Partial -->
+                    <div class="border-l-4 border-blue-500 pl-4">
+                        <h3 class="text-xl font-bold text-slate-800">2. Участие (Total vs. Partial)</h3>
+                        <p class="text-slate-600 mt-1">Трябва ли всяка същност от свръхкласа да принадлежи на някой подклас?</p>
+                        <div class="grid md:grid-cols-2 gap-4 mt-4">
+                             <div class="bg-slate-50 p-3 rounded">
+                                <span class="font-bold text-blue-700">Пълно (Total):</span>
+                                <p class="text-sm">Да. Всеки `СЛУЖИТЕЛ` трябва да има длъжност (да е или секретар, или инженер...). (Двойна линия).</p>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded">
+                                <span class="font-bold text-blue-700">Частично (Partial):</span>
+                                <p class="text-sm">Не. Може да имаме `СЛУЖИТЕЛ`, който не е нито инженер, нито секретар (напр. стажант без специфичен подклас). (Единична линия).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: ER Notation -->
+        <section id="slide-6" class="my-20 scroll-mt-24">
+             <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-8 text-slate-900"><span class="text-5xl mr-2">🎨</span> Нотация в диаграмата</h2>
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <ul class="space-y-4 text-slate-600">
+                            <li>Връзката се нарича <strong>"ISA"</strong> (is a / е).</li>
+                            <li>Представя се чрез <strong>триъгълник</strong>.</li>
+                            <li>В триъгълника или до него се пише ограничението за пресичане (<strong>d</strong> или <strong>o</strong>).</li>
+                            <li>Линията от свръхкласа до триъгълника показва участието (единична или двойна).</li>
+                            <li>Подкласовете се свързват с линии към триъгълника.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg border-2 border-slate-200 text-center">
+                        <h4 class="font-bold text-xl mb-4">Пример: {disjoint, total}</h4>
+                        <p class="text-xs mb-4 text-slate-500">Всеки служител ТРЯБВА да е или на заплата, или на час, но не и двете.</p>
+                        
+                        <!-- Simple SVG representation -->
+                        <svg class="w-full h-auto" viewBox="0 0 300 180">
+                            <!-- Superclass -->
+                            <rect x="100" y="10" width="100" height="30" fill="white" stroke="black" stroke-width="2"></rect>
+                            <text x="150" y="30" text-anchor="middle" font-weight="bold" font-size="10">СЛУЖИТЕЛ</text>
+                            
+                            <!-- Total Participation Line (Double) -->
+                            <line x1="148" y1="40" x2="148" y2="70" stroke="black" stroke-width="1"></line>
+                            <line x1="152" y1="40" x2="152" y2="70" stroke="black" stroke-width="1"></line>
+
+                            <!-- Triangle -->
+                            <polygon points="135,70 165,70 150,90" fill="white" stroke="black" stroke-width="1.5"></polygon>
+                            <text x="150" y="82" text-anchor="middle" font-size="8" font-weight="bold">d</text>
+
+                            <!-- Lines to subclasses -->
+                            <line x1="150" y1="90" x2="100" y2="120" stroke="black" stroke-width="1"></line>
+                            <line x1="150" y1="90" x2="200" y2="120" stroke="black" stroke-width="1"></line>
+
+                            <!-- Subclasses -->
+                            <rect x="50" y="120" width="100" height="30" fill="white" stroke="black" stroke-width="2"></rect>
+                            <text x="100" y="138" text-anchor="middle" font-weight="bold" font-size="8">НА_ЗАПЛАТА</text>
+                            
+                            <rect x="150" y="120" width="100" height="30" fill="white" stroke="black" stroke-width="2"></rect>
+                            <text x="200" y="138" text-anchor="middle" font-weight="bold" font-size="8">НА_ЧАС</text>
+
+                            <!-- Specific Attributes -->
+                            <ellipse cx="50" cy="155" rx="20" ry="10" fill="white" stroke="black"></ellipse>
+                            <text x="50" y="158" text-anchor="middle" font-size="6">Годишна_сума</text>
+
+                            <ellipse cx="250" cy="155" rx="20" ry="10" fill="white" stroke="black"></ellipse>
+                            <text x="250" y="158" text-anchor="middle" font-size="6">Часова_ставка</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tasks Section -->
+        <section id="tasks" class="my-20 scroll-mt-24">
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-8 text-slate-900"><span class="text-5xl mr-2">✍️</span> Практически задачи</h2>
+                <div class="space-y-8">
+                    
+                    <div class="p-6 border border-slate-200 rounded-lg">
+                        <h3 class="font-bold text-lg text-amber-700">Задача 1: Университетски хора</h3>
+                        <p class="mt-2 mb-4 text-slate-600">Имаме свръхклас `ЧОВЕК` (Име, ЕГН, Адрес). В университета има три типа хора: `СТУДЕНТ`, `ПРЕПОДАВАТЕЛ` и `АДМИНИСТРАЦИЯ`.</p>
+                        <p class="mt-4"><strong>Въпроси:</strong>
+                            <ul class="list-disc list-inside mt-2 text-sm">
+                                <li>Предложете по един специфичен атрибут за всеки от трите подкласа (който го няма в другите).</li>
+                                <li>Възможно ли е човек да е едновременно преподавател и студент (напр. докторант, който води упражнения)? Ако да, това <strong>disjoint</strong> или <strong>overlapping</strong> специализация е?</li>
+                            </ul>
+                        </p>
+                    </div>
+
+                    <div class="p-6 border border-slate-200 rounded-lg">
+                        <h3 class="font-bold text-lg text-amber-700">Задача 2: Банкови сметки</h3>
+                        <p class="mt-2 mb-4 text-slate-600">Разглеждаме свръхклас `СМЕТКА` (IBAN, Баланс). Имаме подкласове `СПЕСТОВНА` (има Лихвен процент) и `РАЗПЛАЩАТЕЛНА` (има Такса обслужване).</p>
+                        <p class="mt-4"><strong>Въпроси:</strong>
+                            <ul class="list-disc list-inside mt-2 text-sm">
+                                <li>Ако всяка сметка в банката задължително трябва да бъде или спестовна, или разплащателна (не може просто "обща сметка"), какво е ограничението за участие (total или partial)?</li>
+                                <li>Как ще изобразите това на диаграма?</li>
+                            </ul>
+                        </p>
+                    </div>
+
+                    <div class="p-6 border border-slate-200 rounded-lg">
+                        <h3 class="font-bold text-lg text-amber-700">Задача 3: Онлайн магазин</h3>
+                        <p class="mt-2 mb-4 text-slate-600">Имате множество същности `АРТИКУЛ`. Някои са физически (`КНИГА`, `ЛАПТОП`), а други са дигитални (`Е-КНИГА`, `СОФТУЕР`).</p>
+                        <p class="mt-4"><strong>Задача:</strong>
+                            Начертайте (или опишете) йерархия. Определете общи атрибути за `АРТИКУЛ` (напр. Цена, Име) и специфични за физическите (Тегло за доставка) и дигиталните (Размер на файла).
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+  <body class="bg-gray-100 text-gray-900">
+    <div class="container max-w-5xl mx-auto p-6 lg:p-10">
+      <!-- Заглавие -->
+      <header
+        class="bg-white p-8 rounded-xl shadow-lg mb-8 border-b-4 border-indigo-600"
+      >
+        <h1 class="text-4xl font-bold text-gray-800 mb-2">
+          Йерархии от множества същности
+        </h1>
+        <p class="text-xl text-gray-600">
+          Суперкласове, подкласове и наследяване в ER моделите.
+        </p>
+      </header>
+
+      <!-- 1. Въведение -->
+      <section class="bg-white p-8 rounded-xl shadow-lg mb-8">
+        <h2 class="text-3xl font-bold text-indigo-700 mb-4">
+          1. Какво е йерархия и "IS-A" връзка?
+        </h2>
+        <p class="mb-4 text-lg">
+          Представи си, че проектираш база данни за университет. Имаш същности
+          <strong>Студенти</strong> и <strong>Преподаватели</strong>. И двете
+          групи имат <em>Име</em>, <em>ЕГН</em> и <em>Адрес</em>. Но само
+          студентите имат <em>Факултетен номер</em>, и само преподавателите имат
+          <em>Заплата</em>.
+        </p>
+        <p class="mb-4 text-lg">
+          Вместо да повтаряме общите атрибути (Име, ЕГН) в две отделни таблици,
+          ние създаваме йерархия.
+        </p>
+        <ul class="list-disc list-inside ml-4 text-lg space-y-2 mb-4">
+          <li>
+            <strong>Суперклас (Superclass):</strong> Общата същност (напр.
+            <strong>Човек</strong>).
+          </li>
+          <li>
+            <strong>Подклас (Subclass):</strong> Специфичната същност (напр.
+            <strong>Студент</strong>).
+          </li>
+          <li>
+            <strong>IS-A (Е):</strong> Връзката между тях. Студентът
+            <strong>Е</strong> Човек.
+          </li>
+        </ul>
+
+        <!-- Визуализация на йерархия -->
+        <div class="diagram-box">
+          <div class="entity">Човек (Име, ЕГН)</div>
+          <div class="connector"></div>
+          <div class="relationship-triangle"></div>
+          <div class="branch-connector">
+            <div class="branch-line"></div>
+            <div class="branch-line"></div>
+          </div>
+          <div class="flex justify-around mt-2">
+            <div class="entity bg-blue-50">
+              Студент<br /><span class="text-sm font-normal text-gray-600"
+                >(+Фак. Номер)</span
+              >
+            </div>
+            <div class="entity bg-green-50">
+              Преподавател<br /><span class="text-sm font-normal text-gray-600"
+                >(+Заплата)</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="mt-6 bg-yellow-50 border border-yellow-300 p-4 rounded-lg text-yellow-800"
+        >
+          <strong class="font-semibold">Ключово правило - Наследяване:</strong>
+          Подкласът (Студент) автоматично притежава (наследява) всички атрибути
+          на Суперкласа (Човек). Тоест, Студентът има и Име, и ЕГН, въпреки че
+          са написани само при Човека.
+        </div>
+
+        <!-- Задача 1 -->
+        <div class="bg-indigo-50 border border-indigo-200 p-6 rounded-lg mt-6">
+          <h5 class="text-lg font-semibold mb-3">⚡ Мини-Задача 1:</h5>
+          <p class="mb-3">
+            Имате онлайн магазин. Продавате "Лаптопи" и "Тениски". И двете имат
+            цена. Само лаптопите имат "RAM памет". Само тениските имат "Размер".
+            Кое е Суперкласът?
+          </p>
+          <div id="task1-options">
+            <label class="block mb-2"
+              ><input type="radio" name="task1" value="a" /> Лаптоп</label
+            >
+            <label class="block mb-2"
+              ><input type="radio" name="task1" value="b" /> Продукт (или
+              Стока)</label
+            >
+            <label class="block mb-2"
+              ><input type="radio" name="task1" value="c" /> RAM памет</label
+            >
+          </div>
+          <button
+            onclick="checkTask('task1', 'b')"
+            class="mt-3 bg-indigo-600 text-white px-5 py-2 rounded-md hover:bg-indigo-700 transition-colors"
+          >
+            Провери
+          </button>
+          <div id="task1-feedback" class="mt-3 text-lg font-semibold"></div>
+        </div>
+      </section>
+
+      <!-- 2. Специализация и Генерализация -->
+      <section class="bg-white p-8 rounded-xl shadow-lg mb-8">
+        <h2 class="text-3xl font-bold text-indigo-700 mb-4">
+          2. Специализация срещу Генерализация
+        </h2>
+        <p class="mb-4 text-lg">
+          Тези термини звучат страшно, но описват посоката, в която мислим,
+          когато създаваме модела.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="border p-4 rounded-lg">
+            <h3 class="text-xl font-bold text-blue-600 mb-2">
+              Специализация (Top-Down)
+            </h3>
+            <p>
+              Започваме от общото и търсим разликите. <br />
+              <em
+                >"Имам много Служители. Ама чакай, някои са шофьори, а други са
+                счетоводители. Трябва да ги разделя."</em
+              >
+            </p>
+            <p class="mt-2 text-sm text-gray-500">
+              Процес на разбиване на една същност на подкласове.
+            </p>
+          </div>
+          <div class="border p-4 rounded-lg">
+            <h3 class="text-xl font-bold text-green-600 mb-2">
+              Генерализация (Bottom-Up)
+            </h3>
+            <p>
+              Започваме от отделните неща и търсим общото. <br />
+              <em
+                >"Имам таблица за Камиони и таблица за Мотори. Хей, те имат
+                много общо! Я да направя обща таблица Превозни средства."</em
+              >
+            </p>
+            <p class="mt-2 text-sm text-gray-500">
+              Процес на обединяване на същности в суперклас.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Ограничения (Constraints) -->
+      <section class="bg-white p-8 rounded-xl shadow-lg mb-8">
+        <h2 class="text-3xl font-bold text-indigo-700 mb-4">
+          3. Ограничения (Най-важната част!)
+        </h2>
+        <p class="mb-4 text-lg">
+          Когато разделяме нещата на подкласове, трябва да зададем правила. Тези
+          правила отговарят на два въпроса:
+        </p>
+
+        <h3 class="text-2xl font-semibold mt-6 mb-2">
+          А. Може ли да си и двете? (Disjoint vs Overlapping)
+        </h3>
+        <ul class="list-disc list-inside ml-4 text-lg space-y-4">
+          <li>
+            <span class="font-bold text-red-600"
+              >Disjoint (Непресичащи се):</span
+            >
+            Един обект може да бъде <strong>САМО В ЕДИН</strong> подклас.
+            <br /><span class="text-gray-600 text-base ml-6"
+              >Пример: Един човек може да е или "Мъж", или "Жена" (в класически
+              БД модел). Не може да е в двете таблици едновременно. Означава се
+              с <strong>(d)</strong> в диаграмата.</span
+            >
+          </li>
+          <li>
+            <span class="font-bold text-green-600"
+              >Overlapping (Пресичащи се):</span
+            >
+            Един обект може да бъде в <strong>НЯКОЛКО</strong> подкласа
+            едновременно. <br /><span class="text-gray-600 text-base ml-6"
+              >Пример: В един университет, един "Човек" може да бъде
+              едновременно "Студент" (учи магистратура) и "Служител" (работи в
+              библиотеката). Означава се с <strong>(o)</strong>.</span
+            >
+          </li>
+        </ul>
+
+        <h3 class="text-2xl font-semibold mt-8 mb-2">
+          Б. Трябва ли да си поне едното? (Total vs Partial)
+        </h3>
+        <ul class="list-disc list-inside ml-4 text-lg space-y-4">
+          <li>
+            <span class="font-bold text-blue-600"
+              >Total Participation (Пълно участие):</span
+            >
+            Всеки обект от суперкласа <strong>ТРЯБВА</strong> да принадлежи към
+            поне един подклас. <br /><span class="text-gray-600 text-base ml-6"
+              >Пример: Ако имаме суперклас "Служител" и подкласове "На заплата"
+              и "На хонорар". Няма служител, който да не получава пари по
+              някакъв начин. Означава се с <strong>двойна линия</strong>.</span
+            >
+          </li>
+          <li>
+            <span class="font-bold text-purple-600"
+              >Partial Participation (Частично участие):</span
+            >
+            Обект от суперкласа може да си стои просто като суперклас, без да
+            влиза в нито един подклас. <br /><span
+              class="text-gray-600 text-base ml-6"
+              >Пример: Суперклас "Превозно средство", подкласове "Кола" и
+              "Камион". Ами ако имаме "Мотоциклет", но нямаме подклас за него?
+              Той си остава просто "Превозно средство". Означава се с
+              <strong>единична линия</strong>.</span
+            >
+          </li>
+        </ul>
+
+        <!-- Задача 2 -->
+        <div class="bg-indigo-50 border border-indigo-200 p-6 rounded-lg mt-6">
+          <h5 class="text-lg font-semibold mb-3">⚡ Мини-Задача 2:</h5>
+          <p class="mb-3">
+            Имаме суперклас <strong>Животно</strong> и подкласове
+            <strong>Куче</strong> и <strong>Котка</strong>. Едно животно не може
+            да е едновременно куче и котка. Но има и други животни (напр.
+            хамстери), които не са нито куче, нито котка.
+          </p>
+          <p class="mb-3">Какви са ограниченията?</p>
+          <div id="task2-options">
+            <label class="block mb-2"
+              ><input type="radio" name="task2" value="a" /> Disjoint
+              (непресичащи) и Total (пълно)</label
+            >
+            <label class="block mb-2"
+              ><input type="radio" name="task2" value="b" /> Overlapping
+              (пресичащи) и Partial (частично)</label
+            >
+            <label class="block mb-2"
+              ><input type="radio" name="task2" value="c" /> Disjoint
+              (непресичащи) и Partial (частично)</label
+            >
+          </div>
+          <button
+            onclick="checkTask('task2', 'c')"
+            class="mt-3 bg-indigo-600 text-white px-5 py-2 rounded-md hover:bg-indigo-700 transition-colors"
+          >
+            Провери
+          </button>
+          <div id="task2-feedback" class="mt-3 text-lg font-semibold"></div>
+          <small class="text-gray-500 mt-2 block"
+            >Подсказка: Може ли да си куче-котка? Трябва ли всяко животно да е
+            куче или котка?</small
+          >
+        </div>
+      </section>
+
+      <!-- 4. Финални Задачи -->
+      <section class="bg-white p-8 rounded-xl shadow-lg mb-8">
+        <h2 class="text-3xl font-bold text-indigo-700 mb-4">
+          🚀 Предизвикателство: 10 Тестови Ситуации
+        </h2>
+        <p class="mb-6 text-lg">
+          Определи типа на ограничението (Disjoint/Overlapping и Total/Partial)
+          за следните сценарии.
+        </p>
+
+        <div class="space-y-6">
+          <!-- Въпросите са скрити в details за по-чист вид -->
+          <details class="bg-gray-50 p-4 rounded-lg border">
+            <summary class="font-bold text-lg cursor-pointer">
+              1. Софтуер за болница
+            </summary>
+            <p class="mt-2 pl-4">
+              Суперклас: <strong>Пациент</strong>. Подкласове:
+              <strong>Амбулаторен</strong> (идва и си тръгва) и
+              <strong>Хоспитализиран</strong> (лежи в болницата). В даден момент
+              един пациент може да е само едно от двете. Всеки регистриран
+              пациент трябва да е един от двата вида.
+            </p>
+            <p class="mt-2 pl-4 font-semibold text-indigo-600">
+              Отговор: Disjoint, Total
+            </p>
+          </details>
+
+          <details class="bg-gray-50 p-4 rounded-lg border">
+            <summary class="font-bold text-lg cursor-pointer">
+              2. Социална мрежа
+            </summary>
+            <p class="mt-2 pl-4">
+              Суперклас: <strong>Потребител</strong>. Подкласове:
+              <strong>Създател на съдържание</strong> и
+              <strong>Модератор</strong>. Един потребител може да бъде и двете
+              едновременно. Повечето потребители не са нито едното, нито другото
+              (само гледат).
+            </p>
+            <p class="mt-2 pl-4 font-semibold text-indigo-600">
+              Отговор: Overlapping, Partial
+            </p>
+          </details>
+
+          <details class="bg-gray-50 p-4 rounded-lg border">
+            <summary class="font-bold text-lg cursor-pointer">
+              3. Части за автомобили
+            </summary>
+            <p class="mt-2 pl-4">
+              Суперклас: <strong>Част</strong>. Подкласове:
+              <strong>Произведена_Намясто</strong> и
+              <strong>Купена_Отвън</strong>. Една част не може да е едновременно
+              произведена и купена. Всички части в склада трябва да са или
+              произведени, или купени.
+            </p>
+            <p class="mt-2 pl-4 font-semibold text-indigo-600">
+              Отговор: Disjoint, Total
+            </p>
+          </details>
+
+          <details class="bg-gray-50 p-4 rounded-lg border">
+            <summary class="font-bold text-lg cursor-pointer">
+              4. Университетски проекти
+            </summary>
+            <p class="mt-2 pl-4">
+              Суперклас: <strong>Проект</strong>. Подкласове:
+              <strong>Инженерен</strong>, <strong>Научен</strong>,
+              <strong>Артистичен</strong>. Един проект може да комбинира наука и
+              изкуство (да е в няколко категории). Няма проекти извън тези
+              категории.
+            </p>
+            <p class="mt-2 pl-4 font-semibold text-indigo-600">
+              Отговор: Overlapping, Total
+            </p>
+          </details>
+
+          <details class="bg-gray-50 p-4 rounded-lg border">
+            <summary class="font-bold text-lg cursor-pointer">
+              5. Банкови сметки
+            </summary>
+            <p class="mt-2 pl-4">
+              Суперклас: <strong>Сметка</strong>. Подкласове:
+              <strong>Спестовна</strong> и <strong>Разплащателна</strong>. Една
+              сметка е стриктно от един вид. Но банката предлага и други видове
+              сметки (напр. инвестиционна), които не са моделирани като
+              подкласове.
+            </p>
+            <p class="mt-2 pl-4 font-semibold text-indigo-600">
+              Отговор: Disjoint, Partial
+            </p>
+          </details>
+
+          <details class="bg-gray-50 p-4 rounded-lg border">
+            <summary class="font-bold text-lg cursor-pointer">
+              6. Превозни средства във фирма
+            </summary>
+            <p class="mt-2 pl-4">
+              Суперклас: <strong>МПС</strong>. Подклас: <strong>Кола</strong>,
+              <strong>Камион</strong>. Едно МПС не може да е и кола, и камион.
+              Имаме и мотокари, които са МПС, но не са нито кола, нито камион.
+            </p>
+            <p class="mt-2 pl-4 font-semibold text-indigo-600">
+              Отговор: Disjoint, Partial
+            </p>
+          </details>
+
+          <details class="bg-gray-50 p-4 rounded-lg border">
+            <summary class="font-bold text-lg cursor-pointer">
+              7. Библиотека - Медии
+            </summary>
+            <p class="mt-2 pl-4">
+              Суперклас: <strong>Носител</strong>. Подкласове:
+              <strong>Книга</strong>, <strong>Списание</strong>,
+              <strong>DVD</strong>. Един физически обект е само едно от
+              изброените. Библиотеката не държи нищо друго освен тези трите.
+            </p>
+            <p class="mt-2 pl-4 font-semibold text-indigo-600">
+              Отговор: Disjoint, Total
+            </p>
+          </details>
+
+          <details class="bg-gray-50 p-4 rounded-lg border">
+            <summary class="font-bold text-lg cursor-pointer">
+              8. Онлайн обучение
+            </summary>
+            <p class="mt-2 pl-4">
+              Суперклас: <strong>Участник</strong>. Подкласове:
+              <strong>Ученик</strong>, <strong>Учител</strong>. В тази система
+              учителите също могат да се записват на курсове като ученици (т.е.
+              да са и двете). Всеки участник в платформата трябва да има някаква
+              роля (или ученик, или учител, или и двете).
+            </p>
+            <p class="mt-2 pl-4 font-semibold text-indigo-600">
+              Отговор: Overlapping, Total
+            </p>
+          </details>
+
+          <details class="bg-gray-50 p-4 rounded-lg border">
+            <summary class="font-bold text-lg cursor-pointer">
+              9. Меню в ресторант
+            </summary>
+            <p class="mt-2 pl-4">
+              Суперклас: <strong>Ястие</strong>. Подкласове:
+              <strong>Веганско</strong>, <strong>Безглутеново</strong>. Едно
+              ястие може да бъде едновременно веганско и безглутеново. Има
+              ястия, които не са нито едно от двете (с месо и глутен).
+            </p>
+            <p class="mt-2 pl-4 font-semibold text-indigo-600">
+              Отговор: Overlapping, Partial
+            </p>
+          </details>
+
+          <details class="bg-gray-50 p-4 rounded-lg border">
+            <summary class="font-bold text-lg cursor-pointer">
+              10. Компютърна игра - Герои
+            </summary>
+            <p class="mt-2 pl-4">
+              Суперклас: <strong>Герой</strong>. Подкласове:
+              <strong>Магьосник</strong>, <strong>Войн</strong>,
+              <strong>Стрелец</strong>. Играта позволява "мулти-клас" (можеш да
+              си Магьосник-Войн). Всеки създаден герой трябва да избере поне
+              един клас.
+            </p>
+            <p class="mt-2 pl-4 font-semibold text-indigo-600">
+              Отговор: Overlapping, Total
+            </p>
+          </details>
+        </div>
+      </section>
+    </div>
+
+    <!-- JavaScript за задачите -->
+    <script>
+      function checkTask(taskId, correctAnswer) {
+        const options = document.getElementsByName(taskId);
+        const feedbackEl = document.getElementById(taskId + "-feedback");
+        let selectedValue = null;
+
+        for (const option of options) {
+          if (option.checked) {
+            selectedValue = option.value;
+            break;
+          }
+        }
+
+        if (selectedValue === null) {
+          feedbackEl.textContent = "Моля, изберете отговор.";
+          feedbackEl.className = "mt-3 text-lg font-semibold text-yellow-700";
+        } else if (selectedValue === correctAnswer) {
+          feedbackEl.textContent = "✅ Правилно! Разбра логиката.";
+          feedbackEl.className = "mt-3 text-lg font-semibold text-green-700";
+        } else {
+          feedbackEl.textContent =
+            "❌ Грешка. Опитай пак да помислиш за връзката.";
+          feedbackEl.className = "mt-3 text-lg font-semibold text-red-700";
+        }
+      }
+    </script>
+  </body>
+</html>
