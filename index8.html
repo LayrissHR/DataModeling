@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="bg">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Урок: Изграждане на ER диаграма - Упражнение</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      .gradient-text {
+        background: linear-gradient(
+          to right,
+          #ea580c,
+          #f97316
+        ); /* Orange gradient for food theme */
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-700">
+    <!-- Header and Navigation -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+      <nav
+        class="container mx-auto px-6 py-4 flex justify-between items-center"
+      >
+        <div class="text-xl font-bold text-slate-800">
+          <a href="#slide-1">ER Работилница</a>
+        </div>
+        <div class="hidden md:flex space-x-6 text-sm font-medium">
+          <a
+            href="#slide-2"
+            class="text-slate-600 hover:text-orange-600 transition-colors duration-300"
+            >Сценарий</a
+          >
+          <a
+            href="#slide-3"
+            class="text-slate-600 hover:text-orange-600 transition-colors duration-300"
+            >Стъпка 1: Същности</a
+          >
+          <a
+            href="#slide-4"
+            class="text-slate-600 hover:text-orange-600 transition-colors duration-300"
+            >Стъпка 2: Връзки</a
+          >
+          <a
+            href="#slide-5"
+            class="text-slate-600 hover:text-orange-600 transition-colors duration-300"
+            >Стъпка 3: Атрибути</a
+          >
+          <a
+            href="#slide-6"
+            class="text-slate-600 hover:text-orange-600 transition-colors duration-300"
+            >Финална диаграма</a
+          >
+          <a
+            href="#tasks"
+            class="text-slate-600 hover:text-orange-600 transition-colors duration-300"
+            >Задачи</a
+          >
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="container mx-auto px-6 py-8 md:py-12">
+      <!-- Slide 1: Hero Section -->
+      <section
+        id="slide-1"
+        class="text-center min-h-[70vh] flex flex-col justify-center items-center bg-white rounded-2xl shadow-lg p-8"
+      >
+        <div class="max-w-4xl">
+          <h1
+            class="text-4xl md:text-6xl font-bold mb-4 text-slate-900 leading-tight"
+          >
+            Упражнение: Изграждане на
+            <span class="gradient-text">ER диаграма</span>
+          </h1>
+          <p class="text-xl md:text-2xl font-light text-slate-600 mt-6">
+            Стъпка по стъпка: От текстово задание до графичен модел.
+          </p>
+          <svg
+            class="w-24 h-24 text-orange-200 mx-auto mt-12"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+            />
+          </svg>
+        </div>
+      </section>
+
+      <!-- Slide 2: The Scenario -->
+      <section id="slide-2" class="my-20 scroll-mt-24">
+        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-8 text-slate-900">
+            <span class="text-5xl mr-2">📋</span> Заданието (Сценарий)
+          </h2>
+          <div class="grid md:grid-cols-2 gap-12 items-start">
+            <div>
+              <p class="mb-4 text-lg font-medium text-slate-800">
+                Проектиране на система за доставка на храна (тип
+                Takeaway/Glovo).
+              </p>
+              <div
+                class="bg-slate-50 p-6 rounded-lg border-l-4 border-orange-400 text-slate-700 italic leading-relaxed"
+              >
+                "Фирма 'Бърза Хапка' иска база данни за управление на
+                доставките.
+                <br /><br />
+                Клиентите се регистрират с телефонен номер и име. Те правят
+                поръчки от различни ресторанти. Всеки ресторант предлага
+                разнообразни ястия в менюто си.
+                <br /><br />
+                Една поръчка се прави от един клиент към един конкретен
+                ресторант. Поръчката може да съдържа няколко различни ястия
+                (напр. 2 бургера и 1 кола).
+                <br /><br />
+                Всяка поръчка се доставя от един куриер. Куриерите използват
+                различни превозни средства (кола, колело)."
+              </div>
+            </div>
+            <div class="bg-orange-50 p-6 rounded-lg">
+              <h4 class="font-bold text-xl mb-4 text-orange-800">
+                Нашата цел:
+              </h4>
+              <ol class="list-decimal list-inside space-y-3 text-slate-700">
+                <li>
+                  Да идентифицираме
+                  <strong class="text-orange-600">Същностите</strong> (Кои са
+                  "съществителните"?).
+                </li>
+                <li>
+                  Да открием
+                  <strong class="text-orange-600">Връзките</strong> (Кой с кого
+                  си взаимодейства?).
+                </li>
+                <li>
+                  Да определим
+                  <strong class="text-orange-600">Кардиналността</strong> (По
+                  колко?).
+                </li>
+                <li>
+                  Да добавим <strong class="text-orange-600">Атрибути</strong> и
+                  <strong class="text-orange-600">Ключове</strong>.
+                </li>
+                <li>Да начертаем финалната диаграма.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 3: Step 1 - Entities -->
+      <section id="slide-3" class="my-20 scroll-mt-24">
+        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-8 text-slate-900">
+            <span class="text-5xl mr-2">1️⃣</span> Стъпка 1: Идентифициране на
+            Същности
+          </h2>
+          <p class="mb-8 text-lg text-slate-600">
+            Търсим основните обекти, за които трябва да пазим информация
+            (съществителните имена в текста).
+          </p>
+
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-6 text-center">
+            <!-- Entity 1 -->
+            <div
+              class="p-6 bg-white border-2 border-slate-800 rounded-lg shadow-sm hover:shadow-md transition"
+            >
+              <div class="text-4xl mb-2">👤</div>
+              <h4 class="font-bold text-lg">КЛИЕНТ</h4>
+              <p class="text-xs text-slate-500 mt-1">Поръчва храната</p>
+            </div>
+            <!-- Entity 2 -->
+            <div
+              class="p-6 bg-white border-2 border-slate-800 rounded-lg shadow-sm hover:shadow-md transition"
+            >
+              <div class="text-4xl mb-2">🏪</div>
+              <h4 class="font-bold text-lg">РЕСТОРАНТ</h4>
+              <p class="text-xs text-slate-500 mt-1">Приготвя храната</p>
+            </div>
+            <!-- Entity 3 -->
+            <div
+              class="p-6 bg-white border-2 border-slate-800 rounded-lg shadow-sm hover:shadow-md transition"
+            >
+              <div class="text-4xl mb-2">🍔</div>
+              <h4 class="font-bold text-lg">ЯСТИЕ</h4>
+              <p class="text-xs text-slate-500 mt-1">Част от менюто</p>
+            </div>
+            <!-- Entity 4 -->
+            <div
+              class="p-6 bg-white border-2 border-slate-800 rounded-lg shadow-sm hover:shadow-md transition"
+            >
+              <div class="text-4xl mb-2">🧾</div>
+              <h4 class="font-bold text-lg">ПОРЪЧКА</h4>
+              <p class="text-xs text-slate-500 mt-1">Свързващото събитие</p>
+            </div>
+            <!-- Entity 5 -->
+            <div
+              class="p-6 bg-white border-2 border-slate-800 rounded-lg shadow-sm hover:shadow-md transition"
+            >
+              <div class="text-4xl mb-2">🛵</div>
+              <h4 class="font-bold text-lg">КУРИЕР</h4>
+              <p class="text-xs text-slate-500 mt-1">Доставя поръчката</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 4: Step 2 & 3 - Relationships -->
+      <section id="slide-4" class="my-20 scroll-mt-24">
+        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-8 text-slate-900">
+            <span class="text-5xl mr-2">2️⃣</span> Стъпка 2 и 3: Връзки и
+            Кардиналност
+          </h2>
+          <p class="mb-8 text-lg text-slate-600">
+            Свързваме същностите и задаваме въпроса: "Едно или много?"
+          </p>
+
+          <div class="space-y-6">
+            <!-- Rel 1 -->
+            <div
+              class="flex flex-col md:flex-row items-center gap-4 p-4 bg-slate-50 rounded-lg border"
+            >
+              <div class="font-bold">КЛИЕНТ</div>
+              <div
+                class="flex-1 border-t-2 border-slate-300 relative text-center"
+              >
+                <span class="bg-slate-50 px-2 text-sm text-blue-600 font-bold"
+                  >Прави</span
+                >
+              </div>
+              <div class="font-bold">ПОРЪЧКА</div>
+              <div
+                class="md:ml-auto bg-orange-100 text-orange-800 px-3 py-1 rounded text-sm font-bold w-full md:w-auto text-center"
+              >
+                1:N (Един към много)
+              </div>
+              <p class="text-xs text-slate-500 w-full md:w-auto">
+                Един клиент прави много поръчки. Една поръчка е на един клиент.
+              </p>
+            </div>
+
+            <!-- Rel 2 -->
+            <div
+              class="flex flex-col md:flex-row items-center gap-4 p-4 bg-slate-50 rounded-lg border"
+            >
+              <div class="font-bold">РЕСТОРАНТ</div>
+              <div
+                class="flex-1 border-t-2 border-slate-300 relative text-center"
+              >
+                <span class="bg-slate-50 px-2 text-sm text-blue-600 font-bold"
+                  >Предлага</span
+                >
+              </div>
+              <div class="font-bold">ЯСТИЕ</div>
+              <div
+                class="md:ml-auto bg-orange-100 text-orange-800 px-3 py-1 rounded text-sm font-bold w-full md:w-auto text-center"
+              >
+                1:N (Един към много)
+              </div>
+              <p class="text-xs text-slate-500 w-full md:w-auto">
+                Ресторантът има много ястия. Едно ястие (от менюто) принадлежи
+                на един ресторант.
+              </p>
+            </div>
+
+            <!-- Rel 3 - The Tricky One -->
+            <div
+              class="flex flex-col md:flex-row items-center gap-4 p-4 bg-yellow-50 rounded-lg border border-yellow-200"
+            >
+              <div class="font-bold">ПОРЪЧКА</div>
+              <div
+                class="flex-1 border-t-2 border-slate-300 relative text-center"
+              >
+                <span class="bg-yellow-50 px-2 text-sm text-blue-600 font-bold"
+                  >Съдържа</span
+                >
+              </div>
+              <div class="font-bold">ЯСТИЕ</div>
+              <div
+                class="md:ml-auto bg-orange-100 text-orange-800 px-3 py-1 rounded text-sm font-bold w-full md:w-auto text-center"
+              >
+                M:N (Много към много)
+              </div>
+              <p class="text-xs text-slate-500 w-full md:w-auto">
+                В една поръчка има много ястия. Едно ястие (бургер) може да
+                присъства в много различни поръчки.
+              </p>
+            </div>
+
+            <!-- Rel 4 -->
+            <div
+              class="flex flex-col md:flex-row items-center gap-4 p-4 bg-slate-50 rounded-lg border"
+            >
+              <div class="font-bold">КУРИЕР</div>
+              <div
+                class="flex-1 border-t-2 border-slate-300 relative text-center"
+              >
+                <span class="bg-slate-50 px-2 text-sm text-blue-600 font-bold"
+                  >Доставя</span
+                >
+              </div>
+              <div class="font-bold">ПОРЪЧКА</div>
+              <div
+                class="md:ml-auto bg-orange-100 text-orange-800 px-3 py-1 rounded text-sm font-bold w-full md:w-auto text-center"
+              >
+                1:N (Един към много)
+              </div>
+              <p class="text-xs text-slate-500 w-full md:w-auto">
+                Един куриер доставя много поръчки (през деня). Една поръчка се
+                доставя от един куриер.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 5: Step 4 - Attributes & Keys -->
+      <section id="slide-5" class="my-20 scroll-mt-24">
+        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-8 text-slate-900">
+            <span class="text-5xl mr-2">3️⃣</span> Стъпка 3: Атрибути и Ключове
+          </h2>
+          <p class="mb-8 text-lg text-slate-600">
+            Дефинираме детайлите за всяка същност и избираме уникален
+            идентификатор (Ключ).
+          </p>
+
+          <div class="grid md:grid-cols-2 gap-8">
+            <div class="bg-slate-50 p-4 rounded border">
+              <h4 class="font-bold text-slate-800 border-b pb-2 mb-2">
+                КЛИЕНТ
+              </h4>
+              <ul class="text-sm space-y-1">
+                <li>
+                  <span class="underline font-bold text-orange-600"
+                    >Телефон</span
+                  >
+                  (PK)
+                </li>
+                <li>Име</li>
+                <li>Адрес (Сложен: Град, Улица)</li>
+              </ul>
+            </div>
+            <div class="bg-slate-50 p-4 rounded border">
+              <h4 class="font-bold text-slate-800 border-b pb-2 mb-2">
+                РЕСТОРАНТ
+              </h4>
+              <ul class="text-sm space-y-1">
+                <li>
+                  <span class="underline font-bold text-orange-600"
+                    >Име_Ресторант</span
+                  >
+                  (PK)
+                </li>
+                <li>Адрес</li>
+                <li>Рейтинг</li>
+              </ul>
+            </div>
+            <div class="bg-slate-50 p-4 rounded border">
+              <h4 class="font-bold text-slate-800 border-b pb-2 mb-2">ЯСТИЕ</h4>
+              <ul class="text-sm space-y-1">
+                <li>
+                  <span class="underline font-bold text-orange-600"
+                    >Ястие_ID</span
+                  >
+                  (PK)
+                </li>
+                <li>Наименование</li>
+                <li>Цена</li>
+              </ul>
+            </div>
+            <div class="bg-slate-50 p-4 rounded border">
+              <h4 class="font-bold text-slate-800 border-b pb-2 mb-2">
+                ПОРЪЧКА
+              </h4>
+              <ul class="text-sm space-y-1">
+                <li>
+                  <span class="underline font-bold text-orange-600"
+                    >Номер_Поръчка</span
+                  >
+                  (PK)
+                </li>
+                <li>Дата_Час</li>
+                <li>Статус (Нова, Готви се, Пътува)</li>
+                <li class="italic text-slate-500">Обща_Сума (Извлечен)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div
+            class="mt-6 p-4 bg-yellow-100 border-l-4 border-yellow-500 rounded text-sm"
+          >
+            <strong>Важен детайл:</strong> При връзката
+            <span class="font-bold">ПОРЪЧКА <-> ЯСТИЕ</span> (която е M:N),
+            трябва да добавим атрибут
+            <span class="font-bold">Количество</span> към самата връзка. Иначе
+            няма да знаем дали сме поръчали 1 бургер или 5.
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 6: Final Diagram -->
+      <section id="slide-6" class="my-20 scroll-mt-24">
+        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-8 text-slate-900">
+            <span class="text-5xl mr-2">🏁</span> Финална ER Диаграма
+          </h2>
+          <div
+            class="overflow-x-auto bg-white p-4 border rounded-lg flex justify-center"
+          >
+            <!-- Complex SVG Diagram -->
+            <svg
+              width="800"
+              height="500"
+              viewBox="0 0 800 500"
+              class="max-w-full h-auto"
+            >
+              <!-- Entities -->
+              <!-- Client -->
+              <rect
+                x="50"
+                y="50"
+                width="100"
+                height="40"
+                fill="#fff"
+                stroke="#1e293b"
+                stroke-width="2"
+              ></rect>
+              <text
+                x="100"
+                y="75"
+                text-anchor="middle"
+                font-weight="bold"
+                font-size="12"
+              >
+                КЛИЕНТ
+              </text>
+
+              <!-- Order -->
+              <rect
+                x="350"
+                y="50"
+                width="100"
+                height="40"
+                fill="#fff"
+                stroke="#1e293b"
+                stroke-width="2"
+              ></rect>
+              <text
+                x="400"
+                y="75"
+                text-anchor="middle"
+                font-weight="bold"
+                font-size="12"
+              >
+                ПОРЪЧКА
+              </text>
+
+              <!-- Courier -->
+              <rect
+                x="650"
+                y="50"
+                width="100"
+                height="40"
+                fill="#fff"
+                stroke="#1e293b"
+                stroke-width="2"
+              ></rect>
+              <text
+                x="700"
+                y="75"
+                text-anchor="middle"
+                font-weight="bold"
+                font-size="12"
+              >
+                КУРИЕР
+              </text>
+
+              <!-- Restaurant -->
+              <rect
+                x="350"
+                y="350"
+                width="100"
+                height="40"
+                fill="#fff"
+                stroke="#1e293b"
+                stroke-width="2"
+              ></rect>
+              <text
+                x="400"
+                y="375"
+                text-anchor="middle"
+                font-weight="bold"
+                font-size="12"
+              >
+                РЕСТОРАНТ
+              </text>
+
+              <!-- Dish -->
+              <rect
+                x="50"
+                y="350"
+                width="100"
+                height="40"
+                fill="#fff"
+                stroke="#1e293b"
+                stroke-width="2"
+              ></rect>
+              <text
+                x="100"
+                y="375"
+                text-anchor="middle"
+                font-weight="bold"
+                font-size="12"
+              >
+                ЯСТИЕ
+              </text>
+
+              <!-- Relationships -->
+              <!-- Client - Order -->
+              <polygon
+                points="200,70 230,50 260,70 230,90"
+                fill="#fff"
+                stroke="#1e293b"
+                stroke-width="1.5"
+              ></polygon>
+              <text x="230" y="74" text-anchor="middle" font-size="10">
+                Прави
+              </text>
+              <line x1="150" y1="70" x2="200" y2="70" stroke="#1e293b"></line>
+              <line x1="260" y1="70" x2="350" y2="70" stroke="#1e293b"></line>
+              <text x="160" y="65" font-size="10" font-weight="bold">1</text>
+              <text x="340" y="65" font-size="10" font-weight="bold">N</text>
+
+              <!-- Order - Courier -->
+              <polygon
+                points="500,70 530,50 560,70 530,90"
+                fill="#fff"
+                stroke="#1e293b"
+                stroke-width="1.5"
+              ></polygon>
+              <text x="530" y="74" text-anchor="middle" font-size="10">
+                Доставя
+              </text>
+              <line x1="450" y1="70" x2="500" y2="70" stroke="#1e293b"></line>
+              <line x1="560" y1="70" x2="650" y2="70" stroke="#1e293b"></line>
+              <text x="460" y="65" font-size="10" font-weight="bold">N</text>
+              <text x="640" y="65" font-size="10" font-weight="bold">1</text>
+
+              <!-- Order - Dish (M:N) -->
+              <!-- Connecting vertically roughly -->
+              <polygon
+                points="180,200 210,180 240,200 210,220"
+                fill="#fff"
+                stroke="#1e293b"
+                stroke-width="1.5"
+              ></polygon>
+              <text x="210" y="204" text-anchor="middle" font-size="10">
+                Съдържа
+              </text>
+              <line x1="350" y1="90" x2="225" y2="188" stroke="#1e293b"></line>
+              <line x1="100" y1="350" x2="200" y2="215" stroke="#1e293b"></line>
+              <text x="330" y="105" font-size="10" font-weight="bold">M</text>
+              <text x="110" y="340" font-size="10" font-weight="bold">N</text>
+              <!-- Quantity Attribute on Relationship -->
+              <line
+                x1="210"
+                y1="220"
+                x2="210"
+                y2="250"
+                stroke="#1e293b"
+                stroke-dasharray="4"
+              ></line>
+              <ellipse
+                cx="210"
+                cy="260"
+                rx="35"
+                ry="15"
+                fill="#fff"
+                stroke="#1e293b"
+              ></ellipse>
+              <text x="210" y="264" text-anchor="middle" font-size="10">
+                Количество
+              </text>
+
+              <!-- Restaurant - Dish -->
+              <polygon
+                points="200,370 230,350 260,370 230,390"
+                fill="#fff"
+                stroke="#1e293b"
+                stroke-width="1.5"
+              ></polygon>
+              <text x="230" y="374" text-anchor="middle" font-size="10">
+                Предлага
+              </text>
+              <line x1="150" y1="370" x2="200" y2="370" stroke="#1e293b"></line>
+              <line x1="260" y1="370" x2="350" y2="370" stroke="#1e293b"></line>
+              <text x="160" y="365" font-size="10" font-weight="bold">N</text>
+              <text x="340" y="365" font-size="10" font-weight="bold">1</text>
+
+              <!-- Order - Restaurant (Optional direct link for "To Restaurant") -->
+              <line x1="400" y1="90" x2="400" y2="350" stroke="#1e293b"></line>
+              <polygon
+                points="385,220 400,200 415,220 400,240"
+                fill="#fff"
+                stroke="#1e293b"
+                stroke-width="1.5"
+              ></polygon>
+              <text
+                x="400"
+                y="224"
+                text-anchor="middle"
+                font-size="10"
+                transform="rotate(90, 400, 224)"
+              >
+                Към
+              </text>
+              <text x="410" y="110" font-size="10" font-weight="bold">N</text>
+              <text x="410" y="340" font-size="10" font-weight="bold">1</text>
+            </svg>
+          </div>
+          <p class="text-center text-sm text-slate-500 mt-4">
+            Визуализация на пълната схема на "Бърза Хапка"
+          </p>
+        </div>
+      </section>
+
+      <!-- Tasks Section -->
+      <section id="tasks" class="my-20 scroll-mt-24">
+        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-8 text-slate-900">
+            <span class="text-5xl mr-2">💪</span> Твой ред: Нови сценарии
+          </h2>
+          <div class="space-y-8">
+            <div class="p-6 border border-slate-200 rounded-lg">
+              <h3 class="font-bold text-lg text-orange-700">
+                Задача 1: Хотелска резервация
+              </h3>
+              <p class="mt-2 mb-4 text-slate-600">
+                Опитайте се да скицирате диаграма за хотел. Основните точки са:
+              </p>
+              <ul class="list-disc list-inside mt-2 text-sm text-slate-700">
+                <li>Имаме `ГОСТ`, `СТАЯ` и `РЕЗЕРВАЦИЯ`.</li>
+                <li>Стаите имат `Номер` и `Категория` (Единична, Двойна).</li>
+                <li>
+                  Един гост прави резервация. Една резервация може да е за една
+                  или повече стаи.
+                </li>
+                <li>
+                  Внимавайте с атрибутите `Дата_Настаняване` и `Дата_Напускане`
+                  - къде трябва да стоят?
+                </li>
+              </ul>
+            </div>
+
+            <div class="p-6 border border-slate-200 rounded-lg">
+              <h3 class="font-bold text-lg text-orange-700">
+                Задача 2: Музикална платформа (Spotify)
+              </h3>
+              <p class="mt-2 mb-4 text-slate-600">
+                Моделирайте система с `ИЗПЪЛНИТЕЛ`, `АЛБУМ` и `ПЕСЕН`.
+              </p>
+              <ul class="list-disc list-inside mt-2 text-sm text-slate-700">
+                <li>Изпълнител издава Албуми (1:N).</li>
+                <li>Албум съдържа Песни (1:N).</li>
+                <li>
+                  Ако искаме да добавим и `ПОТРЕБИТЕЛ`, който създава
+                  `ПЛЕЙЛИСТИ` със съществуващи песни - каква ще е връзката между
+                  Плейлист и Песен?
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-white mt-16">
+      <div
+        class="container mx-auto px-6 py-8 text-center text-sm text-slate-400"
+      >
+        <p>&copy; 2025 Урок по моделиране на данни. инж. Пламна Янева</p>
+      </div>
+    </footer>
+  </body>
+</html>
