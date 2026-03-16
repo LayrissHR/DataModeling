@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="bg">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Урок: Съпоставяне на UML диаграми с ER модел</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      .uml-box {
+        @apply border-2 border-blue-600 rounded-md shadow-sm bg-white overflow-hidden w-48 mx-auto flex flex-col;
+      }
+      .uml-header {
+        @apply bg-blue-600 text-white font-bold text-center py-2 border-b-2 border-blue-600;
+      }
+      .uml-body {
+        @apply p-3 text-left text-sm text-gray-700 min-h-[80px];
+      }
+
+      .er-box {
+        @apply border-2 border-emerald-600 rounded-md shadow-sm bg-white overflow-hidden w-48 mx-auto flex flex-col;
+      }
+      .er-header {
+        @apply bg-emerald-600 text-white font-bold text-center py-2 border-b-2 border-emerald-600;
+      }
+      .er-body {
+        @apply p-3 text-left text-sm text-gray-700 min-h-[80px];
+      }
+      .pk {
+        @apply underline font-semibold;
+      }
+
+      .relation-line {
+        @apply flex-1 border-t-2 border-gray-400 relative mt-6;
+      }
+      .relation-text {
+        @apply absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gray-50 px-2 text-sm font-semibold text-gray-600;
+      }
+
+      h2 {
+        @apply text-2xl font-bold text-gray-800 mb-4 border-b-2 border-gray-200 pb-2;
+      }
+      h3 {
+        @apply text-xl font-semibold text-gray-700 mt-6 mb-3;
+      }
+      .card {
+        @apply bg-gray-50 rounded-xl p-6 shadow-sm border border-gray-100 mb-8;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 text-gray-800 antialiased p-4 md:p-8">
+    <div
+      class="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden"
+    >
+      <!-- Header -->
+      <header class="bg-indigo-700 text-white p-8 text-center">
+        <h1 class="text-3xl md:text-4xl font-extrabold mb-2">
+          Съпоставяне на UML диаграми с ER модел
+        </h1>
+        <p class="text-indigo-200 text-lg">Урок по Моделиране на данни</p>
+      </header>
+
+      <div class="p-8">
+        <!-- Section 1 to 6: Lesson Meta -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div class="card bg-blue-50/50">
+            <h3 class="mt-0 text-blue-800">Основна информация</h3>
+            <p>
+              <strong>Вид на урока:</strong> За нови знания с практическо
+              приложение
+            </p>
+            <p class="mt-2">
+              <strong>Основна идея:</strong> Учениците трябва да разберат как
+              обектно-ориентираният модел (UML) и релационният модел (ER)
+              представят една и съща система, но по различен начин. Основният
+              акцент е върху това как:
+            </p>
+            <ul class="list-disc ml-5 mt-2 font-semibold text-blue-900">
+              <li>UML клас &rarr; ER същност</li>
+              <li>UML атрибут &rarr; ER атрибут</li>
+              <li>UML асоциация &rarr; ER връзка</li>
+            </ul>
+          </div>
+
+          <div class="card bg-green-50/50">
+            <h3 class="mt-0 text-green-800">Цели на урока</h3>
+            <ul class="list-disc ml-5 space-y-1 text-sm">
+              <li>
+                <strong>Образователни:</strong> Разбиране на разликата между
+                моделите, разпознаване на елементи и преобразуване.
+              </li>
+              <li>
+                <strong>Практически:</strong> Анализиране на диаграми, извличане
+                на същности/атрибути и създаване на ER модел.
+              </li>
+              <li>
+                <strong>Възпитателни:</strong> Развиване на аналитично мислене и
+                систематична работа.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+          <div>
+            <h3 class="text-gray-700 border-b pb-1">Основни понятия</h3>
+            <div class="flex flex-wrap gap-2 mt-3 text-sm">
+              <span class="bg-gray-200 px-3 py-1 rounded-full">UML</span>
+              <span class="bg-gray-200 px-3 py-1 rounded-full">Клас</span>
+              <span class="bg-gray-200 px-3 py-1 rounded-full">Атрибут</span>
+              <span class="bg-gray-200 px-3 py-1 rounded-full">Асоциация</span>
+              <span class="bg-gray-200 px-3 py-1 rounded-full">ER модел</span>
+              <span class="bg-gray-200 px-3 py-1 rounded-full">Същност</span>
+              <span class="bg-gray-200 px-3 py-1 rounded-full">Връзка</span>
+              <span class="bg-gray-200 px-3 py-1 rounded-full"
+                >Кардиналност</span
+              >
+            </div>
+          </div>
+          <div>
+            <h3 class="text-gray-700 border-b pb-1">Необходими средства</h3>
+            <ul class="list-disc ml-5 mt-3 text-sm">
+              <li>Компютър и проектор</li>
+              <li>
+                Инструмент за диаграми (draw.io / Lucidchart / Visual Paradigm)
+              </li>
+              <li>Учебни материали</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Актуализация -->
+        <div class="card bg-yellow-50 border-yellow-200">
+          <h2 class="text-yellow-800 border-yellow-300">
+            7. Актуализация на знанията (Въпроси)
+          </h2>
+          <div class="flex flex-wrap gap-4 mt-4">
+            <div
+              class="bg-white p-3 rounded shadow-sm border border-yellow-100 flex-1 min-w-[200px] text-center font-medium"
+            >
+              Какво представлява UML?
+            </div>
+            <div
+              class="bg-white p-3 rounded shadow-sm border border-yellow-100 flex-1 min-w-[200px] text-center font-medium"
+            >
+              Какво е UML клас диаграма?
+            </div>
+            <div
+              class="bg-white p-3 rounded shadow-sm border border-yellow-100 flex-1 min-w-[200px] text-center font-medium"
+            >
+              Какво е ER модел?
+            </div>
+            <div
+              class="bg-white p-3 rounded shadow-sm border border-yellow-100 flex-1 min-w-[200px] text-center font-medium"
+            >
+              Какво е същност и връзка?
+            </div>
+          </div>
+        </div>
+
+        <!-- Теория -->
+        <h2>8. Теоретична част</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div>
+            <h3 class="text-blue-600 flex items-center gap-2">
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                ></path>
+              </svg>
+              Какво е UML?
+            </h3>
+            <p class="mb-2">
+              <strong>Unified Modeling Language</strong> е стандартен език за
+              моделиране на софтуерни системи.
+            </p>
+            <ul class="list-disc ml-5 text-sm text-gray-700">
+              <li>Описване на структурата на системата</li>
+              <li>Планиране на разработка</li>
+              <li>Визуализиране на класове и връзки (Клас диаграма)</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-emerald-600 flex items-center gap-2">
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
+                ></path>
+              </svg>
+              Какво е ER модел?
+            </h3>
+            <p class="mb-2">
+              <strong>Entity-Relationship Model</strong> е модел за представяне
+              на структурата на база данни.
+            </p>
+            <ul class="list-disc ml-5 text-sm text-gray-700">
+              <li><strong>Entity:</strong> Същност</li>
+              <li><strong>Attribute:</strong> Атрибут</li>
+              <li><strong>Relationship:</strong> Връзка</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>9. Съпоставяне между UML и ER</h2>
+          <div class="overflow-x-auto">
+            <table class="min-w-full bg-white border rounded text-left">
+              <thead class="bg-gray-100 text-gray-600">
+                <tr>
+                  <th class="py-3 px-4 border-b font-semibold">UML</th>
+                  <th class="py-3 px-4 border-b font-semibold border-l">
+                    ER модел
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-gray-700">
+                <tr>
+                  <td class="py-2 px-4 border-b">Клас</td>
+                  <td
+                    class="py-2 px-4 border-b border-l font-medium text-emerald-700"
+                  >
+                    Същност
+                  </td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-4 border-b">Атрибут</td>
+                  <td class="py-2 px-4 border-b border-l">Атрибут</td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-4 border-b">Асоциация</td>
+                  <td
+                    class="py-2 px-4 border-b border-l font-medium text-indigo-700"
+                  >
+                    Връзка
+                  </td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-4 border-b">Множество обекти</td>
+                  <td class="py-2 px-4 border-b border-l">Таблица</td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-4">Instance (Обект)</td>
+                  <td class="py-2 px-4 border-l">Запис</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Example 1 -->
+        <h2>10 & 11. Пример: Система за библиотека</h2>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          <!-- UML Representation -->
+          <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+            <h3 class="text-center text-blue-800 mt-0">UML Диаграма</h3>
+            <div class="flex items-start justify-center mt-6">
+              <div class="uml-box">
+                <div class="uml-header">Author</div>
+                <div class="uml-body">
+                  <div>id</div>
+                  <div>name</div>
+                </div>
+              </div>
+              <div class="flex-1 px-4 pt-8 text-center">
+                <div
+                  class="border-b-2 border-blue-400 pb-1 text-sm font-semibold text-blue-700"
+                >
+                  writes &rarr;
+                </div>
+              </div>
+              <div class="uml-box">
+                <div class="uml-header">Book</div>
+                <div class="uml-body">
+                  <div>id</div>
+                  <div>title</div>
+                  <div>year</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ER Representation -->
+          <div class="bg-emerald-50 p-6 rounded-lg border border-emerald-200">
+            <h3 class="text-center text-emerald-800 mt-0">ER Модел</h3>
+            <div class="flex items-start justify-center mt-6">
+              <div class="er-box">
+                <div class="er-header">Author</div>
+                <div class="er-body">
+                  <div class="pk">id (PK)</div>
+                  <div>name</div>
+                </div>
+              </div>
+              <div class="flex-1 px-4 pt-8 text-center">
+                <div
+                  class="border-b-2 border-emerald-500 pb-1 text-sm font-bold text-emerald-700"
+                >
+                  1 &mdash; N
+                </div>
+              </div>
+              <div class="er-box">
+                <div class="er-header">Book</div>
+                <div class="er-body">
+                  <div class="pk">id (PK)</div>
+                  <div>title</div>
+                  <div>year</div>
+                  <div class="text-emerald-600 italic mt-1">author_id (FK)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Steps -->
+        <h2>12. Преобразуване UML &rarr; ER (Стъпки)</h2>
+        <div class="flex flex-col md:flex-row gap-4 mb-8">
+          <div
+            class="flex-1 bg-white p-4 rounded shadow border border-gray-200"
+          >
+            <div class="font-bold text-lg text-indigo-600 mb-2">
+              Стъпка 1 & 2
+            </div>
+            <p class="text-sm text-gray-600 mb-2">
+              Определяме класовете &rarr; стават същности.
+            </p>
+            <div class="bg-gray-100 p-2 text-center rounded">
+              Student, Course
+            </div>
+          </div>
+          <div
+            class="flex-1 bg-white p-4 rounded shadow border border-gray-200"
+          >
+            <div class="font-bold text-lg text-indigo-600 mb-2">Стъпка 3</div>
+            <p class="text-sm text-gray-600 mb-2">Атрибутите остават същите.</p>
+            <div class="bg-gray-100 p-2 text-center rounded text-sm">
+              id, name, email
+            </div>
+          </div>
+          <div
+            class="flex-1 bg-white p-4 rounded shadow border border-gray-200"
+          >
+            <div class="font-bold text-lg text-indigo-600 mb-2">Стъпка 4</div>
+            <p class="text-sm text-gray-600 mb-2">Асоциациите стават връзки.</p>
+            <div class="bg-gray-100 p-2 text-center rounded text-sm">
+              Student (M:N) Course
+            </div>
+          </div>
+        </div>
+
+        <!-- Complex Example -->
+        <h2>13. Пример – Университетска система</h2>
+        <div class="card bg-gray-50 border-gray-300">
+          <p class="mb-4 text-center text-gray-600">
+            UML показва асоциативен клас (Enrollment), който в ER модела се
+            превръща в свързваща таблица.
+          </p>
+          <div class="flex flex-wrap items-center justify-center gap-6">
+            <div class="er-box w-40">
+              <div class="er-header">Student</div>
+              <div class="er-body">
+                <div class="pk">id</div>
+                <div>name</div>
+                <div>email</div>
+              </div>
+            </div>
+
+            <div class="text-center font-bold text-emerald-700">
+              1 &mdash; N
+            </div>
+
+            <div class="er-box w-48 border-indigo-500">
+              <div class="bg-indigo-500 text-white font-bold text-center py-2">
+                Enrollment
+              </div>
+              <div class="p-3 text-left text-sm bg-indigo-50">
+                <div class="pk">id</div>
+                <div>grade</div>
+                <div class="text-indigo-600 italic">student_id (FK)</div>
+                <div class="text-indigo-600 italic">course_id (FK)</div>
+              </div>
+            </div>
+
+            <div class="text-center font-bold text-emerald-700">
+              N &mdash; 1
+            </div>
+
+            <div class="er-box w-40">
+              <div class="er-header">Course</div>
+              <div class="er-body">
+                <div class="pk">id</div>
+                <div>title</div>
+                <div>credits</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Demo / Practice -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div>
+            <h2>14 & 15. Демонстрация</h2>
+            <div class="card bg-orange-50 border-orange-200 h-full">
+              <h3 class="mt-0 text-orange-800">
+                UML: Customer &rarr; places &rarr; Order
+              </h3>
+              <p class="text-sm mb-4">
+                Учениците трябва да направят ER модел. Решението:
+              </p>
+              <div class="flex items-center justify-center gap-2">
+                <div class="er-box w-32 border-orange-500">
+                  <div
+                    class="bg-orange-500 text-white font-bold text-center py-1"
+                  >
+                    Customer
+                  </div>
+                  <div class="p-2 text-xs bg-white">
+                    <span class="pk">id</span><br />name<br />email
+                  </div>
+                </div>
+                <div class="font-bold text-orange-700 text-sm">1 &mdash; N</div>
+                <div class="er-box w-32 border-orange-500">
+                  <div
+                    class="bg-orange-500 text-white font-bold text-center py-1"
+                  >
+                    Order
+                  </div>
+                  <div class="p-2 text-xs bg-white">
+                    <span class="pk">id</span><br />date<br />total<br /><i
+                      class="text-orange-600"
+                      >customer_id</i
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h2>16 & 17. Практическо упражнение</h2>
+            <div class="card bg-purple-50 border-purple-200 h-full">
+              <h3 class="mt-0 text-purple-800">Онлайн магазин</h3>
+              <ul class="text-sm space-y-1 mb-4">
+                <li><strong>Product:</strong> id, name, price</li>
+                <li><strong>Category:</strong> id, name</li>
+                <li><strong>Customer:</strong> id, name, email</li>
+                <li><strong>Order:</strong> id, date</li>
+              </ul>
+              <div
+                class="bg-white p-3 rounded border border-purple-100 text-sm"
+              >
+                <strong>Очакван резултат (Връзки):</strong>
+                <ul class="list-disc ml-5 mt-1 text-purple-900 font-medium">
+                  <li>Category (1:N) Product</li>
+                  <li>Customer (1:N) Order</li>
+                  <li>Order (M:N) Product</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer / Wrap up -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-gray-800 text-white p-5 rounded-lg">
+            <h3 class="text-white mt-0 border-b border-gray-600 pb-2">
+              18. Обобщение
+            </h3>
+            <p class="text-sm mt-3 text-gray-300">
+              UML и ER описват една и съща система, но UML е за
+              <strong>софтуерен дизайн</strong>, а ER е за
+              <strong>бази данни</strong>. Преобразуването е ключово при
+              разработката.
+            </p>
+          </div>
+
+          <div class="bg-blue-600 text-white p-5 rounded-lg">
+            <h3 class="text-white mt-0 border-b border-blue-400 pb-2">
+              19. Затвърждаване
+            </h3>
+            <ul class="list-disc ml-4 text-sm mt-3 text-blue-100 space-y-1">
+              <li>Какво е UML клас?</li>
+              <li>Какво е същност в ER?</li>
+              <li>Какво е асоциация?</li>
+              <li>Как се преобразува клас в ER?</li>
+              <li>Какво показва кардиналността?</li>
+            </ul>
+          </div>
+
+          <div class="bg-emerald-600 text-white p-5 rounded-lg">
+            <h3 class="text-white mt-0 border-b border-emerald-400 pb-2">
+              20. Домашна работа
+            </h3>
+            <p class="text-sm mt-3 text-emerald-100 font-semibold">
+              Направете ER модел:
+            </p>
+            <ul class="text-sm mt-2 text-emerald-50 space-y-1">
+              <li><strong>Teacher:</strong> id, name</li>
+              <li><strong>Subject:</strong> id, title</li>
+              <li><strong>Class:</strong> id, name</li>
+            </ul>
+            <p class="text-xs mt-2 italic text-emerald-200">
+              Teacher &rarr; teaches &rarr; Subject<br />Class &rarr; studies
+              &rarr; Subject
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
