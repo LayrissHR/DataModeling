@@ -1,0 +1,1309 @@
+<!doctype html>
+<html lang="bg">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Моделиране на данни | Заявки върху множество релации (JOIN)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap");
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f8fafc;
+      }
+
+      .section-content {
+        display: none;
+        animation: fadeIn 0.4s ease-out forwards;
+      }
+
+      .section-content.active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .code-block {
+        background-color: #1e293b;
+        color: #f8fafc;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        font-family: "Courier New", Courier, monospace;
+        overflow-x: auto;
+        margin: 1rem 0;
+        box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .sql-keyword {
+        color: #c678dd;
+        font-weight: bold;
+      }
+      .sql-table {
+        color: #61afef;
+      }
+      .sql-column {
+        color: #e5c07b;
+      }
+      .sql-string {
+        color: #98c379;
+      }
+
+      .nav-link.active {
+        background-color: #f0fdf4;
+        color: #16a34a;
+        border-left: 4px solid #16a34a;
+        font-weight: 600;
+      }
+
+      .nav-link {
+        border-left: 4px solid transparent;
+        transition: all 0.2s;
+      }
+
+      .nav-link:hover {
+        background-color: #f1f5f9;
+      }
+
+      /* Tables styling for DB visualizer */
+      .db-table {
+        border-collapse: collapse;
+        width: 100%;
+        background-color: white;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border-radius: 0.5rem;
+        overflow: hidden;
+      }
+      .db-table th {
+        background-color: #f1f5f9;
+        color: #475569;
+        font-weight: 600;
+        text-align: left;
+        padding: 0.75rem 1rem;
+        border-bottom: 2px solid #e2e8f0;
+      }
+      .db-table td {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #e2e8f0;
+        color: #334155;
+      }
+      .db-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      /* Table Colors for Visualizing JOINs */
+      .table-a-col {
+        background-color: rgba(59, 130, 246, 0.05);
+      }
+      .table-b-col {
+        background-color: rgba(16, 185, 129, 0.05);
+      }
+
+      /* Venn Diagrams */
+      .venn-container {
+        position: relative;
+        width: 200px;
+        height: 140px;
+        margin: 0 auto;
+      }
+      .venn-circle {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        mix-blend-mode: multiply;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: #333;
+        border: 2px solid #333;
+      }
+      .venn-left {
+        background-color: #93c5fd;
+        left: 20px;
+        top: 20px;
+      }
+      .venn-right {
+        background-color: #a7f3d0;
+        right: 20px;
+        top: 20px;
+      }
+    </style>
+  </head>
+  <body class="flex h-screen overflow-hidden text-gray-800">
+    <!-- Странично меню -->
+    <aside
+      class="w-64 bg-white border-r shadow-lg flex flex-col h-full z-10 hidden md:flex flex-shrink-0"
+    >
+      <div class="p-5 border-b flex items-center gap-3 bg-green-600 text-white">
+        <i class="fa-solid fa-database text-2xl"></i>
+        <h1 class="text-lg font-bold">SQL Practice</h1>
+      </div>
+      <div class="overflow-y-auto flex-1 py-4">
+        <ul class="space-y-1" id="nav-menu">
+          <li>
+            <button
+              onclick="navigate('home')"
+              class="nav-link active w-full text-left px-5 py-3 text-sm text-gray-600"
+            >
+              <i class="fa-solid fa-house w-6 text-center mr-2"></i> Начало
+            </button>
+          </li>
+          <li>
+            <button
+              onclick="navigate('intro')"
+              class="nav-link w-full text-left px-5 py-3 text-sm text-gray-600"
+            >
+              <i class="fa-solid fa-book-open w-6 text-center mr-2"></i> Защо
+              съединяваме таблици?
+            </button>
+          </li>
+          <li>
+            <button
+              onclick="navigate('keys')"
+              class="nav-link w-full text-left px-5 py-3 text-sm text-gray-600"
+            >
+              <i class="fa-solid fa-key w-6 text-center mr-2"></i> Ключове (PK и
+              FK)
+            </button>
+          </li>
+          <li>
+            <button
+              onclick="navigate('inner-join')"
+              class="nav-link w-full text-left px-5 py-3 text-sm text-gray-600"
+            >
+              <i class="fa-solid fa-link w-6 text-center mr-2"></i> INNER JOIN
+            </button>
+          </li>
+          <li>
+            <button
+              onclick="navigate('outer-joins')"
+              class="nav-link w-full text-left px-5 py-3 text-sm text-gray-600"
+            >
+              <i class="fa-solid fa-object-group w-6 text-center mr-2"></i>
+              LEFT, RIGHT & FULL JOIN
+            </button>
+          </li>
+          <li>
+            <button
+              onclick="navigate('simulator')"
+              class="nav-link w-full text-left px-5 py-3 text-sm text-gray-600"
+            >
+              <i class="fa-solid fa-sliders w-6 text-center mr-2"></i>
+              Интерактивен Симулатор
+            </button>
+          </li>
+          <li>
+            <button
+              onclick="navigate('practice')"
+              class="nav-link w-full text-left px-5 py-3 text-sm text-gray-600"
+            >
+              <i class="fa-solid fa-laptop-code w-6 text-center mr-2"></i>
+              Практически Задачи
+            </button>
+          </li>
+          <li>
+            <button
+              onclick="navigate('quiz')"
+              class="nav-link w-full text-left px-5 py-3 text-sm text-gray-600"
+            >
+              <i class="fa-solid fa-list-check w-6 text-center mr-2"></i> Тест
+              за самооценка
+            </button>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Мобилно меню -->
+    <div
+      class="md:hidden fixed top-0 left-0 right-0 bg-green-600 text-white shadow-md z-20 flex justify-between items-center p-4"
+    >
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-database text-xl"></i>
+        <h1 class="font-bold">SQL Practice</h1>
+      </div>
+      <select
+        id="mobile-nav"
+        class="bg-white text-gray-900 text-sm rounded-lg block p-2"
+        onchange="navigate(this.value)"
+      >
+        <option value="home">Начало</option>
+        <option value="intro">Защо съединяваме?</option>
+        <option value="keys">Ключове (PK и FK)</option>
+        <option value="inner-join">INNER JOIN</option>
+        <option value="outer-joins">OUTER JOINs</option>
+        <option value="simulator">Симулатор</option>
+        <option value="practice">Задачи</option>
+        <option value="quiz">Тест</option>
+      </select>
+    </div>
+
+    <!-- Основно съдържание -->
+    <main
+      class="flex-1 overflow-y-auto p-6 md:p-10 pt-20 md:pt-10 relative bg-slate-50"
+    >
+      <div class="max-w-5xl mx-auto pb-20">
+        <!-- Секция: Начало -->
+        <section id="home" class="section-content active">
+          <div
+            class="bg-white rounded-2xl p-10 shadow-lg border border-gray-100 mb-8 relative overflow-hidden"
+          >
+            <div
+              class="absolute top-0 right-0 p-8 opacity-10 pointer-events-none"
+            >
+              <i class="fa-solid fa-table-columns text-9xl text-green-600"></i>
+            </div>
+            <div class="relative z-10">
+              <span
+                class="bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide"
+                >Моделиране на данни • Учебна практика</span
+              >
+              <h1
+                class="text-4xl md:text-5xl font-bold mt-4 mb-4 text-gray-800"
+              >
+                Заявки върху повече от една релация (JOIN)
+              </h1>
+              <p class="text-xl text-gray-600 mb-8 max-w-2xl">
+                Научете как да обединявате и извличате данни от множество
+                таблици в релационни бази данни чрез SQL JOIN операции.
+              </p>
+              <button
+                onclick="navigate('intro')"
+                class="bg-green-600 text-white hover:bg-green-700 font-bold py-3 px-6 rounded-lg shadow-md transition duration-300"
+              >
+                Започни урока <i class="fa-solid fa-arrow-right ml-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
+            <div
+              class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition"
+            >
+              <div
+                class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4 text-blue-600 text-xl"
+              >
+                <i class="fa-solid fa-diagram-project"></i>
+              </div>
+              <h3 class="font-bold text-lg mb-2">Нормализация</h3>
+              <p class="text-gray-600 text-sm">
+                Разбиране защо данните се разделят в различни таблици (релации).
+              </p>
+            </div>
+            <div
+              class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition"
+            >
+              <div
+                class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4 text-purple-600 text-xl"
+              >
+                <i class="fa-solid fa-link"></i>
+              </div>
+              <h3 class="font-bold text-lg mb-2">Връзки (Ключове)</h3>
+              <p class="text-gray-600 text-sm">
+                Използване на Primary Key (PK) и Foreign Key (FK) за създаване
+                на релации.
+              </p>
+            </div>
+            <div
+              class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition"
+            >
+              <div
+                class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4 text-orange-600 text-xl"
+              >
+                <i class="fa-solid fa-table"></i>
+              </div>
+              <h3 class="font-bold text-lg mb-2">Синтаксис</h3>
+              <p class="text-gray-600 text-sm">
+                Писане на сложни SQL заявки с INNER, LEFT, RIGHT и FULL JOIN.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Секция: Въведение -->
+        <section id="intro" class="section-content">
+          <h2
+            class="text-3xl font-bold text-gray-800 mb-6 border-b-2 border-green-500 pb-2 inline-block"
+          >
+            Защо съединяваме таблици?
+          </h2>
+
+          <div class="prose max-w-none text-gray-700 text-lg space-y-4 mb-8">
+            <p>
+              В добре проектираните (нормализирани) релационни бази данни,
+              информацията не се пази в една огромна таблица. Вместо това, тя се
+              разделя в множество по-малки, тематично свързани таблици
+              (релации), за да се избегне излишното повторение на данни
+              (редундантност) и за да се поддържа целостта на данните.
+            </p>
+
+            <div
+              class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg"
+            >
+              <strong>Пример:</strong> В училищна база данни не записваме името
+              на класния ръководител срещу името на всеки един ученик. Създаваме
+              две таблици: <code>Ученици</code> и <code>Класове</code>.
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+            <div>
+              <h3 class="font-bold text-blue-700 mb-2">
+                Таблица: Ученици (Students)
+              </h3>
+              <table class="db-table text-sm">
+                <thead>
+                  <tr>
+                    <th>student_id</th>
+                    <th>name</th>
+                    <th>class_id</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Иван Иванов</td>
+                    <td class="bg-blue-50 font-bold text-blue-600">101</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Мария Петрова</td>
+                    <td class="bg-blue-50 font-bold text-blue-600">102</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <h3 class="font-bold text-green-700 mb-2">
+                Таблица: Класове (Classes)
+              </h3>
+              <table class="db-table text-sm">
+                <thead>
+                  <tr>
+                    <th>class_id</th>
+                    <th>class_name</th>
+                    <th>teacher</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="bg-green-50 font-bold text-green-600">101</td>
+                    <td>10 А клас</td>
+                    <td>г-жа Георгиева</td>
+                  </tr>
+                  <tr>
+                    <td class="bg-green-50 font-bold text-green-600">102</td>
+                    <td>10 Б клас</td>
+                    <td>г-н Димитров</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <p class="text-gray-700 text-lg">
+            Когато искаме да изведем списък с имената на учениците
+            <strong>и</strong> имената на техните класни ръководители, трябва да
+            зададем заявка, която обединява тези две релации. Това се прави чрез
+            клаузата
+            <strong
+              ><code class="text-pink-600 bg-pink-50 px-1 rounded"
+                >JOIN</code
+              ></strong
+            >
+            в SQL.
+          </p>
+        </section>
+
+        <!-- Секция: Ключове -->
+        <section id="keys" class="section-content">
+          <h2
+            class="text-3xl font-bold text-gray-800 mb-6 border-b-2 border-green-500 pb-2 inline-block"
+          >
+            Основата на връзките: PK и FK
+          </h2>
+
+          <p class="mb-6 text-gray-700 text-lg">
+            За да може базата данни да знае <em>как точно</em> да съедини два
+            реда от две различни таблици, ние използваме ключове.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div
+              class="bg-white p-6 rounded-xl shadow-md border-t-4 border-yellow-400"
+            >
+              <div class="flex items-center mb-4">
+                <i class="fa-solid fa-key text-yellow-500 text-2xl mr-3"></i>
+                <h3 class="text-xl font-bold">Primary Key (PK)</h3>
+              </div>
+              <p class="text-gray-600">
+                Първичен ключ. Това е колона (или набор от колони), която
+                <strong>уникално идентифицира</strong> всеки ред в дадена
+                таблица. Не може да има повтарящи се стойности или NULL.
+                <br /><br /><em>Пример:</em> <code>student_id</code> в таблицата
+                с ученици.
+              </p>
+            </div>
+
+            <div
+              class="bg-white p-6 rounded-xl shadow-md border-t-4 border-gray-400"
+            >
+              <div class="flex items-center mb-4">
+                <i class="fa-solid fa-link text-gray-500 text-2xl mr-3"></i>
+                <h3 class="text-xl font-bold">Foreign Key (FK)</h3>
+              </div>
+              <p class="text-gray-600">
+                Външен ключ. Това е колона в една таблица, която
+                <strong>сочи към първичния ключ</strong> на друга таблица. По
+                този начин се създава физическата връзка. <br /><br /><em
+                  >Пример:</em
+                >
+                <code>class_id</code> в таблицата с ученици, което сочи към
+                <code>class_id</code> в таблицата с класове.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Секция: INNER JOIN -->
+        <section id="inner-join" class="section-content">
+          <h2
+            class="text-3xl font-bold text-gray-800 mb-6 border-b-2 border-green-500 pb-2 inline-block"
+          >
+            INNER JOIN
+          </h2>
+
+          <div
+            class="flex flex-col md:flex-row gap-8 items-center bg-white p-6 rounded-xl shadow-sm border mb-6"
+          >
+            <div class="flex-1">
+              <p class="text-gray-700 text-lg mb-4">
+                <strong>INNER JOIN</strong> връща записи, които имат
+                <strong>съвпадащи стойности в двете таблици</strong>. Ако даден
+                ред в Таблица А няма съответствие в Таблица Б (спрямо условието
+                за съединяване), този ред изобщо
+                <strong>няма да се покаже</strong> в резултата.
+              </p>
+              <ul class="list-disc pl-6 text-gray-600 mb-4 space-y-2">
+                <li>Най-често използваният вид JOIN.</li>
+                <li>Връща сечението (пресечната точка) на двете множества.</li>
+              </ul>
+            </div>
+            <div class="w-64 flex justify-center">
+              <div class="venn-container">
+                <div class="venn-circle venn-left">Таблица A</div>
+                <div class="venn-circle venn-right">Таблица B</div>
+                <!-- Центърът се оцветява по подразбиране от mix-blend-mode -->
+                <div
+                  class="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none"
+                >
+                  <div
+                    class="w-10 h-10 bg-indigo-600 rounded-full opacity-60 mix-blend-multiply blur-md"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="font-bold text-xl mb-3">Синтаксис</h3>
+          <div class="code-block">
+            <span class="sql-keyword">SELECT</span>
+            <span class="sql-table">students</span>.<span class="sql-column"
+              >name</span
+            >, <span class="sql-table">classes</span>.<span class="sql-column"
+              >class_name</span
+            >
+            <span class="sql-keyword">FROM</span>
+            <span class="sql-table">students</span>
+            <span class="sql-keyword">INNER JOIN</span>
+            <span class="sql-table">classes</span>
+            <span class="sql-keyword">ON</span>
+            <span class="sql-table">students</span>.<span class="sql-column"
+              >class_id</span
+            >
+            = <span class="sql-table">classes</span>.<span class="sql-column"
+              >class_id</span
+            >;
+          </div>
+
+          <div class="bg-blue-50 text-blue-800 p-4 rounded-lg mt-4 text-sm">
+            <strong>Ключовият момент:</strong> Клаузата <code>ON</code> е тази,
+            която указва на базата данни кое е общото между двете таблици
+            (външният ключ = първичния ключ).
+          </div>
+        </section>
+
+        <!-- Секция: OUTER JOINs -->
+        <section id="outer-joins" class="section-content">
+          <h2
+            class="text-3xl font-bold text-gray-800 mb-6 border-b-2 border-green-500 pb-2 inline-block"
+          >
+            Външни съединения (OUTER JOIN)
+          </h2>
+
+          <p class="mb-6 text-gray-700 text-lg">
+            Понякога искаме да извлечем <strong>всички</strong> записи от едната
+            таблица, дори ако нямат съответствие в другата. За това използваме
+            OUTER JOIN (LEFT, RIGHT или FULL).
+          </p>
+
+          <!-- LEFT JOIN -->
+          <div class="bg-white rounded-xl shadow-sm border p-6 mb-6">
+            <div class="flex items-center justify-between mb-4 border-b pb-4">
+              <h3 class="text-2xl font-bold text-blue-600">
+                LEFT (OUTER) JOIN
+              </h3>
+              <div
+                class="venn-container transform scale-50 m-0 w-[100px] h-[70px]"
+                style="transform-origin: right center"
+              >
+                <div
+                  class="venn-circle venn-left bg-blue-500 text-transparent border-none"
+                ></div>
+                <div class="venn-circle venn-right"></div>
+              </div>
+            </div>
+            <p class="text-gray-700 mb-4">
+              Връща <strong>всички записи от Лявата таблица</strong> (таблица 1)
+              и съвпадащите записи от Дясната таблица (таблица 2). Резултатът е
+              <code>NULL</code> от дясната страна, ако няма съвпадение.
+            </p>
+
+            <div class="code-block mt-2">
+              <span class="sql-keyword">SELECT</span>
+              <span class="sql-table">students</span>.<span class="sql-column"
+                >name</span
+              >, <span class="sql-table">classes</span>.<span class="sql-column"
+                >class_name</span
+              >
+              <span class="sql-keyword">FROM</span>
+              <span class="sql-table">students</span>
+              <span class="text-gray-400">-- ЛЯВА ТАБЛИЦА</span>
+              <span class="sql-keyword">LEFT JOIN</span>
+              <span class="sql-table">classes</span>
+              <span class="text-gray-400">-- ДЯСНА ТАБЛИЦА</span>
+              <span class="sql-keyword">ON</span>
+              <span class="sql-table">students</span>.<span class="sql-column"
+                >class_id</span
+              >
+              = <span class="sql-table">classes</span>.<span class="sql-column"
+                >class_id</span
+              >;
+            </div>
+            <p class="text-sm text-gray-500 italic mt-2">
+              *Това ще покаже всички ученици, дори тези (напр. новозаписани),
+              които все още не са разпределени в клас (при тях class_name ще
+              бъде NULL).*
+            </p>
+          </div>
+
+          <!-- RIGHT JOIN -->
+          <div class="bg-white rounded-xl shadow-sm border p-6 mb-6">
+            <div class="flex items-center justify-between mb-4 border-b pb-4">
+              <h3 class="text-2xl font-bold text-green-600">
+                RIGHT (OUTER) JOIN
+              </h3>
+              <div
+                class="venn-container transform scale-50 m-0 w-[100px] h-[70px]"
+                style="transform-origin: right center"
+              >
+                <div class="venn-circle venn-left"></div>
+                <div
+                  class="venn-circle venn-right bg-green-500 text-transparent border-none"
+                ></div>
+              </div>
+            </div>
+            <p class="text-gray-700 mb-4">
+              Връща <strong>всички записи от Дясната таблица</strong> и
+              съвпадащите от Лявата. (Работи точно като LEFT JOIN, но
+              огледално).
+            </p>
+            <p class="text-sm text-gray-500 italic mt-2">
+              *Това ще покаже всички класове, дори тези, в които все още няма
+              записан нито един ученик.*
+            </p>
+          </div>
+
+          <!-- FULL JOIN -->
+          <div class="bg-white rounded-xl shadow-sm border p-6">
+            <h3 class="text-xl font-bold text-purple-600 mb-2">
+              FULL (OUTER) JOIN
+            </h3>
+            <p class="text-gray-700">
+              Връща всички записи, когато има съвпадение в лявата ИЛИ в дясната
+              таблица. Тоест, показва всичко от двете таблици, като попълва с
+              NULL липсващите данни.
+            </p>
+          </div>
+        </section>
+
+        <!-- Секция: Интерактивен Симулатор -->
+        <section id="simulator" class="section-content">
+          <div
+            class="bg-gradient-to-r from-gray-800 to-slate-900 rounded-2xl p-6 md:p-8 text-white shadow-xl"
+          >
+            <h2 class="text-3xl font-bold mb-2">
+              <i class="fa-solid fa-cogs mr-3 text-green-400"></i>SQL JOIN
+              Симулатор
+            </h2>
+            <p class="mb-8 text-gray-300">
+              Изберете тип съединение, за да видите как се променя резултатната
+              таблица.
+            </p>
+
+            <!-- Исходни таблици -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <!-- Таблица A -->
+              <div
+                class="bg-white text-gray-800 rounded-lg overflow-hidden shadow"
+              >
+                <div
+                  class="bg-blue-100 p-3 font-bold text-blue-800 flex justify-between"
+                >
+                  <span
+                    >Таблица A:
+                    <code
+                      class="bg-white px-2 py-1 rounded text-sm text-blue-600"
+                      >employees</code
+                    ></span
+                  >
+                </div>
+                <table class="w-full text-sm text-left">
+                  <thead class="bg-gray-50 border-b">
+                    <tr>
+                      <th class="p-2">emp_id</th>
+                      <th class="p-2">name</th>
+                      <th class="p-2 bg-yellow-100">dept_id (FK)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="border-b">
+                      <td class="p-2">1</td>
+                      <td class="p-2">Иван</td>
+                      <td class="p-2 bg-yellow-50 font-bold">10</td>
+                    </tr>
+                    <tr class="border-b">
+                      <td class="p-2">2</td>
+                      <td class="p-2">Мария</td>
+                      <td class="p-2 bg-yellow-50 font-bold">20</td>
+                    </tr>
+                    <tr class="border-b">
+                      <td class="p-2">3</td>
+                      <td class="p-2">Пешо</td>
+                      <td class="p-2 bg-red-100 font-bold italic">NULL</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Таблица B -->
+              <div
+                class="bg-white text-gray-800 rounded-lg overflow-hidden shadow"
+              >
+                <div
+                  class="bg-green-100 p-3 font-bold text-green-800 flex justify-between"
+                >
+                  <span
+                    >Таблица B:
+                    <code
+                      class="bg-white px-2 py-1 rounded text-sm text-green-600"
+                      >departments</code
+                    ></span
+                  >
+                </div>
+                <table class="w-full text-sm text-left">
+                  <thead class="bg-gray-50 border-b">
+                    <tr>
+                      <th class="p-2 bg-yellow-100">dept_id (PK)</th>
+                      <th class="p-2">dept_name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="border-b">
+                      <td class="p-2 bg-yellow-50 font-bold">10</td>
+                      <td class="p-2">ИТ отдел</td>
+                    </tr>
+                    <tr class="border-b">
+                      <td class="p-2 bg-yellow-50 font-bold">20</td>
+                      <td class="p-2">Маркетинг</td>
+                    </tr>
+                    <tr class="border-b">
+                      <td class="p-2 bg-yellow-50 font-bold">30</td>
+                      <td class="p-2 text-gray-500 italic">Счетоводство</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Контроли -->
+            <div
+              class="flex flex-wrap gap-4 mb-6 bg-gray-800 p-4 rounded-lg border border-gray-700 items-center justify-center"
+            >
+              <span class="font-bold mr-2 text-gray-300">Избери JOIN:</span>
+              <button
+                onclick="runSimulation('INNER')"
+                class="sim-btn px-4 py-2 bg-gray-700 hover:bg-green-600 rounded text-sm font-bold transition focus:ring focus:ring-green-400 active"
+              >
+                INNER JOIN
+              </button>
+              <button
+                onclick="runSimulation('LEFT')"
+                class="sim-btn px-4 py-2 bg-gray-700 hover:bg-blue-600 rounded text-sm font-bold transition focus:ring focus:ring-blue-400"
+              >
+                LEFT JOIN
+              </button>
+              <button
+                onclick="runSimulation('RIGHT')"
+                class="sim-btn px-4 py-2 bg-gray-700 hover:bg-teal-600 rounded text-sm font-bold transition focus:ring focus:ring-teal-400"
+              >
+                RIGHT JOIN
+              </button>
+            </div>
+
+            <!-- SQL Query Display -->
+            <div
+              class="font-mono text-sm bg-black p-4 rounded-t-lg text-gray-300 border-b border-gray-800"
+            >
+              <span class="text-pink-400">SELECT</span> e.name, d.dept_name<br />
+              <span class="text-pink-400">FROM</span> employees e<br />
+              <span id="sim-sql-type" class="text-pink-400 font-bold text-lg"
+                >INNER JOIN</span
+              >
+              departments d <span class="text-pink-400">ON</span> e.dept_id =
+              d.dept_id;
+            </div>
+
+            <!-- Резултат -->
+            <div
+              class="bg-white text-gray-800 rounded-b-lg overflow-hidden shadow"
+            >
+              <table class="w-full text-left" id="sim-result-table">
+                <thead class="bg-gray-100 border-b">
+                  <tr>
+                    <th class="p-3 text-blue-800 border-r border-gray-200">
+                      employees.name
+                    </th>
+                    <th class="p-3 text-green-800">departments.dept_name</th>
+                  </tr>
+                </thead>
+                <tbody id="sim-result-body">
+                  <!-- Генерира се от JavaScript -->
+                </tbody>
+              </table>
+            </div>
+            <div
+              id="sim-explanation"
+              class="mt-4 text-sm text-gray-400 italic"
+            ></div>
+          </div>
+        </section>
+
+        <!-- Секция: Практически Задачи -->
+        <section id="practice" class="section-content">
+          <h2
+            class="text-3xl font-bold text-gray-800 mb-6 border-b-2 border-green-500 pb-2 inline-block"
+          >
+            Практически Задачи
+          </h2>
+
+          <div
+            class="bg-white rounded-xl shadow border border-gray-200 overflow-hidden mb-6"
+          >
+            <div
+              class="bg-slate-800 p-4 text-white flex items-center justify-between"
+            >
+              <h3 class="text-lg font-bold">
+                <i class="fa-solid fa-code mr-2 text-green-400"></i> Задача 1:
+                Книги и Автори
+              </h3>
+            </div>
+            <div class="p-6">
+              <p class="mb-4 text-gray-700">
+                Имате следните две таблици в база данни "Библиотека":
+              </p>
+              <ul
+                class="list-disc pl-6 text-gray-600 mb-4 font-mono text-sm space-y-1"
+              >
+                <li>
+                  <span class="font-bold text-blue-600">Authors</span>
+                  (author_id PK, first_name, last_name)
+                </li>
+                <li>
+                  <span class="font-bold text-green-600">Books</span> (book_id
+                  PK, title, publish_year, author_id FK)
+                </li>
+              </ul>
+              <div
+                class="bg-yellow-50 p-4 rounded border-l-4 border-yellow-400 text-gray-800"
+              >
+                <strong>Условие:</strong> Напишете SQL заявка, която извежда
+                заглавието на всяка книга (title) заедно с първото и фамилното
+                име на нейния автор. Използвайте INNER JOIN.
+              </div>
+
+              <div class="mt-4">
+                <button
+                  onclick="toggleAnswer('ans1')"
+                  class="text-blue-600 hover:underline text-sm font-bold"
+                >
+                  <i class="fa-solid fa-eye mr-1"></i> Покажи/Скрий решението
+                </button>
+                <div id="ans1" class="hidden mt-2 code-block">
+                  <span class="sql-keyword">SELECT</span> Books.<span
+                    class="sql-column"
+                    >title</span
+                  >, Authors.<span class="sql-column">first_name</span>,
+                  Authors.<span class="sql-column">last_name</span>
+                  <span class="sql-keyword">FROM</span>
+                  <span class="sql-table">Books</span>
+                  <span class="sql-keyword">INNER JOIN</span>
+                  <span class="sql-table">Authors</span>
+                  <span class="sql-keyword">ON</span>
+                  <span class="sql-table">Books</span>.<span class="sql-column"
+                    >author_id</span
+                  >
+                  = <span class="sql-table">Authors</span>.<span
+                    class="sql-column"
+                    >author_id</span
+                  >;
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-xl shadow border border-gray-200 overflow-hidden"
+          >
+            <div
+              class="bg-slate-800 p-4 text-white flex items-center justify-between"
+            >
+              <h3 class="text-lg font-bold">
+                <i class="fa-solid fa-code mr-2 text-blue-400"></i> Задача 2:
+                Клиенти без поръчки
+              </h3>
+            </div>
+            <div class="p-6">
+              <p class="mb-4 text-gray-700">
+                Имате таблици <code>Customers</code> (Уникални клиенти) и
+                <code>Orders</code> (Поръчки).
+              </p>
+              <div
+                class="bg-blue-50 p-4 rounded border-l-4 border-blue-400 text-gray-800"
+              >
+                <strong>Условие:</strong> Искаме да изведем списък с
+                <strong>всички</strong> клиенти (имената им), както и датите на
+                техните поръчки. Дори клиентът да не е направил нито една
+                поръчка все още, неговото име трябва да присъства в резултата!
+                Какъв JOIN трябва да използваме? Напишете заявката.
+              </div>
+
+              <div class="mt-4">
+                <button
+                  onclick="toggleAnswer('ans2')"
+                  class="text-blue-600 hover:underline text-sm font-bold"
+                >
+                  <i class="fa-solid fa-eye mr-1"></i> Покажи/Скрий решението
+                </button>
+                <div id="ans2" class="hidden mt-2 code-block">
+                  <span class="text-gray-400"
+                    >-- Използваме LEFT JOIN, за да вземем всички записи от
+                    лявата таблица (Customers)</span
+                  >
+                  <span class="sql-keyword">SELECT</span> Customers.<span
+                    class="sql-column"
+                    >name</span
+                  >, Orders.<span class="sql-column">order_date</span>
+                  <span class="sql-keyword">FROM</span>
+                  <span class="sql-table">Customers</span>
+                  <span class="sql-keyword">LEFT JOIN</span>
+                  <span class="sql-table">Orders</span>
+                  <span class="sql-keyword">ON</span>
+                  <span class="sql-table">Customers</span>.<span
+                    class="sql-column"
+                    >customer_id</span
+                  >
+                  = <span class="sql-table">Orders</span>.<span
+                    class="sql-column"
+                    >customer_id</span
+                  >;
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Секция: Тест за самооценка -->
+        <section id="quiz" class="section-content">
+          <h2
+            class="text-3xl font-bold text-gray-800 mb-6 border-b-2 border-green-500 pb-2 inline-block"
+          >
+            Тест за самооценка
+          </h2>
+          <p class="mb-6 text-gray-700 text-lg">
+            Проверете разбирането си за релационните заявки.
+          </p>
+
+          <form id="quiz-form" class="space-y-6">
+            <!-- Въпрос 1 -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border">
+              <p class="font-bold text-lg mb-3">
+                1. Коя клауза се използва за указване на условието, по което се
+                съединяват две таблици?
+              </p>
+              <div class="space-y-2">
+                <label
+                  class="flex items-center cursor-pointer p-3 hover:bg-gray-50 rounded border border-transparent hover:border-gray-200 transition"
+                  ><input
+                    type="radio"
+                    name="q1"
+                    value="a"
+                    class="mr-3 w-4 h-4 text-green-600"
+                  />
+                  WHERE</label
+                >
+                <label
+                  class="flex items-center cursor-pointer p-3 hover:bg-gray-50 rounded border border-transparent hover:border-gray-200 transition"
+                  ><input
+                    type="radio"
+                    name="q1"
+                    value="b"
+                    class="mr-3 w-4 h-4 text-green-600"
+                  />
+                  ON</label
+                >
+                <label
+                  class="flex items-center cursor-pointer p-3 hover:bg-gray-50 rounded border border-transparent hover:border-gray-200 transition"
+                  ><input
+                    type="radio"
+                    name="q1"
+                    value="c"
+                    class="mr-3 w-4 h-4 text-green-600"
+                  />
+                  LINK</label
+                >
+              </div>
+            </div>
+
+            <!-- Въпрос 2 -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border">
+              <p class="font-bold text-lg mb-3">
+                2. Кой тип JOIN връща САМО тези редове, които имат съвпадение И
+                В ДВЕТЕ таблици?
+              </p>
+              <div class="space-y-2">
+                <label
+                  class="flex items-center cursor-pointer p-3 hover:bg-gray-50 rounded border border-transparent hover:border-gray-200 transition"
+                  ><input
+                    type="radio"
+                    name="q2"
+                    value="a"
+                    class="mr-3 w-4 h-4 text-green-600"
+                  />
+                  LEFT JOIN</label
+                >
+                <label
+                  class="flex items-center cursor-pointer p-3 hover:bg-gray-50 rounded border border-transparent hover:border-gray-200 transition"
+                  ><input
+                    type="radio"
+                    name="q2"
+                    value="b"
+                    class="mr-3 w-4 h-4 text-green-600"
+                  />
+                  FULL OUTER JOIN</label
+                >
+                <label
+                  class="flex items-center cursor-pointer p-3 hover:bg-gray-50 rounded border border-transparent hover:border-gray-200 transition"
+                  ><input
+                    type="radio"
+                    name="q2"
+                    value="c"
+                    class="mr-3 w-4 h-4 text-green-600"
+                  />
+                  INNER JOIN</label
+                >
+              </div>
+            </div>
+
+            <!-- Въпрос 3 -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border">
+              <p class="font-bold text-lg mb-3">
+                3. Имаме таблица `Класове` (лява) и таблица `Ученици` (дясна).
+                Ако искаме да видим списък с ВСИЧКИ класове, дори тези без
+                ученици в тях, ще използваме:
+              </p>
+              <div class="space-y-2">
+                <label
+                  class="flex items-center cursor-pointer p-3 hover:bg-gray-50 rounded border border-transparent hover:border-gray-200 transition"
+                  ><input
+                    type="radio"
+                    name="q3"
+                    value="a"
+                    class="mr-3 w-4 h-4 text-green-600"
+                  />
+                  LEFT JOIN</label
+                >
+                <label
+                  class="flex items-center cursor-pointer p-3 hover:bg-gray-50 rounded border border-transparent hover:border-gray-200 transition"
+                  ><input
+                    type="radio"
+                    name="q3"
+                    value="b"
+                    class="mr-3 w-4 h-4 text-green-600"
+                  />
+                  RIGHT JOIN</label
+                >
+                <label
+                  class="flex items-center cursor-pointer p-3 hover:bg-gray-50 rounded border border-transparent hover:border-gray-200 transition"
+                  ><input
+                    type="radio"
+                    name="q3"
+                    value="c"
+                    class="mr-3 w-4 h-4 text-green-600"
+                  />
+                  INNER JOIN</label
+                >
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onclick="checkQuiz()"
+              class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-md transition w-full md:w-auto text-lg"
+            >
+              Изпрати отговорите
+            </button>
+          </form>
+
+          <div
+            id="quiz-result"
+            class="mt-6 hidden p-6 rounded-xl font-bold text-lg text-center shadow-inner border"
+          ></div>
+        </section>
+      </div>
+    </main>
+
+    <!-- JavaScript Логика -->
+    <script>
+      // --- НАВИГАЦИЯ ---
+      function navigate(sectionId) {
+        document.querySelectorAll(".section-content").forEach((el) => {
+          el.classList.remove("active");
+        });
+
+        document.getElementById(sectionId).classList.add("active");
+
+        document.querySelectorAll(".nav-link").forEach((el) => {
+          el.classList.remove("active", "bg-f0fdf4", "text-green-600");
+        });
+
+        const activeBtn = Array.from(
+          document.querySelectorAll(".nav-link"),
+        ).find((btn) => btn.getAttribute("onclick") === `Maps('${sectionId}')`);
+        if (activeBtn) {
+          activeBtn.classList.add("active");
+        }
+
+        document.getElementById("mobile-nav").value = sectionId;
+        document.querySelector("main").scrollTop = 0;
+      }
+
+      // --- ТОГЪЛ ЗА ОТГОВОРИ (Задачи) ---
+      function toggleAnswer(id) {
+        const el = document.getElementById(id);
+        if (el.classList.contains("hidden")) {
+          el.classList.remove("hidden");
+        } else {
+          el.classList.add("hidden");
+        }
+      }
+
+      // --- SQL JOIN СИМУЛАТОР ---
+      const dataEmployees = [
+        { id: 1, name: "Иван", dept_id: 10 },
+        { id: 2, name: "Мария", dept_id: 20 },
+        { id: 3, name: "Пешо", dept_id: null }, // Няма отдел
+      ];
+
+      const dataDepartments = [
+        { id: 10, name: "ИТ отдел" },
+        { id: 20, name: "Маркетинг" },
+        { id: 30, name: "Счетоводство" }, // Няма служители
+      ];
+
+      function runSimulation(joinType) {
+        // Update active button style
+        document.querySelectorAll(".sim-btn").forEach((btn) => {
+          btn.classList.remove(
+            "bg-green-600",
+            "bg-blue-600",
+            "bg-teal-600",
+            "active",
+          );
+          btn.classList.add("bg-gray-700");
+        });
+        const activeBtn = Array.from(
+          document.querySelectorAll(".sim-btn"),
+        ).find((b) => b.innerText.includes(joinType));
+        if (joinType === "INNER")
+          activeBtn.classList.replace("bg-gray-700", "bg-green-600");
+        if (joinType === "LEFT")
+          activeBtn.classList.replace("bg-gray-700", "bg-blue-600");
+        if (joinType === "RIGHT")
+          activeBtn.classList.replace("bg-gray-700", "bg-teal-600");
+
+        // Update SQL Code Text
+        document.getElementById("sim-sql-type").innerText = `${joinType} JOIN`;
+
+        // Process Join
+        let results = [];
+
+        if (joinType === "INNER") {
+          dataEmployees.forEach((emp) => {
+            const dept = dataDepartments.find((d) => d.id === emp.dept_id);
+            if (dept) results.push({ empName: emp.name, deptName: dept.name });
+          });
+          document.getElementById("sim-explanation").innerText =
+            "*Резултат: Само Иван и Мария. Пешо (няма отдел) и Счетоводството (няма служители) отпадат, защото нямат съвпадение.*";
+        } else if (joinType === "LEFT") {
+          dataEmployees.forEach((emp) => {
+            const dept = dataDepartments.find((d) => d.id === emp.dept_id);
+            results.push({
+              empName: emp.name,
+              deptName: dept
+                ? dept.name
+                : '<span class="text-gray-400 italic">NULL</span>',
+            });
+          });
+          document.getElementById("sim-explanation").innerHTML =
+            "*Резултат: Всички служители (лява таблица). Срещу Пешо излиза <code>NULL</code>, защото той няма отдел. Счетоводството липсва.*";
+        } else if (joinType === "RIGHT") {
+          dataDepartments.forEach((dept) => {
+            const emps = dataEmployees.filter((e) => e.dept_id === dept.id);
+            if (emps.length > 0) {
+              emps.forEach((emp) =>
+                results.push({ empName: emp.name, deptName: dept.name }),
+              );
+            } else {
+              results.push({
+                empName: '<span class="text-gray-400 italic">NULL</span>',
+                deptName: dept.name,
+              });
+            }
+          });
+          document.getElementById("sim-explanation").innerHTML =
+            "*Резултат: Всички отдели (дясна таблица). Срещу Счетоводство излиза <code>NULL</code>, защото няма служители там. Пешо липсва.*";
+        }
+
+        // Render Result Table
+        const tbody = document.getElementById("sim-result-body");
+        tbody.innerHTML = "";
+        results.forEach((row, index) => {
+          const tr = document.createElement("tr");
+          tr.className =
+            index % 2 === 0 ? "bg-white border-b" : "bg-gray-50 border-b";
+
+          // Highlight logic for NULLs
+          const empClass = row.empName.includes("NULL")
+            ? "p-3 border-r border-gray-200 bg-red-50"
+            : "p-3 border-r border-gray-200 font-medium text-blue-900";
+          const deptClass = row.deptName.includes("NULL")
+            ? "p-3 bg-red-50"
+            : "p-3 font-medium text-green-900";
+
+          tr.innerHTML = `
+                    <td class="${empClass}">${row.empName}</td>
+                    <td class="${deptClass}">${row.deptName}</td>
+                `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      // --- ТЕСТ ЗА САМООЦЕНКА ---
+      function checkQuiz() {
+        const answers = {
+          q1: "b", // ON
+          q2: "c", // INNER JOIN
+          q3: "a", // LEFT JOIN (защото Класове е лявата таблица)
+        };
+
+        let score = 0;
+        let total = 3;
+        const form = document.getElementById("quiz-form");
+        const data = new FormData(form);
+
+        for (let [question, correctAns] of Object.entries(answers)) {
+          if (data.get(question) === correctAns) {
+            score++;
+          }
+        }
+
+        const resultDiv = document.getElementById("quiz-result");
+        resultDiv.classList.remove(
+          "hidden",
+          "bg-green-100",
+          "text-green-800",
+          "border-green-300",
+          "bg-yellow-100",
+          "text-yellow-800",
+          "border-yellow-300",
+          "bg-red-100",
+          "text-red-800",
+          "border-red-300",
+        );
+
+        let message = `Резултат: ${score} от ${total} верни отговора! <br>`;
+
+        if (score === 3) {
+          resultDiv.classList.add(
+            "bg-green-100",
+            "text-green-800",
+            "border-green-300",
+          );
+          message += "Перфектно! Разбирате отлично как работят релациите.";
+        } else if (score === 2) {
+          resultDiv.classList.add(
+            "bg-yellow-100",
+            "text-yellow-800",
+            "border-yellow-300",
+          );
+          message += "Много добре! Има съвсем малко за преговор.";
+        } else {
+          resultDiv.classList.add(
+            "bg-red-100",
+            "text-red-800",
+            "border-red-300",
+          );
+          message +=
+            "Опитайте отново! Прочетете теорията и тествайте симулатора.";
+        }
+
+        resultDiv.innerHTML = message;
+      }
+
+      // Инициализация при зареждане
+      window.onload = function () {
+        runSimulation("INNER");
+      };
+    </script>
+  </body>
+</html>
